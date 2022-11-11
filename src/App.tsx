@@ -14,7 +14,7 @@ export default App;
 const MainBody = styled.div`
   position: relative;
   width: 100vw;
-  max-width: 420px;
+  /* max-width: 420px; */
   height: 100vh;
   background-color: red;
   /* margin: auto; */
