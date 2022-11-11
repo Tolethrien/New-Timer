@@ -17,6 +17,6 @@ const MainBody = styled.div`
   max-width: 420px;
   height: 100vh;
   background-color: red;
-  margin: auto;
+  /* margin: auto; */
   overflow: hidden;
 `;
