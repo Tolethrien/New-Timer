@@ -28,19 +28,19 @@ const Login: React.FC<LoginProps> = (props) => {
         <Name>Account</Name>
         <LineDevider width={80}></LineDevider>
         <LoginText>Login</LoginText>
-        <form onSubmit={(e) => handleLogin(e)}>
+        <Form onSubmit={(e) => handleLogin(e)}>
           <UserInput
             type={"login"}
             ref={userLogin}
-            // onChange={(e) => handleChange("login", e)}
+            placeholder={"login..."}
           ></UserInput>
           <UserInput
             type={"password"}
             ref={userPassword}
-            // onChange={(e) => handleChange("password", e)}
+            placeholder={"Password..."}
           ></UserInput>
           <input type="submit" value="Submit" hidden={true} />
-        </form>
+        </Form>
         <CreateAccountText>Do not have account yet? </CreateAccountText>
         <CreateAccountLink>Register</CreateAccountLink>
       </Glass>
@@ -54,7 +54,40 @@ const Wrap = styled.div<StyleProps>`
   justify-content: center;
 `;
 const Name = styled.h3<StyleProps>``;
-const LoginText = styled.div<StyleProps>``;
-const UserInput = styled.input<StyleProps>``;
-const CreateAccountText = styled.div<StyleProps>``;
-const CreateAccountLink = styled.div<StyleProps>``;
+const LoginText = styled.p<StyleProps>`
+  font-size: 30px;
+  margin-top: 20%;
+  margin-bottom: 10%;
+`;
+const Form = styled.form<StyleProps>`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+const UserInput = styled.input<StyleProps>`
+  border-radius: 5px;
+  border: none;
+  box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.25);
+  margin: 2% 0;
+  text-align: center;
+  margin-bottom: 5%;
+  height: 100%;
+  width: 100%;
+  :focus {
+    outline: none;
+  }
+`;
+const CreateAccountText = styled.div<StyleProps>`
+  font-size: 1.6em;
+  margin-top: 10%;
+`;
+const CreateAccountLink = styled.div<StyleProps>`
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  color: white;
+  font-size: 1.2em;
+  margin-top: 5%;
+  margin-bottom: 20%;
+`;

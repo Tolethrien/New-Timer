@@ -15,9 +15,12 @@ const Glass: React.FC<GlassProps> = ({ size, children }) => {
     primary: { primaryColor },
   } = useContext(appContext);
   return (
-    <GlassStyle size={size} color={primaryColor}>
-      {children}
-    </GlassStyle>
+    <>
+      <Blur />
+      <GlassStyle size={size} color={primaryColor}>
+        {children}
+      </GlassStyle>
+    </>
   );
 };
 
@@ -32,7 +35,6 @@ const GlassStyle = styled.div<styleProps>`
   background-color: ${({ color }) => color};
   min-height: 20px;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(20px);
   color: white;
   border: 1px solid #9c9c9c;
 
@@ -47,4 +49,7 @@ const GlassStyle = styled.div<styleProps>`
         border-radius: 10px;
       `;
   }};
+`;
+const Blur = styled.div`
+  backdrop-filter: blur(20px);
 `;
