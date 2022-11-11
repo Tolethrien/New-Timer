@@ -14,6 +14,6 @@ const Wrap = styled.div<StyleProps>`
   height: 2px;
   background: linear-gradient(180deg, #fffbfb 0%, rgba(255, 251, 251, 0) 100%);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
+  border-radius: 4px;
   margin: 10px 0;
 `;
