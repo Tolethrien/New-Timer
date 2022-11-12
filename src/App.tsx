@@ -20,7 +20,7 @@ const MainBody = styled.div<{ height: number }>`
   position: relative;
 
   width: 100vw;
-  /* max-width: 420px; */
+  max-width: 420px;
   height: ${({ height }) => height}px;
   /* background-color: red; */
   background: conic-gradient(
@@ -30,6 +30,6 @@ const MainBody = styled.div<{ height: number }>`
     #245c9d 240deg,
     #26c10d 360deg
   );
-  /* margin: auto; */
+  margin: auto;
   overflow: hidden;
 `;
