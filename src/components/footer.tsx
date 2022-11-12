@@ -44,7 +44,11 @@ const Footer: React.FC<FooterProps> = () => {
           )}
           color={currentWindow === key.id ? primaryColor : secondaryColor}
         >
-          <ButtonImg src={key.icon} alt={`${key.name} button`}></ButtonImg>
+          <ButtonImg
+            src={key.icon}
+            alt={`${key.name} button`}
+            draggable={"false"}
+          ></ButtonImg>
         </ButtonLink>
       ))}
     </Wrap>
