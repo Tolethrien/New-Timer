@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Glass from "./styledComponents/glass";
 import LineDevider from "./styledComponents/lineDevider";
-import { login, auth } from "../firebase";
+import { login, auth } from "./API/firebase";
 import { useRef } from "react";
 //=======TYPES========
 interface LoginProps {}
@@ -26,7 +26,7 @@ const Login: React.FC<LoginProps> = (props) => {
     <Wrap>
       <Glass size={"inline"}>
         <Name>Account</Name>
-        <LineDevider width={80}></LineDevider>
+        <LineDevider width={80} margin={1} thickness={3}></LineDevider>
         <LoginText>Login</LoginText>
         <Form onSubmit={(e) => handleLogin(e)}>
           <UserInput
@@ -52,13 +52,19 @@ export default Login;
 const Wrap = styled.div<StyleProps>`
   display: flex;
   justify-content: center;
-  height: 80%;
+  align-items: center;
+  width: 100%;
+  height: calc(100% - 45px);
 `;
-const Name = styled.h3<StyleProps>``;
+
+const Name = styled.h3<StyleProps>`
+  padding-top: 2%;
+  font-size: 1.3em;
+`;
 const LoginText = styled.p<StyleProps>`
-  font-size: 30px;
-  margin-top: 20%;
-  margin-bottom: 10%;
+  font-size: 2em;
+  padding-top: 20%;
+  padding-bottom: 5%;
 `;
 const Form = styled.form<StyleProps>`
   display: flex;
@@ -66,6 +72,7 @@ const Form = styled.form<StyleProps>`
   justify-content: center;
   align-items: center;
   width: 100%;
+  padding-bottom: 10%;
 `;
 const UserInput = styled.input<StyleProps>`
   border-radius: 5px;
@@ -73,24 +80,22 @@ const UserInput = styled.input<StyleProps>`
   box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.25);
   margin: 2% 0;
   text-align: center;
-  margin-bottom: 5%;
-  height: 40px;
-  width: 80%;
+  width: 50%;
+  height: 2em;
+  background: #d4d3d3;
   :focus {
     outline: none;
   }
 `;
 const CreateAccountText = styled.div<StyleProps>`
   font-size: 1.6em;
-  margin-top: 10%;
+  padding-bottom: 2%;
 `;
 const CreateAccountLink = styled.div<StyleProps>`
   background: none;
   border: none;
   cursor: pointer;
   text-decoration: underline;
-  color: white;
   font-size: 1.2em;
-  margin-top: 5%;
-  margin-bottom: 20%;
+  padding-bottom: 20%;
 `;

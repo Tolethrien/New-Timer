@@ -1,28 +1,34 @@
+import { useContext } from "react";
 import styled from "styled-components";
 import Footer from "./components/footer";
 import Login from "./components/login";
+import { appContext } from "./global/provider";
+//=======TYPES========
+interface styleProps {
+  height: number;
+  textColor: string;
+}
+//=======COMPONENT========
 function App() {
-  const width = window.innerWidth;
   const height = window.innerHeight;
+  const {
+    text: { textColor },
+  } = useContext(appContext);
   return (
-    <MainBody height={height}>
+    <MainBody height={height} textColor={textColor}>
       <Login />
-      <p>
-        {width}, {height}
-      </p>
       <Footer />
     </MainBody>
   );
 }
-
 export default App;
-const MainBody = styled.div<{ height: number }>`
+//=======STYLES========
+const MainBody = styled.div<styleProps>`
   position: relative;
-
+  color: ${({ textColor }) => textColor};
   width: 100vw;
   max-width: 420px;
   height: ${({ height }) => height}px;
-  /* background-color: red; */
   background: conic-gradient(
     from 224.11deg at 61.25% 50%,
     #979454 0deg,
