@@ -63,6 +63,8 @@ const Form = styled.form<StyleProps>`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 100%;
 `;
 const UserInput = styled.input<StyleProps>`
   border-radius: 5px;
@@ -71,8 +73,8 @@ const UserInput = styled.input<StyleProps>`
   margin: 2% 0;
   text-align: center;
   margin-bottom: 5%;
-  height: 100%;
-  width: 100%;
+  height: 30px;
+  width: 80%;
   :focus {
     outline: none;
   }
