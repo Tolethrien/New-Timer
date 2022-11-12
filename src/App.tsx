@@ -1,8 +1,15 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import Footer from "./components/footer";
-import Login from "./components/login";
+import Login from "./pages/login";
+import Dashboard from "./pages/dashboard";
+import Calendar from "./pages/calendar";
+import Timer from "./pages/timer";
+import Data from "./pages/data";
+import Projects from "./pages/projects";
+import Options from "./pages/options";
 import { appContext } from "./global/provider";
+import { Routes, Route } from "react-router-dom";
 //=======TYPES========
 interface styleProps {
   height: number;
@@ -16,7 +23,15 @@ function App() {
   } = useContext(appContext);
   return (
     <MainBody height={height} textColor={textColor}>
-      <Login />
+      <Routes>
+        <Route path={"/"} element={<Dashboard />}></Route>
+        <Route path={"/timer"} element={<Timer />}></Route>
+        <Route path={"/calendar"} element={<Calendar />}></Route>
+        <Route path={"/data"} element={<Data />}></Route>
+        <Route path={"/projects"} element={<Projects />}></Route>
+        <Route path={"/options"} element={<Options />}></Route>
+        <Route path={"/login"} element={<Login />}></Route>
+      </Routes>
       <Footer />
     </MainBody>
   );
