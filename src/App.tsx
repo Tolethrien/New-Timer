@@ -2,9 +2,14 @@ import styled from "styled-components";
 import Footer from "./components/footer";
 import Login from "./components/login";
 function App() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
   return (
     <MainBody>
       <Login />
+      <p>
+        {width}, {height}
+      </p>
       <Footer />
     </MainBody>
   );
