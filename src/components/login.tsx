@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Glass from "./styledComponents/glass";
 import LineDevider from "./styledComponents/lineDevider";
-import { login, auth } from "./API/firebase";
+import { login, auth } from "../API/firebase";
 import { useRef } from "react";
 //=======TYPES========
 interface LoginProps {}

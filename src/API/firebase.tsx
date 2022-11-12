@@ -45,7 +45,7 @@ export const auth = getAuth();
 // export const updateAcc = (name: string) => {
 //   return updateProfile(auth.currentUser, { displayName: name });
 // };
-
+//sdsds
 export const login = (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password);
 };
