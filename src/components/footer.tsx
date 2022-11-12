@@ -44,11 +44,7 @@ const Footer: React.FC<FooterProps> = () => {
           )}
           color={currentWindow === key.id ? primaryColor : secondaryColor}
         >
-          <ButtonImg
-            src={key.icon}
-            alt={`${key.name} button`}
-            draggable={"false"}
-          ></ButtonImg>
+          <ButtonImg src={key.icon} alt={`${key.name} button`}></ButtonImg>
         </ButtonLink>
       ))}
     </Wrap>
@@ -78,4 +74,5 @@ const ButtonLink = styled.div<styleProps>`
 const ButtonImg = styled.img`
   width: 70%;
   height: 70%;
+  user-select: none;
 `;
