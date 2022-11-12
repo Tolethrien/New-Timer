@@ -74,5 +74,5 @@ const ButtonLink = styled.div<styleProps>`
 const ButtonImg = styled.img`
   width: 70%;
   height: 70%;
-  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 `;
