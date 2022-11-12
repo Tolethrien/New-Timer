@@ -52,6 +52,7 @@ export default Login;
 const Wrap = styled.div<StyleProps>`
   display: flex;
   justify-content: center;
+  height: 80%;
 `;
 const Name = styled.h3<StyleProps>``;
 const LoginText = styled.p<StyleProps>`
@@ -73,7 +74,7 @@ const UserInput = styled.input<StyleProps>`
   margin: 2% 0;
   text-align: center;
   margin-bottom: 5%;
-  height: 130px;
+  height: 40px;
   width: 80%;
   :focus {
     outline: none;
