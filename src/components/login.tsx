@@ -73,7 +73,7 @@ const UserInput = styled.input<StyleProps>`
   margin: 2% 0;
   text-align: center;
   margin-bottom: 5%;
-  height: 30px;
+  height: 130px;
   width: 80%;
   :focus {
     outline: none;
