@@ -5,7 +5,7 @@ function App() {
   const width = window.innerWidth;
   const height = window.innerHeight;
   return (
-    <MainBody>
+    <MainBody height={height}>
       <Login />
       <p>
         {width}, {height}
@@ -16,12 +16,12 @@ function App() {
 }
 
 export default App;
-const MainBody = styled.div`
+const MainBody = styled.div<{ height: number }>`
   position: relative;
 
   width: 100vw;
   /* max-width: 420px; */
-  height: 100vh;
+  height: ${({ height }) => height}px;
   /* background-color: red; */
   background: conic-gradient(
     from 224.11deg at 61.25% 50%,
