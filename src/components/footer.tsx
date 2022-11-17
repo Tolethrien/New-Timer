@@ -16,6 +16,7 @@ const Footer: React.FC<FooterProps> = () => {
   const {
     primary: { primaryColor },
     secondary: { secondaryColor },
+    vibration: { isVibrate },
   } = useContext(appContext);
   const linkData = {
     dashboard: { id: 0, name: "Dashboard", link: "./", icon: Dashboard },
@@ -40,7 +41,7 @@ const Footer: React.FC<FooterProps> = () => {
           to={key.link}
           key={key.id}
           onClick={() => (
-            setCurrentWindow(key.id), navigator.vibrate(buzzTime)
+            setCurrentWindow(key.id), isVibrate && navigator.vibrate(buzzTime)
           )}
           color={currentWindow === key.id ? primaryColor : secondaryColor}
         >
@@ -74,5 +75,4 @@ const ButtonLink = styled.div<styleProps>`
 const ButtonImg = styled.img`
   width: 70%;
   height: 70%;
-  -webkit-tap-highlight-color: transparent;
 `;

@@ -5,17 +5,19 @@ import { appContext } from "../../global/provider";
 interface GlassProps {
   children?: React.ReactNode;
   size: "inline" | "full";
+  padding?: string;
 }
 interface styleProps {
   color: string;
   size: "inline" | "full";
+  padding?: string;
 }
-const Glass: React.FC<GlassProps> = ({ size, children }) => {
+const Glass: React.FC<GlassProps> = ({ size, children, padding }) => {
   const {
     primary: { primaryColor },
   } = useContext(appContext);
   return (
-    <GlassStyle size={size} color={primaryColor}>
+    <GlassStyle size={size} color={primaryColor} padding={padding}>
       {children}
     </GlassStyle>
   );
@@ -34,7 +36,7 @@ const GlassStyle = styled.div<styleProps>`
   min-height: 20px;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   border: 1px solid #9c9c9c;
-
+  padding: ${({ padding }) => padding};
   ${({ size }) => {
     if (size === "full")
       return css`
