@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import LineDevider from "../components/styledComponents/lineDevider";
-import Glass from "../components/styledComponents/glass";
-import Option from "../components/optionsComponents/option";
+import LineDevider from "../components/styled/lineDevider";
+import Glass from "../components/styled/glass";
+import Option from "../components/options/option";
 interface OptionsProps {}
 interface StyleProps {}
 const Options: React.FC<OptionsProps> = (props) => {

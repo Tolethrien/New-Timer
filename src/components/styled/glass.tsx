@@ -1,23 +1,30 @@
 import styled, { css } from "styled-components";
 import { useContext } from "react";
-import { appContext } from "../../global/provider";
+import { appContext } from "../providers/appProvider";
 
 interface GlassProps {
   children?: React.ReactNode;
   size: "inline" | "full";
   padding?: string;
+  margin?: string;
 }
 interface styleProps {
   color: string;
   size: "inline" | "full";
   padding?: string;
+  margin?: string;
 }
-const Glass: React.FC<GlassProps> = ({ size, children, padding }) => {
+const Glass: React.FC<GlassProps> = ({ size, children, padding, margin }) => {
   const {
     primary: { primaryColor },
   } = useContext(appContext);
   return (
-    <GlassStyle size={size} color={primaryColor} padding={padding}>
+    <GlassStyle
+      size={size}
+      color={primaryColor}
+      padding={padding}
+      margin={margin}
+    >
       {children}
     </GlassStyle>
   );
@@ -37,6 +44,7 @@ const GlassStyle = styled.div<styleProps>`
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
   border: 1px solid #9c9c9c;
   padding: ${({ padding }) => padding};
+  margin: ${({ margin }) => margin};
   ${({ size }) => {
     if (size === "full")
       return css`

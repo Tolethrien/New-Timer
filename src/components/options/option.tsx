@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useContext } from "react";
-import { appContext } from "../../global/provider";
+import { appContext } from "../providers/appProvider";
 interface OptionProps {
   children: React.ReactNode;
   optionName: string;

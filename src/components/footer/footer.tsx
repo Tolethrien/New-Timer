@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import Dashboard from "../Icons/Dashboard.svg";
-import Timer from "../Icons/Timer.svg";
-import Calendar from "../Icons/Calendar.svg";
-import Data from "../Icons/Data.svg";
-import Projects from "../Icons/Projects.svg";
-import Options from "../Icons/Options.svg";
+import Dashboard from "../../Icons/Dashboard.svg";
+import Timer from "../../Icons/Timer.svg";
+import Calendar from "../../Icons/Calendar.svg";
+import Data from "../../Icons/Data.svg";
+import Projects from "../../Icons/Projects.svg";
+import Options from "../../Icons/Options.svg";
 import { useContext, useState } from "react";
-import { appContext } from "../global/provider";
+import { appContext } from "../providers/appProvider";
 interface FooterProps {}
 interface styleProps {
   color: string;

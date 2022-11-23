@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Glass from "../components/styledComponents/glass";
-import LineDevider from "../components/styledComponents/lineDevider";
+import Glass from "../components/styled/glass";
+import LineDevider from "../components/styled/lineDevider";
 import { login, auth } from "../API/firebase";
 import { useRef } from "react";
 //=======TYPES========

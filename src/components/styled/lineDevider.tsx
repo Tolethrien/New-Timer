@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { appContext } from "../../global/provider";
+import { appContext } from "../providers/appProvider";
 
 import styled from "styled-components";
 //=======TYPES=============

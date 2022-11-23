@@ -51,7 +51,7 @@ interface CircleStyle {
  *@desc costomize circular progress bar with text
  * @param {Object} config configuration data
  * @param {text} children displayed text on center
- * @param {number} progres percent of complition
+ * @param {number} progress percent of complition
  * @returns JSX
  */
 const CircularProgressBar: React.FC<CircularProps> = ({
@@ -106,7 +106,7 @@ const CircularProgressBar: React.FC<CircularProps> = ({
           fontFamily={font ? font.family : "inherit"}
           fontSize={font ? font.size : 1}
         >
-          {children}
+          <span>{children}</span>
         </Time>
       </Wrap>
     </>
