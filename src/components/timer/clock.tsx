@@ -15,7 +15,13 @@ const Clock: React.FC<CounterProps> = (props) => {
     useContext(clockContext);
   const {
     primary: { primaryColor },
+    vibration: { isVibrate },
   } = useContext(appContext);
+  const buzzTime: number = 50;
+
+  const vibrate = () => {
+    isVibrate && navigator.vibrate(buzzTime);
+  };
   return (
     <Glass size={"inline"} margin={"20% 0"}>
       <ProgressBar>
@@ -36,16 +42,16 @@ const Clock: React.FC<CounterProps> = (props) => {
         </CircularProgressBar>
       </ProgressBar>
       <Buttons>
-        <Button onClick={playClock} color={primaryColor}>
+        <Button onClick={() => (playClock(), vibrate())} color={primaryColor}>
           <ButtonSvg src={Play} alt={"s"}></ButtonSvg>
         </Button>
-        <Button onClick={pauseClock} color={primaryColor}>
+        <Button onClick={() => (pauseClock(), vibrate())} color={primaryColor}>
           <ButtonSvg src={Pause} alt={"s"}></ButtonSvg>
         </Button>
-        <Button onClick={stopClock} color={primaryColor}>
+        <Button onClick={() => (stopClock(), vibrate())} color={primaryColor}>
           <ButtonSvg src={Stop} alt={"s"}></ButtonSvg>
         </Button>
-        <Button onClick={pauseClock} color={primaryColor}>
+        <Button onClick={() => (stopClock(), vibrate())} color={primaryColor}>
           <ButtonSvg src={Done} alt={"s"}></ButtonSvg>
         </Button>
       </Buttons>

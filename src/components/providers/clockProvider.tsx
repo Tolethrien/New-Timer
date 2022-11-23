@@ -16,7 +16,7 @@ const Clock: React.FC<props> = (props) => {
   let timeTotal = 1;
   const [barProgress, setBarProgress] = useState(0);
   const [isRunning, setIsRunning] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(timeTotal * 10);
+  const [timeLeft, setTimeLeft] = useState(timeTotal * 60);
   const minutesToPercent = (1 / (timeTotal * 60)) * 100;
   let interval = useRef<NodeJS.Timer>();
 
