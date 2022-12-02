@@ -1,4 +1,6 @@
 import { createContext, useState } from "react";
+import { GetUserData } from "../../API/getUserData";
+import { ProjectsData } from "../../API/getUserData";
 interface props {
   children: React.ReactNode;
 }
@@ -20,6 +22,7 @@ interface provider {
     isVibrate: boolean;
     setIsVibrate: React.Dispatch<React.SetStateAction<boolean>>;
   };
+  userData: ProjectsData[];
 }
 export const appContext = createContext<provider>({} as provider);
 /**
@@ -32,6 +35,7 @@ const Provider: React.FC<props> = (props) => {
   const [secondaryColor, setSecondaryColor] = useState("rgba(104,117,7,1)");
   const [textColor, setTextColor] = useState("#f8f8f8");
   const [isVibrate, setIsVibrate] = useState(true);
+  const userData = GetUserData();
   return (
     <appContext.Provider
       value={{
@@ -39,6 +43,7 @@ const Provider: React.FC<props> = (props) => {
         secondary: { secondaryColor, setSecondaryColor },
         text: { textColor, setTextColor },
         vibration: { isVibrate, setIsVibrate },
+        userData,
       }}
     >
       {props.children}

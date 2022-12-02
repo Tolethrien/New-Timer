@@ -15,7 +15,7 @@ export const clockContext = createContext<provider>({} as provider);
 const Clock: React.FC<props> = (props) => {
   let timeTotal = 1;
   const [barProgress, setBarProgress] = useState(0);
-  const [isRunning, setIsRunning] = useState(true);
+  const [isRunning, setIsRunning] = useState(false);
   const [timeLeft, setTimeLeft] = useState(timeTotal * 60);
   const minutesToPercent = (1 / (timeTotal * 60)) * 100;
   let interval = useRef<NodeJS.Timer>();

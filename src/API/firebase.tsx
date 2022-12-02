@@ -157,39 +157,6 @@ export const login = (email: string, password: string) => {
 //   return TasksList;
 // };
 
-// export const GetProjectsData = () => {
-//   const [projects, setProjects] = useState([]);
-//   const [tasks, setTasks] = useState([]);
-//   // const finish = () => {
-//   //   let build = []
-//   // task.forEach(e => projects.forEach((project) => project.id === e.data.id) && e.tasks.push(e)
-//   // }
-//   const GetTasks = () => {
-//     const querySorted = query(
-//       collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks")
-//     );
-//     onSnapshot(querySorted, (snap) => {
-//       setTasks(snap.docs.map((doc) => ({ data: doc.data(), id: doc.id })));
-//     });
-//   };
-
-//   const GetProjects = () => {
-//     const querySorted = query(
-//       collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Projects"),
-//       orderBy("createdAt", "desc")
-//     );
-//     onSnapshot(querySorted, (snap) => {
-//       setProjects(
-//         snap.docs.map((doc) => ({ data: doc.data(), id: doc.id, tasks: [] }))
-//       );
-//     });
-//   };
-//   useEffect(() => {
-//     GetProjects();
-//     GetTasks();
-//   }, []);
-//   return { projects, tasks };
-// };
 // export const createUserMeta = () => {
 //   const projectRef = doc(
 //     collection(db, "Users", auth.currentUser.uid, "Projects")

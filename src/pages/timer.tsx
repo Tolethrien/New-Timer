@@ -2,23 +2,17 @@ import styled from "styled-components";
 import Clock from "../components/timer/clock";
 import ProjectDesc from "../components/timer/projectDesc";
 import TimeRace from "../components/timer/timeRace";
+import PageWrap from "../components/styled/pageWrap";
+
 interface TimerProps {}
 interface StyleProps {}
 const Timer: React.FC<TimerProps> = (props) => {
   return (
-    <Wrap>
+    <PageWrap>
       <ProjectDesc></ProjectDesc>
       <Clock></Clock>
       <TimeRace></TimeRace>
-    </Wrap>
+    </PageWrap>
   );
 };
 export default Timer;
-const Wrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  width: 100%;
-  height: calc(100% - 55px);
-`;

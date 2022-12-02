@@ -3,6 +3,7 @@ import Glass from "../components/styled/glass";
 import LineDevider from "../components/styled/lineDevider";
 import { login, auth } from "../API/firebase";
 import { useRef } from "react";
+import PageWrap from "../components/styled/pageWrap";
 //=======TYPES========
 interface LoginProps {}
 interface StyleProps {}
@@ -23,7 +24,7 @@ const Login: React.FC<LoginProps> = (props) => {
   };
 
   return (
-    <Wrap>
+    <PageWrap>
       <Glass size={"inline"}>
         <Name>Account</Name>
         <LineDevider width={80} margin={1} thickness={3}></LineDevider>
@@ -44,18 +45,11 @@ const Login: React.FC<LoginProps> = (props) => {
         <CreateAccountText>Do not have account yet? </CreateAccountText>
         <CreateAccountLink>Register</CreateAccountLink>
       </Glass>
-    </Wrap>
+    </PageWrap>
   );
 };
 export default Login;
 //=======STYLES========
-const Wrap = styled.div<StyleProps>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: calc(100% - 45px);
-`;
 
 const Name = styled.h3<StyleProps>`
   padding-top: 2%;
