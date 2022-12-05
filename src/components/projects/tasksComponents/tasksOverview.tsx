@@ -4,7 +4,11 @@ import { useParams, Outlet } from "react-router-dom";
 import { RouteData, RoutesChange } from "../../../pages/projects";
 import FindData from "../../hooks/findData";
 import { TasksData } from "../../../API/getUserData";
-
+import Glass from "../../styled/glass";
+import UseStore from "../../hooks/useStore";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { clockContext } from "../../providers/clockProvider";
 interface TasksOverviewProps {
   changeRoute: (route: RoutesChange) => void;
   renderRoute: RouteData;
@@ -14,16 +18,44 @@ const TaskOverview: React.FC<TasksOverviewProps> = ({
   renderRoute,
   changeRoute,
 }) => {
-  const project = FindData(renderRoute) as TasksData;
-
+  const task = FindData(renderRoute) as TasksData;
+  const createdAt = new Date(task.data.createdAt.seconds * 1000);
+  const navigate = useNavigate();
+  const { setClock } = useContext(clockContext);
   return (
-    <Wrap>
-      TasksOverview
-      <p>{project.id}</p>
+    <Glass size={"inline"}>
+      <p>{task.id}</p>
+      <p>{task.data.finished ? "true" : "false"}</p>
+      <p>{task.data.totalTime}</p>
+      <p>{task.data.timeLeft}</p>
+      <p>{createdAt.toDateString()}</p>
+      <Desc></Desc>
+      <Bucket>
+        <input type={"checkbox"}></input>
+        <input type={"text"}></input>
+      </Bucket>
+      <Bucket>
+        <input type={"checkbox"}></input>
+        <input type={"text"}></input>
+      </Bucket>
+      <button
+        onClick={() => (
+          setClock(task.data.totalTime, task.id), navigate("/timer")
+        )}
+      >
+        uruchom
+      </button>
       <button onClick={() => changeRoute("back")}>back</button>
-    </Wrap>
+    </Glass>
   );
 };
 export default TaskOverview;
 const Wrap = styled.div<StyleProps>``;
-const Butt = styled.div<StyleProps>``;
+const Butt = styled.div``;
+const Desc = styled.textarea`
+  resize: none;
+  width: 90%;
+  height: fit-content;
+  background-color: #d0cfcfa4;
+`;
+const Bucket = styled.div``;

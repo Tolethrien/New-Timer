@@ -8,6 +8,7 @@ import Projects from "../../Icons/Projects.svg";
 import Options from "../../Icons/Options.svg";
 import { useContext, useState } from "react";
 import { appContext } from "../providers/appProvider";
+import { vibrate } from "../utils/navigatorUtils";
 interface FooterProps {}
 interface styleProps {
   color: string;
@@ -16,7 +17,6 @@ const Footer: React.FC<FooterProps> = () => {
   const {
     primary: { primaryColor },
     secondary: { secondaryColor },
-    vibration: { isVibrate },
   } = useContext(appContext);
   const linkData = {
     dashboard: { id: 0, name: "Dashboard", link: "./", icon: Dashboard },
@@ -32,7 +32,6 @@ const Footer: React.FC<FooterProps> = () => {
   const [currentWindow, setCurrentWindow] = useState<number | undefined>(
     findUrl ? findUrl.id : undefined
   );
-  const buzzTime: number = 50;
   return (
     <Wrap>
       {Object.values(linkData).map((key) => (
@@ -40,9 +39,7 @@ const Footer: React.FC<FooterProps> = () => {
           as={NavLink}
           to={key.link}
           key={key.id}
-          onClick={() => (
-            setCurrentWindow(key.id), isVibrate && navigator.vibrate(buzzTime)
-          )}
+          onClick={() => (setCurrentWindow(key.id), vibrate("short"))}
           color={currentWindow === key.id ? primaryColor : secondaryColor}
         >
           <ButtonImg src={key.icon} alt={`${key.name} button`}></ButtonImg>

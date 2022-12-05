@@ -3,9 +3,8 @@ import Glass from "../../styled/glass";
 import { useContext } from "react";
 import { appContext } from "../../providers/appProvider";
 import { RoutesChange } from "../../../pages/projects";
-
+import { addProject } from "../../../API/handleDocs";
 interface ProjectsOverallProps {
-  // changeRoute: React.Dispatch<React.SetStateAction<RouteData>>;
   changeRoute: (route: RoutesChange) => void;
 }
 interface StyleProps {}
@@ -19,20 +18,21 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
   };
   return (
     <Glass size={"inline"}>
-      wszystkie projekty
+      <Head>
+        <p>wszystkie projekty</p>
+        <button onClick={() => addProject("testowa")}>add new</button>
+      </Head>
       {userData.map((e) => (
         <ProjectBanner key={e.id}>
-          <ProjectColor></ProjectColor>
-          <ProjectData>
+          <ProjectColor color={e.data.color} />
+          <ProjectData onClick={() => changeRoute({ projectId: e.id })}>
             <Name>{e.id}</Name>
             <NumberOfTasks>
               zadania: {taskDone(e.tasks) + "/" + e.tasks.length}
             </NumberOfTasks>
           </ProjectData>
-          <PercentOfComplete>50%</PercentOfComplete>
-          <GoToButton onClick={() => changeRoute({ projectId: e.id })}>
-            go
-          </GoToButton>
+          {/* <PercentOfComplete>50%</PercentOfComplete> */}
+          <GoToButton onClick={() => console.log("o niee")}>bro</GoToButton>
         </ProjectBanner>
       ))}
     </Glass>
@@ -50,16 +50,23 @@ const ProjectBanner = styled.div`
   overflow: hidden;
   margin: 1% 0;
 `;
-const ProjectColor = styled.div`
+const Head = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+`;
+
+const ProjectColor = styled.div<{ color: string }>`
   flex: 1;
   height: 100%;
-  background-color: black;
+  background-color: ${({ color }) => color};
 `;
 const ProjectData = styled.div`
   flex: 7;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  cursor: pointer;
 `;
 const Name = styled.div`
   align-self: center;
@@ -72,6 +79,9 @@ const PercentOfComplete = styled.div`
 `;
 const GoToButton = styled.button`
   flex: 1;
-  width: 10px;
-  height: 10px;
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
 `;

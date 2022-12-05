@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import styled from "styled-components";
 import Footer from "./components/footer/footer";
 import Login from "./pages/login";
@@ -8,7 +7,6 @@ import Timer from "./pages/timer";
 import Data from "./pages/data";
 import Projects from "./pages/projects";
 import Options from "./pages/options";
-import { appContext } from "./components/providers/appProvider";
 import { Routes, Route } from "react-router-dom";
 import Clock from "./components/providers/clockProvider";
 import useStore from "./components/hooks/useStore";
@@ -22,12 +20,10 @@ function App() {
   const height = window.innerHeight;
   const {
     text: { textColor },
-  } = useContext(appContext);
+  } = useStore("app");
   //
   return (
     <MainBody height={height} textColor={textColor}>
-      {/* {timeLeft} */}
-      {/* <button onClick={stopClock}>click</button> */}
       <Clock>
         <Routes>
           <Route path={"/"} element={<Dashboard />}></Route>
@@ -45,7 +41,7 @@ function App() {
 }
 export default App;
 //=======STYLES========
-const MainBody = styled.div<styleProps>`
+const MainBody = styled.main<styleProps>`
   position: relative;
   color: ${({ textColor }) => textColor};
   width: 100vw;

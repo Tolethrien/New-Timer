@@ -1,27 +1,23 @@
 import styled from "styled-components";
 import Glass from "../styled/glass";
 import CircularProgressBar from "../styled/circularProgresBar";
-import { useContext } from "react";
-import { clockContext } from "../providers/clockProvider";
-import { appContext } from "../providers/appProvider";
 import Play from "../../Icons/Play.svg";
 import Pause from "../../Icons/Pause.svg";
 import Stop from "../../Icons/Stop.svg";
 import Done from "../../Icons/Done.svg";
-
+import { vibrate } from "../utils/navigatorUtils";
+import UseStore from "../hooks/useStore";
+import { useContext } from "react";
+import { clockContext } from "../providers/clockProvider";
+import { appContext } from "../providers/appProvider";
 interface CounterProps {}
 const Clock: React.FC<CounterProps> = (props) => {
   const { timeLeft, pauseClock, playClock, barProgress, stopClock } =
     useContext(clockContext);
   const {
     primary: { primaryColor },
-    vibration: { isVibrate },
   } = useContext(appContext);
-  const buzzTime: number = 50;
 
-  const vibrate = () => {
-    isVibrate && navigator.vibrate(buzzTime);
-  };
   return (
     <Glass size={"inline"} margin={"20% 0"}>
       <ProgressBar>
@@ -42,16 +38,28 @@ const Clock: React.FC<CounterProps> = (props) => {
         </CircularProgressBar>
       </ProgressBar>
       <Buttons>
-        <Button onClick={() => (playClock(), vibrate())} color={primaryColor}>
+        <Button
+          onClick={() => (playClock(), vibrate("short"))}
+          color={primaryColor}
+        >
           <ButtonSvg src={Play} alt={"s"}></ButtonSvg>
         </Button>
-        <Button onClick={() => (pauseClock(), vibrate())} color={primaryColor}>
+        <Button
+          onClick={() => (pauseClock(), vibrate("short"))}
+          color={primaryColor}
+        >
           <ButtonSvg src={Pause} alt={"s"}></ButtonSvg>
         </Button>
-        <Button onClick={() => (stopClock(), vibrate())} color={primaryColor}>
+        <Button
+          onClick={() => (stopClock(), vibrate("short"))}
+          color={primaryColor}
+        >
           <ButtonSvg src={Stop} alt={"s"}></ButtonSvg>
         </Button>
-        <Button onClick={() => (stopClock(), vibrate())} color={primaryColor}>
+        <Button
+          onClick={() => (stopClock(), vibrate("short"))}
+          color={primaryColor}
+        >
           <ButtonSvg src={Done} alt={"s"}></ButtonSvg>
         </Button>
       </Buttons>

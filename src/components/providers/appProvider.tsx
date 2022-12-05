@@ -18,10 +18,7 @@ interface provider {
     textColor: string;
     setTextColor: React.Dispatch<React.SetStateAction<string>>;
   };
-  vibration: {
-    isVibrate: boolean;
-    setIsVibrate: React.Dispatch<React.SetStateAction<boolean>>;
-  };
+
   userData: ProjectsData[];
 }
 export const appContext = createContext<provider>({} as provider);
@@ -34,7 +31,7 @@ const Provider: React.FC<props> = (props) => {
   const [primaryColor, setPrimaryColor] = useState("#84bc7a7d");
   const [secondaryColor, setSecondaryColor] = useState("rgba(104,117,7,1)");
   const [textColor, setTextColor] = useState("#f8f8f8");
-  const [isVibrate, setIsVibrate] = useState(true);
+
   const userData = GetUserData();
   return (
     <appContext.Provider
@@ -42,7 +39,6 @@ const Provider: React.FC<props> = (props) => {
         primary: { primaryColor, setPrimaryColor },
         secondary: { secondaryColor, setSecondaryColor },
         text: { textColor, setTextColor },
-        vibration: { isVibrate, setIsVibrate },
         userData,
       }}
     >
