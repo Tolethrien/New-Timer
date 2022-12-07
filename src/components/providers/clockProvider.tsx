@@ -1,5 +1,4 @@
 import { useState, useEffect, createContext, useRef } from "react";
-import UseStore from "../hooks/useStore";
 import { updateTime } from "../../API/handleDocs";
 interface provider {
   timeLeft: number;
@@ -16,12 +15,13 @@ interface props {
 export const clockContext = createContext<provider>({} as provider);
 
 const Clock: React.FC<props> = (props) => {
-  let timeTotal = 1;
   const [barProgress, setBarProgress] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [taskInProgress, setTaskInProgress] = useState("");
-  const [timeLeft, setTimeLeft] = useState(45);
-  const minutesToPercent = (1 / (timeTotal * 60)) * 100;
+  const [taskInProgress, setTaskInProgress] = useState<string | undefined>(
+    undefined
+  );
+  const [timeLeft, setTimeLeft] = useState(0);
+  const minutesToPercent = (1 / 60) * 100;
   let interval = useRef<NodeJS.Timer>();
 
   useEffect(() => {
@@ -33,12 +33,12 @@ const Clock: React.FC<props> = (props) => {
     interval.current = setInterval(() => {
       setTimeLeft(timeLeft + 1);
       setBarProgress(barProgress + minutesToPercent);
-      if (taskInProgress.length > 0) updateTime(taskInProgress, timeLeft + 1);
     }, 1000);
   };
   const pauseClock = () => {
     clearInterval(interval.current);
     setIsRunning(false);
+    updateDB();
   };
   const playClock = () => {
     if (isRunning) return;
@@ -46,14 +46,18 @@ const Clock: React.FC<props> = (props) => {
     setIsRunning(true);
   };
   const stopClock = () => {
+    updateDB();
     clearInterval(interval.current);
-    setTimeLeft(timeTotal * 60);
+    setTimeLeft(0);
     setBarProgress(0);
     setIsRunning(false);
   };
   const setClock = (value: number, task: string) => {
     setTimeLeft(value);
     setTaskInProgress(task);
+  };
+  const updateDB = () => {
+    updateTime(taskInProgress!, timeLeft);
   };
   const onComplete = () => {
     alert("ss");

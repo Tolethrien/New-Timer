@@ -9,6 +9,7 @@ import UseStore from "../../hooks/useStore";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { clockContext } from "../../providers/clockProvider";
+import { appContext } from "../../providers/appProvider";
 interface TasksOverviewProps {
   changeRoute: (route: RoutesChange) => void;
   renderRoute: RouteData;
@@ -22,6 +23,12 @@ const TaskOverview: React.FC<TasksOverviewProps> = ({
   const createdAt = new Date(task.data.createdAt.seconds * 1000);
   const navigate = useNavigate();
   const { setClock } = useContext(clockContext);
+  const { currentWindow } = useContext(appContext);
+  const setAndOpenTimer = () => {
+    setClock(task.data.totalTime, task.id);
+    navigate("/timer");
+    currentWindow.set(1);
+  };
   return (
     <Glass size={"inline"}>
       <p>{task.id}</p>
@@ -38,13 +45,7 @@ const TaskOverview: React.FC<TasksOverviewProps> = ({
         <input type={"checkbox"}></input>
         <input type={"text"}></input>
       </Bucket>
-      <button
-        onClick={() => (
-          setClock(task.data.totalTime, task.id), navigate("/timer")
-        )}
-      >
-        uruchom
-      </button>
+      <button onClick={() => setAndOpenTimer()}>uruchom</button>
       <button onClick={() => changeRoute("back")}>back</button>
     </Glass>
   );

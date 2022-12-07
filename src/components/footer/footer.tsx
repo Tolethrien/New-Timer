@@ -6,7 +6,7 @@ import Calendar from "../../Icons/Calendar.svg";
 import Data from "../../Icons/Data.svg";
 import Projects from "../../Icons/Projects.svg";
 import Options from "../../Icons/Options.svg";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { appContext } from "../providers/appProvider";
 import { vibrate } from "../utils/navigatorUtils";
 interface FooterProps {}
@@ -17,6 +17,7 @@ const Footer: React.FC<FooterProps> = () => {
   const {
     primary: { primaryColor },
     secondary: { secondaryColor },
+    currentWindow,
   } = useContext(appContext);
   const linkData = {
     dashboard: { id: 0, name: "Dashboard", link: "./", icon: Dashboard },
@@ -29,9 +30,10 @@ const Footer: React.FC<FooterProps> = () => {
   const findUrl = Object.values(linkData).find((e) =>
     e.link.includes(window.location.pathname)
   );
-  const [currentWindow, setCurrentWindow] = useState<number | undefined>(
-    findUrl ? findUrl.id : undefined
-  );
+
+  useEffect(() => {
+    findUrl?.id !== currentWindow.id && currentWindow.set(findUrl!.id);
+  }, []);
   return (
     <Wrap>
       {Object.values(linkData).map((key) => (
@@ -39,8 +41,8 @@ const Footer: React.FC<FooterProps> = () => {
           as={NavLink}
           to={key.link}
           key={key.id}
-          onClick={() => (setCurrentWindow(key.id), vibrate("short"))}
-          color={currentWindow === key.id ? primaryColor : secondaryColor}
+          onClick={() => (currentWindow.set(key.id), vibrate("short"))}
+          color={currentWindow.id === key.id ? primaryColor : secondaryColor}
         >
           <ButtonImg src={key.icon} alt={`${key.name} button`}></ButtonImg>
         </ButtonLink>

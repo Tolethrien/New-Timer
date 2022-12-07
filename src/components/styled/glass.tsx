@@ -39,6 +39,7 @@ const GlassStyle = styled.div<styleProps>`
   align-items: center;
   justify-content: center;
   height: fit-content;
+  flex-shrink: 0;
   background-color: ${({ color }) => color};
   min-height: 20px;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);

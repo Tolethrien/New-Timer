@@ -17,7 +17,7 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
     return done.length > 0 ? done.length : 0;
   };
   return (
-    <Glass size={"inline"}>
+    <Glass size={"inline"} margin="5% 0" padding="10px 0">
       <Head>
         <p>wszystkie projekty</p>
         <button onClick={() => addProject("testowa")}>add new</button>

@@ -6,7 +6,6 @@ import Pause from "../../Icons/Pause.svg";
 import Stop from "../../Icons/Stop.svg";
 import Done from "../../Icons/Done.svg";
 import { vibrate } from "../utils/navigatorUtils";
-import UseStore from "../hooks/useStore";
 import { useContext } from "react";
 import { clockContext } from "../providers/clockProvider";
 import { appContext } from "../providers/appProvider";
