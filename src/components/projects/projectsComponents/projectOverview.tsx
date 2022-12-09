@@ -4,6 +4,7 @@ import FindData from "../../hooks/findData";
 import { ProjectsData } from "../../../API/getUserData";
 import Glass from "../../styled/glass";
 import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
+import { deleteProject, addTask } from "../../../API/handleDocs";
 interface ProjectProps {
   changeRoute: (route: RoutesChange) => void;
   renderRoute: RouteData;
@@ -21,9 +22,7 @@ const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
       0
     );
   };
-  const testik = () => {
-    console.log("strsds");
-  };
+
   return (
     <Glass size="inline">
       {!project ? (
@@ -37,6 +36,17 @@ const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
               zadania: {taskDone(project.tasks) + "/" + project.tasks.length}
             </p>
           </CompleteData>
+          <DropMenuButton name={"..."} config={{}}>
+            <DropMenuOption callback={() => addTask(project.id, "testowewe")}>
+              Add
+            </DropMenuOption>
+            <DropMenuOption>Edit</DropMenuOption>
+            <DropMenuOption
+              callback={() => (deleteProject(project), changeRoute("back"))}
+            >
+              Remove
+            </DropMenuOption>
+          </DropMenuButton>
           <AllTasks>
             {project.tasks.map((e) => (
               <TaskData
@@ -48,22 +58,9 @@ const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
                 <TaskFinished>
                   {e.data.finished ? "true" : "false"}
                 </TaskFinished>
-                <TaskGoTo
-                  onClick={(event) => (
-                    event.stopPropagation(), console.log("bruuh")
-                  )}
-                >
-                  ...
-                </TaskGoTo>
               </TaskData>
             ))}
           </AllTasks>
-          <DropMenuButton name={"button"}>
-            <DropMenuOption>num2</DropMenuOption>
-            <DropMenuOption callback={() => console.log("ssss")}>
-              num1
-            </DropMenuOption>
-          </DropMenuButton>
           <button onClick={() => changeRoute("back")}>back</button>
         </>
       )}

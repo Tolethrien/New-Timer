@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { clockContext } from "../../providers/clockProvider";
 import { appContext } from "../../providers/appProvider";
+import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
+import { deleteTask } from "../../../API/handleDocs";
 interface TasksOverviewProps {
   changeRoute: (route: RoutesChange) => void;
   renderRoute: RouteData;
@@ -36,7 +38,16 @@ const TaskOverview: React.FC<TasksOverviewProps> = ({
       <p>{task.data.totalTime}</p>
       <p>{task.data.timeLeft}</p>
       <p>{createdAt.toDateString()}</p>
+      <DropMenuButton name={"..."} config={{}}>
+        <DropMenuOption>Edit</DropMenuOption>
+        <DropMenuOption
+          callback={() => (deleteTask(task), changeRoute("back"))}
+        >
+          Remove
+        </DropMenuOption>
+      </DropMenuButton>
       <Desc></Desc>
+
       <Bucket>
         <input type={"checkbox"}></input>
         <input type={"text"}></input>
