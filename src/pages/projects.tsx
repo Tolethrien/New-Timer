@@ -18,9 +18,9 @@ export interface RouteData {
 }
 const Projects: React.FC<ProjectsProps> = (props) => {
   const [renderRoute, setRenderRoute] = useState<RouteData>({
-    currentRoute: "projectOverview",
+    currentRoute: "allProjects",
     prevRoute: undefined,
-    projectId: "z5rXvGY83kNQQ8VVHUV1",
+    projectId: undefined,
     taskId: undefined,
   });
 
