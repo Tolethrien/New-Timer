@@ -2,31 +2,32 @@ import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 interface DropMenuButtonProps {
   children?: React.ReactNode;
-  name: string;
   config?: {};
+  src: string;
+  alt: string;
 }
 export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
   children,
-  name,
   config,
+  src,
+  alt,
 }) => {
   const [visible, setVisible] = useState(false);
-  const myRef = useRef<null | HTMLDivElement>(null);
+  const myRef = useRef<null | HTMLImageElement>(null);
   const handleClickOutside = (e: any) => {
-    console.log(e);
     if (!myRef.current?.contains(e.target)) {
       setVisible(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
+    visible && document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   });
 
   return (
     <Button ref={myRef} onClick={() => setVisible(!visible)} config={config}>
-      <span>{name}</span>
+      <img src={src} alt={alt}></img>
       <OptionsBox visible={visible}>{children}</OptionsBox>
     </Button>
   );
@@ -36,14 +37,13 @@ const Button = styled.div<{ config?: {} }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  outline: black solid 1px;
   cursor: pointer;
   ${({ config }) => config}
 `;
 const OptionsBox = styled.div<{ visible: boolean }>`
   display: ${({ visible }) => (visible ? "block" : "none")};
   position: absolute;
-  left: 0;
+  right: 0;
   top: 100%;
   z-index: 100;
 `;

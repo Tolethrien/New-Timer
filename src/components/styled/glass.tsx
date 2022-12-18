@@ -7,14 +7,22 @@ interface GlassProps {
   size: "inline" | "full";
   padding?: string;
   margin?: string;
+  direction?: string;
 }
 interface styleProps {
   color: string;
   size: "inline" | "full";
   padding?: string;
   margin?: string;
+  direction?: string;
 }
-const Glass: React.FC<GlassProps> = ({ size, children, padding, margin }) => {
+const Glass: React.FC<GlassProps> = ({
+  size,
+  children,
+  padding,
+  margin,
+  direction,
+}) => {
   const {
     primary: { primaryColor },
   } = useContext(appContext);
@@ -24,6 +32,7 @@ const Glass: React.FC<GlassProps> = ({ size, children, padding, margin }) => {
       color={primaryColor}
       padding={padding}
       margin={margin}
+      direction={direction}
     >
       {children}
     </GlassStyle>
@@ -35,7 +44,7 @@ export default Glass;
 const GlassStyle = styled.div<styleProps>`
   position: relative;
   display: flex;
-  flex-direction: column;
+  flex-direction: ${({ direction }) => direction ?? "column"};
   align-items: center;
   justify-content: center;
   height: fit-content;

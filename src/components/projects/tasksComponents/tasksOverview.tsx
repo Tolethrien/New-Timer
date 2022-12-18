@@ -5,6 +5,8 @@ import { RouteData, RoutesChange } from "../../../pages/projects";
 import FindData from "../../hooks/findData";
 import { TasksData } from "../../../API/getUserData";
 import Glass from "../../styled/glass";
+import Detail from "../../../Icons/Detail.svg";
+
 import UseStore from "../../hooks/useStore";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -38,7 +40,7 @@ const TaskOverview: React.FC<TasksOverviewProps> = ({
       <p>{task.data.totalTime}</p>
       <p>{task.data.timeLeft}</p>
       <p>{createdAt.toDateString()}</p>
-      <DropMenuButton name={"..."} config={{}}>
+      <DropMenuButton src={Detail} alt="more options">
         <DropMenuOption>Edit</DropMenuOption>
         <DropMenuOption
           callback={() => (deleteTask(task), changeRoute("back"))}
