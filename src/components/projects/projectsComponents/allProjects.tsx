@@ -27,10 +27,10 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
     //zrobic komponent zolty globalny
     <>
       <Head>
-        <Text size={1} weight={500} margin="2% 0 0 0">
+        <Text size={1.1} weight={500} margin="4% 0 0 0">
           Hello! Pavel
         </Text>
-        <Text size={1.5} weight={700} margin="0 0 2% 0">
+        <Text size={1.8} weight={700} margin="1% 0 3% 0">
           Projects On your List (5)
         </Text>
         <ManagingProject>
@@ -119,7 +119,7 @@ const SearchBox = styled.div`
 const SearchBoxInput = styled.input`
   background-color: transparent;
   border: none;
-  padding-left: 5px;
+  padding-left: 10px;
   width: 100%;
   height: 100%;
 
@@ -132,8 +132,8 @@ const SearchBoxInput = styled.input`
   }
 `;
 const SearchBoxImg = styled.img`
-  height: 70%;
-  padding-left: 5px;
+  height: 60%;
+  padding-left: 10px;
 `;
 const NewProject = styled.button`
   display: flex;
