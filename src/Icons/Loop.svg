@@ -1,6 +1,6 @@
 <svg width="23" height="21" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="13.6809" y="10" width="11.1319" height="4.17069" transform="rotate(40 13.6809 10)" fill="white"/>
-<circle cx="8" cy="8" r="6.5" stroke="white" stroke-width="3"/>
+<rect x="13.6809" y="10" width="11.1319" height="4.17069" transform="rotate(40 13.6809 10)" fill="#4D4D4D"/>
+<circle cx="8" cy="8" r="6.5" stroke="#4D4D4D" stroke-width="3"/>
 <circle cx="8" cy="8" r="3.5" stroke="url(#paint0_angular_116_1040)"/>
 <defs>
 <radialGradient id="paint0_angular_116_1040" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(8 8) rotate(90) scale(4)">

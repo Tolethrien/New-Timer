@@ -1,11 +1,11 @@
 <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_i_116_1053)">
-<rect x="8" width="5" height="21" rx="1" fill="white"/>
+<rect x="8" width="5" height="21" rx="1" fill="#707070"/>
 </g>
 <g filter="url(#filter1_i_116_1053)">
-<rect y="8" width="21" height="5" rx="1" fill="white"/>
+<rect y="8" width="21" height="5" rx="1" fill="#707070"/>
 </g>
-<rect x="8" y="8" width="5" height="5" fill="white"/>
+<rect x="8" y="8" width="5" height="5" fill="#707070"/>
 <defs>
 <filter id="filter0_i_116_1053" x="8" y="0" width="5" height="21" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>

@@ -1,8 +1,19 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+  html{
+    font-family: "Roboto";
+  }
+input{
+  font-family: "Roboto";
+
+}
   p{
     margin: 0;
+  }
+  button{
+    font-family: "Roboto";
+    font-weight: 500;
   }
   body{
     margin: 0;

@@ -60,7 +60,7 @@ const Wrap = styled.div`
   padding: 10px 0;
   width: 100%;
   border-radius: 7px 7px 0 0;
-  background-color: #430303a5;
+  background-color: hsla(360, 90%, 14%, 0.19);
 `;
 const ButtonLink = styled.div<styleProps>`
   display: flex;

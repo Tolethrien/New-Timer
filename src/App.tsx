@@ -50,13 +50,7 @@ const MainBody = styled.main<styleProps>`
   width: 100vw;
   max-width: 420px;
   height: ${({ height }) => height}px;
-  background: conic-gradient(
-    from 224.11deg at 61.25% 50%,
-    #979454 0deg,
-    #7d5757 105deg,
-    #245c9d 240deg,
-    #26c10d 360deg
-  );
+  background: hsla(220, 95%, 88%, 1);
   margin: auto;
   overflow: hidden;
 `;
