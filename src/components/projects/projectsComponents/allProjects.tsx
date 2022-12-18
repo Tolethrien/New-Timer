@@ -5,6 +5,7 @@ import { appContext } from "../../providers/appProvider";
 import { RoutesChange } from "../../../pages/projects";
 import Loop from "../../../Icons/Loop.svg";
 import Add from "../../../Icons/Add.svg";
+import ProjectCard from "./projectCard";
 // import SearchBox from "./searchBox";
 interface ProjectsOverallProps {
   changeRoute: (route: RoutesChange) => void;
@@ -45,6 +46,11 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
           </NewProject>
         </ManagingProject>
       </Head>
+      <ProjectsList>
+        {userData.filter(filterByName).map((e) => (
+          <ProjectCard></ProjectCard>
+        ))}
+      </ProjectsList>
       {/* <p>All Projects</p>
       <SearchBox search={{ value: searchText, set: setSearchText }}></SearchBox>
       <Glass size={"inline"} margin="5% 0" padding="10px 0">
@@ -152,8 +158,12 @@ const NewProjectImg = styled.img`
   width: 15px;
   padding-right: 5px;
 `;
-
-// const ProjectBanner = styled.div`
+const ProjectsList = styled.div`
+  margin-top: 5px;
+  width: 95%;
+  /* overflow-y: scroll; */
+`;
+// const ProjectBanner = styled.div
 //   display: flex;
 //   align-items: center;
 //   width: 90%;
