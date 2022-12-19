@@ -6,6 +6,8 @@ import { RoutesChange } from "../../../pages/projects";
 import Loop from "../../../Icons/Loop.svg";
 import Add from "../../../Icons/Add.svg";
 import ProjectCard from "./projectCard";
+import { addProject } from "../../../API/handleDocs";
+
 // import SearchBox from "./searchBox";
 interface ProjectsOverallProps {
   changeRoute: (route: RoutesChange) => void;
@@ -16,12 +18,12 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
   const { userData } = useContext(appContext);
   // console.log(userData);
   const [searchText, setSearchText] = useState("");
-  const taskDone = (tasks: { data: { finished: boolean } }[]) => {
-    let done = tasks.filter((e) => e.data.finished === true);
-    return done.length > 0 ? done.length : 0;
-  };
+
   const filterByName = (value: { data: { name: string } }) => {
     return value.data.name.toLowerCase().includes(searchText.toLowerCase());
+  };
+  const setText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
   };
   return (
     //zrobic text globalny
@@ -37,10 +39,14 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
         <ManagingProject>
           <SearchBox>
             <SearchBoxImg src={Loop} alt="searchBar"></SearchBoxImg>
-            <SearchBoxInput placeholder="Search..."></SearchBoxInput>
+            <SearchBoxInput
+              placeholder="Search..."
+              value={searchText}
+              onChange={(e) => setText(e)}
+            ></SearchBoxInput>
           </SearchBox>
 
-          <NewProject>
+          <NewProject onClick={() => addProject("Inter Stelaris Kanis Lupus")}>
             <NewProjectImg src={Add} alt=""></NewProjectImg>
             Add New
           </NewProject>
@@ -48,31 +54,13 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
       </Head>
       <ProjectsList>
         {userData.filter(filterByName).map((e) => (
-          <ProjectCard></ProjectCard>
+          <ProjectCard
+            key={e.id}
+            changeRoute={changeRoute}
+            data={e}
+          ></ProjectCard>
         ))}
       </ProjectsList>
-      {/* <p>All Projects</p>
-      <SearchBox search={{ value: searchText, set: setSearchText }}></SearchBox>
-      <Glass size={"inline"} margin="5% 0" padding="10px 0">
-        {userData.filter(filterByName).map((e) => (
-          <ProjectBanner
-            key={e.id}
-            onClick={() => changeRoute({ projectId: e.id })}
-          >
-            <ProjectColor color={e.data.color} />
-            <ProjectData>
-              <Name>{e.id}</Name>
-              <NumberOfTasks>
-                zadania: {taskDone(e.tasks) + "/" + e.tasks.length}
-              </NumberOfTasks>
-            </ProjectData>
-            <PercentOfComplete>50%</PercentOfComplete>
-            <GoToButton>
-              <Icon src={Arrow} alt={""}></Icon>
-            </GoToButton>
-          </ProjectBanner>
-        ))}
-      </Glass> */}
     </>
   );
 };
@@ -153,6 +141,7 @@ const NewProject = styled.button`
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25),
     inset 0px 1px 1px hsla(0, 0%, 100%, 0.25);
   font-size: 1rem;
+  cursor: pointer;
 `;
 const NewProjectImg = styled.img`
   width: 15px;
@@ -160,56 +149,21 @@ const NewProjectImg = styled.img`
 `;
 const ProjectsList = styled.div`
   margin-top: 5px;
-  width: 95%;
-  /* overflow-y: scroll; */
+  width: 98%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsla(0, 0%, 31%, 1);
+    border-radius: 5px;
+    margin: 20px 0px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsla(0, 0%, 43%, 1);
+    border-radius: 5px;
+  }
 `;
-// const ProjectBanner = styled.div
-//   display: flex;
-//   align-items: center;
-//   width: 90%;
-//   background-color: red;
-//   border-radius: 5px;
-//   outline: 2px solid #b6b6b6;
-//   filter: drop-shadow(3px 3px 4px rgba(0, 0, 0, 0.25));
-//   overflow: hidden;
-//   margin: 1.5% 0;
-//   cursor: pointer;
-// `;
-// const Head = styled.div`
-//   width: 100%;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-around;
-// `;
-
-// const ProjectColor = styled.div<{ color: string }>`
-//   width: 7%;
-//   height: 100%;
-//   background-color: ${({ color }) => color};
-// `;
-// const ProjectData = styled.div`
-//   width: 80%;
-
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-// `;
-// const Name = styled.div`
-//   align-self: center;
-// `;
-// const NumberOfTasks = styled.div`
-//   padding-left: 5%;
-// `;
-// const PercentOfComplete = styled.div`
-//   width: 20%;
-//   text-align: center;
-// `;
-// const GoToButton = styled.div`
-//   width: 10%;
-//   background: none;
-//   border: none;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `;
-// const Icon = styled.img``;

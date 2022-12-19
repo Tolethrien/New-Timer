@@ -8,15 +8,7 @@ import {
 } from "firebase/firestore";
 import db from "./firebase";
 
-const colors = [
-  "#ffff00",
-  "#ff0000",
-  "#0000ff",
-  "#008000",
-  "#800080",
-  "#ffffff",
-  "#000000",
-];
+const colors = [41, 116, 180, 256, 330];
 //===========PROJECTS===========================
 export const addProject = (name: string) => {
   const projectRef = doc(
@@ -26,6 +18,7 @@ export const addProject = (name: string) => {
     name: name,
     createdAt: serverTimestamp(),
     color: colors[Math.floor(Math.random() * colors.length)],
+    status: "Active",
   });
 };
 
