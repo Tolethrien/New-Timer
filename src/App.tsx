@@ -24,7 +24,7 @@ function App() {
   } = useStore("app");
   document
     .querySelector('meta[name="theme-color"]')!
-    .setAttribute("content", `hsla(${newColor}, 76%, 41%, 1)`);
+    .setAttribute("content", `hsla(${newColor}, 20%, 74%, 1)`);
   //
   return (
     <MainBody height={height} textColor={textColor}>
