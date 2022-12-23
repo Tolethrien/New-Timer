@@ -8,7 +8,6 @@ import Add from "../../../Icons/Add.svg";
 import ProjectCard from "./projectCard";
 import { addProject } from "../../../API/handleDocs";
 
-// import SearchBox from "./searchBox";
 interface ProjectsOverallProps {
   changeRoute: (route: RoutesChange) => void;
 }
@@ -26,8 +25,6 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
     setSearchText(e.target.value);
   };
   return (
-    //zrobic text globalny
-    //zrobic komponent zolty globalny
     <>
       <Head>
         <Text size={1.1} weight={500} margin="4% 0 0 0">
@@ -67,13 +64,15 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
 export default AllProjects;
 
 const Head = styled.div`
+  position: relative;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: hsla(65, 76%, 41%, 1);
+  background-color: hsla(233, 20%, 74%, 1);
   width: 100%;
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 15px 15px;
   border-bottom: 1px solid hsla(0, 2%, 88%, 1);
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
 `;
@@ -98,6 +97,9 @@ const ManagingProject = styled.div`
   justify-content: space-between;
   margin-bottom: 3%;
 `;
+const TestButton = styled.div``;
+const TestImg = styled.div``;
+
 const SearchBox = styled.div`
   display: flex;
   align-items: center;
@@ -116,6 +118,8 @@ const SearchBoxInput = styled.input`
   padding-left: 10px;
   width: 100%;
   height: 100%;
+  font-size: 1rem;
+  font-weight: 700;
 
   :focus {
     outline: none;
@@ -148,12 +152,13 @@ const NewProjectImg = styled.img`
   padding-right: 5px;
 `;
 const ProjectsList = styled.div`
-  margin-top: 5px;
+  /* margin-top: 5px; */
   width: 98%;
-  overflow-y: scroll;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 10px;
   ::-webkit-scrollbar {
     width: 6px;
   }

@@ -91,6 +91,7 @@ const InfoBoxImg = styled.img`
 `;
 const InfoBoxValue = styled.p`
   font-weight: 500;
+  font-size: 1rem;
 `;
 const ProgressBar = styled.progress<{ hue: number }>`
   position: absolute;

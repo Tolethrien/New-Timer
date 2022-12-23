@@ -1,5 +1,5 @@
 import styled from "styled-components";
-const PageWrap = styled.div`
+const PageWrap = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -8,8 +8,5 @@ const PageWrap = styled.div`
   overflow-x: hidden;
   width: 100%;
   height: calc(100% - 55px);
-  ::-webkit-scrollbar {
-    width: 0px;
-  }
 `;
 export default PageWrap;

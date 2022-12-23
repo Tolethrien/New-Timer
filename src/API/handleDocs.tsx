@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import db from "./firebase";
 
-const colors = [41, 116, 180, 256, 330];
+export const colors = [41, 116, 180, 256, 330];
 //===========PROJECTS===========================
 export const addProject = (name: string) => {
   const projectRef = doc(
