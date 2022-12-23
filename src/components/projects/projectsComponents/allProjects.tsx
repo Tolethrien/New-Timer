@@ -14,7 +14,10 @@ interface ProjectsOverallProps {
 interface StyleProps {}
 
 const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
-  const { userData } = useContext(appContext);
+  const {
+    userData,
+    newColor: { newColor },
+  } = useContext(appContext);
   // console.log(userData);
   const [searchText, setSearchText] = useState("");
 
@@ -26,7 +29,7 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
   };
   return (
     <>
-      <Head>
+      <Head hue={newColor}>
         <Text size={1.1} weight={500} margin="4% 0 0 0">
           Hello! Pavel
         </Text>
@@ -63,14 +66,14 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
 };
 export default AllProjects;
 
-const Head = styled.div`
+const Head = styled.div<{ hue: number }>`
   position: relative;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: hsla(233, 20%, 74%, 1);
+  background-color: ${({ hue }) => `hsla(${hue}, 20%, 74%, 1)`};
   width: 100%;
   border-radius: 0 0 15px 15px;
   border-bottom: 1px solid hsla(0, 2%, 88%, 1);
@@ -97,8 +100,6 @@ const ManagingProject = styled.div`
   justify-content: space-between;
   margin-bottom: 3%;
 `;
-const TestButton = styled.div``;
-const TestImg = styled.div``;
 
 const SearchBox = styled.div`
   display: flex;

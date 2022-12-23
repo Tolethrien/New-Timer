@@ -24,7 +24,7 @@ const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
   const [editTitle, setEditTitle] = useState(false);
   const [searchText, setSearchText] = useState("");
   const {
-    secondary: { secondaryColor },
+    newColor: { newColor },
   } = useContext(appContext);
 
   const taskDone = (tasks: { data: { finished: boolean } }[]) => {
@@ -46,7 +46,7 @@ const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
 
   if (!project) return <p>Loading...</p>;
   return (
-    <Head>
+    <Head hue={newColor}>
       <BackAndNameAndOptions>
         <ButtonImg
           src={BackArrow}
@@ -133,7 +133,7 @@ const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
   );
 };
 export default Project;
-const Head = styled.div`
+const Head = styled.div<{ hue: number }>`
   position: relative;
   box-sizing: border-box;
   z-index: 10;
@@ -142,7 +142,7 @@ const Head = styled.div`
   padding: 5px 5%;
   justify-content: center;
   flex-direction: column;
-  background-color: hsla(233, 20%, 74%, 1);
+  background-color: ${({ hue }) => `hsla(${hue}, 20%, 74%, 1)`};
   width: 100%;
   border-radius: 0 0 15px 15px;
   border-bottom: 1px solid hsla(0, 2%, 88%, 1);

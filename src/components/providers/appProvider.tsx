@@ -18,6 +18,10 @@ interface provider {
     textColor: string;
     setTextColor: React.Dispatch<React.SetStateAction<string>>;
   };
+  newColor: {
+    newColor: number;
+    setNewColor: React.Dispatch<React.SetStateAction<number>>;
+  };
   currentWindow: {
     id: number;
     set: React.Dispatch<React.SetStateAction<number>>;
@@ -34,6 +38,7 @@ const Provider: React.FC<props> = (props) => {
   const [primaryColor, setPrimaryColor] = useState("#84bc7a7d");
   const [secondaryColor, setSecondaryColor] = useState("#c5dc14");
   const [textColor, setTextColor] = useState("#f8f8f8");
+  const [newColor, setNewColor] = useState(153);
   const [currenWindow, setCurrentWindow] = useState(0);
 
   const userData = GetUserData();
@@ -43,6 +48,7 @@ const Provider: React.FC<props> = (props) => {
         primary: { primaryColor, setPrimaryColor },
         secondary: { secondaryColor, setSecondaryColor },
         text: { textColor, setTextColor },
+        newColor: { newColor, setNewColor },
         userData,
         currentWindow: { id: currenWindow, set: setCurrentWindow },
       }}
