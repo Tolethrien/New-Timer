@@ -53,14 +53,16 @@ const Project: React.FC<ProjectProps> = () => {
   return (
     <Head hue={newColor}>
       <BackAndNameAndOptions>
-        <ButtonImg
-          src={BackArrow}
-          size={[25, 60]}
-          margin="0 3% 0 0"
-          style={{ alignSelf: "flex-end" }}
-          onClick={() => ""}
-        ></ButtonImg>
-        <div>
+        <BackButton>
+          <ButtonImg
+            src={BackArrow}
+            size={[25, 40]}
+            margin="0 3% 0 0"
+            style={{ alignSelf: "flex-end" }}
+            onClick={() => navigate("..")}
+          ></ButtonImg>
+        </BackButton>
+        <NameSlot>
           {editTitle ? (
             <NameEditInput
               placeholder={project.data.name}
@@ -68,19 +70,27 @@ const Project: React.FC<ProjectProps> = () => {
             ></NameEditInput>
           ) : (
             <Text size={1.5} weight={600}>
-              ProjectLazarus
+              {project.data.name.length > 20
+                ? project.data.name.slice(0, 20) + "..."
+                : project.data.name}
             </Text>
           )}
-        </div>
-        {showAll && (
+          {showAll && (
+            <ButtonImg
+              src={Edit}
+              size={[15, 15]}
+              margin="0 0 0 5%"
+              onClick={() => setEditTitle(!editTitle)}
+            ></ButtonImg>
+          )}
+        </NameSlot>
+        <OptionsButton>
           <ButtonImg
-            src={Edit}
-            size={[15, 15]}
-            margin="0 0 0 2%"
-            onClick={() => setEditTitle(!editTitle)}
+            src={Detail}
+            size={[25, 25]}
+            margin="0 0 0 30%"
           ></ButtonImg>
-        )}
-        <ButtonImg src={Detail} size={[25, 25]} margin="0 0 0 30%"></ButtonImg>
+        </OptionsButton>
       </BackAndNameAndOptions>
       {showAll && (
         <>
@@ -114,7 +124,6 @@ const Project: React.FC<ProjectProps> = () => {
               ))}
             </ColorPicker>
           </ColorDetail>
-          <button onClick={() => navigate(`../task/sdssss`)}>ss</button>
         </>
       )}
       <Text size={1.5} weight={600} padding="2% 0 4% 0">
@@ -137,6 +146,7 @@ const Project: React.FC<ProjectProps> = () => {
       </SearchAndAdd>
       <MoreInfo onClick={() => setShowAll((prev) => !prev)}></MoreInfo>
     </Head>
+    // <button onClick={() => navigate(`../task/sdssss`)}>ss</button>
   );
 };
 export default Project;
@@ -160,6 +170,35 @@ const BackAndNameAndOptions = styled.div`
   display: flex;
   justify-content: flex-start;
   width: 100%;
+`;
+const BackButton = styled.div`
+  width: 15%;
+  display: flex;
+  align-items: flex-end;
+`;
+const NameSlot = styled.div`
+  width: 75%;
+  display: flex;
+`;
+const OptionsButton = styled.div`
+  width: 10%;
+`;
+const NameEditInput = styled.input`
+  border: none;
+  outline: none;
+  height: 100%;
+  background-color: transparent;
+  font-size: 1.2rem;
+  font-weight: 600;
+  width: 60%;
+  :focus {
+    outline: none;
+  }
+  ::placeholder {
+    color: #414141;
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
 `;
 
 const ButtonImg = styled.button<{
@@ -185,9 +224,6 @@ const ProjectStatus = styled.div`
   display: flex;
   align-items: center;
 `;
-const NameEditInput = styled.input`
-  height: 95%;
-`;
 
 const ColorDetail = styled.div`
   width: 100%;
@@ -212,8 +248,8 @@ const ColorToPick = styled.div<{ current: boolean; hue: number }>`
   ${({ current }) =>
     current &&
     `
-  width: 2.2vw;
-  height: 2.2vw;
+  width: 25px;
+  height: 25px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   `}
 `;
