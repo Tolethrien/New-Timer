@@ -32,7 +32,7 @@ const Footer: React.FC<FooterProps> = () => {
   );
 
   useEffect(() => {
-    findUrl?.id !== currentWindow.id && currentWindow.set(findUrl!.id);
+    // findUrl?.id !== currentWindow.id && currentWindow.set(findUrl!.id);
   }, []);
   return (
     <Wrap>

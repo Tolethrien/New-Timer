@@ -2,18 +2,15 @@ import styled from "styled-components";
 import Glass from "../../styled/glass";
 import { useContext, useState } from "react";
 import { appContext } from "../../providers/appProvider";
-import { RoutesChange } from "../../../pages/projects";
 import Loop from "../../../Icons/Loop.svg";
 import Add from "../../../Icons/Add.svg";
 import ProjectCard from "./projectCard";
 import { addProject } from "../../../API/handleDocs";
 
-interface ProjectsOverallProps {
-  changeRoute: (route: RoutesChange) => void;
-}
+interface ProjectsOverallProps {}
 interface StyleProps {}
 
-const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
+const AllProjects: React.FC<ProjectsOverallProps> = () => {
   const {
     userData,
     newColor: { newColor },
@@ -54,11 +51,7 @@ const AllProjects: React.FC<ProjectsOverallProps> = ({ changeRoute }) => {
       </Head>
       <ProjectsList>
         {userData.filter(filterByName).map((e) => (
-          <ProjectCard
-            key={e.id}
-            changeRoute={changeRoute}
-            data={e}
-          ></ProjectCard>
+          <ProjectCard key={e.id} data={e}></ProjectCard>
         ))}
       </ProjectsList>
     </>

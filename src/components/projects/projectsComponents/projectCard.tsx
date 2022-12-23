@@ -3,16 +3,14 @@ import GoTo from "../../../Icons/GoTo.svg";
 import Favorites from "../../../Icons/Favorites.svg";
 import TaskList from "../../../Icons/TaskList.svg";
 import Clock from "../../../Icons/Clock.svg";
-import { RoutesChange } from "../../../pages/projects";
 import { ProjectsData } from "../../../API/getUserData";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectCardProps {
-  changeRoute: (route: RoutesChange) => void;
   data: ProjectsData;
 }
 interface StyleProps {}
 const ProjectCard: React.FC<ProjectCardProps> = ({
-  changeRoute,
   data: { data, id, tasks },
 }) => {
   const taskDone = (tasks: { data: { finished: boolean } }[]) => {
@@ -20,6 +18,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     return done.length > 0 ? done.length : 0;
   };
   const color = data.color;
+  const navigate = useNavigate();
   const totalTimeOnTask = tasks.reduce(
     (acu, element) => acu + element.data.totalTime,
     0
@@ -27,7 +26,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const percentOfComplete =
     tasks.length > 0 ? Math.round((taskDone(tasks) / tasks.length) * 100) : 100;
   return (
-    <Wrap onClick={() => changeRoute({ projectId: id })} hue={color}>
+    <Wrap onClick={() => navigate(`./project/${id}`)} hue={color}>
       <Info>
         <InfoBox hue={color}>
           <InfoBoxImg src={TaskList}></InfoBoxImg>

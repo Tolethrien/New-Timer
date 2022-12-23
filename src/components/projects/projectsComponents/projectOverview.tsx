@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { RouteData, RoutesChange } from "../../../pages/projects";
 import FindData from "../../hooks/findData";
 import { useState, useContext } from "react";
 import Add from "../../../Icons/Add.svg";
@@ -13,20 +12,21 @@ import { appContext } from "../../providers/appProvider";
 import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
 import { deleteProject, addTask } from "../../../API/handleDocs";
 import { colors } from "../../../API/handleDocs";
-interface ProjectProps {
-  changeRoute: (route: RoutesChange) => void;
-  renderRoute: RouteData;
-}
+import { useNavigate, Link, useParams } from "react-router-dom";
+
+interface ProjectProps {}
 interface StyleProps {}
-const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
-  const project = FindData(renderRoute) as ProjectsData;
+const Project: React.FC<ProjectProps> = () => {
   const [showAll, setShowAll] = useState(true);
   const [editTitle, setEditTitle] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
+
   const {
     newColor: { newColor },
   } = useContext(appContext);
-
+  const { id } = useParams();
+  const project = FindData(id);
   const taskDone = (tasks: { data: { finished: boolean } }[]) => {
     let done = tasks.filter((e) => e.data.finished === true);
     return done.length > 0 ? done.length : 0;
@@ -44,7 +44,12 @@ const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
     return value.data.name.toLowerCase().includes(searchText.toLowerCase());
   };
 
-  if (!project) return <p>Loading...</p>;
+  if (!project)
+    return (
+      <>
+        <p>Loading...</p>
+      </>
+    );
   return (
     <Head hue={newColor}>
       <BackAndNameAndOptions>
@@ -53,7 +58,7 @@ const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
           size={[25, 60]}
           margin="0 3% 0 0"
           style={{ alignSelf: "flex-end" }}
-          onClick={() => changeRoute("back")}
+          onClick={() => ""}
         ></ButtonImg>
         <div>
           {editTitle ? (
@@ -104,10 +109,12 @@ const Project: React.FC<ProjectProps> = ({ renderRoute, changeRoute }) => {
                 <ColorToPick
                   current={e === project.data.color}
                   hue={e}
+                  key={e}
                 ></ColorToPick>
               ))}
             </ColorPicker>
           </ColorDetail>
+          <button onClick={() => navigate(`../task/sdssss`)}>ss</button>
         </>
       )}
       <Text size={1.5} weight={600} padding="2% 0 4% 0">

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useParams, Outlet } from "react-router-dom";
-import { RouteData, RoutesChange } from "../../../pages/projects";
 import FindData from "../../hooks/findData";
 import { TasksData } from "../../../API/getUserData";
 import Glass from "../../styled/glass";
@@ -14,37 +13,29 @@ import { clockContext } from "../../providers/clockProvider";
 import { appContext } from "../../providers/appProvider";
 import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
 import { deleteTask } from "../../../API/handleDocs";
-interface TasksOverviewProps {
-  changeRoute: (route: RoutesChange) => void;
-  renderRoute: RouteData;
-}
+interface TasksOverviewProps {}
 interface StyleProps {}
-const TaskOverview: React.FC<TasksOverviewProps> = ({
-  renderRoute,
-  changeRoute,
-}) => {
-  const task = FindData(renderRoute) as TasksData;
-  const createdAt = new Date(task.data.createdAt.seconds * 1000);
+const TaskOverview: React.FC<TasksOverviewProps> = () => {
+  const task = FindData("sds");
+  const createdAt = new Date(task?.data.createdAt.seconds * 1000);
   const navigate = useNavigate();
   const { setClock } = useContext(clockContext);
   const { currentWindow } = useContext(appContext);
   const setAndOpenTimer = () => {
-    setClock(task.data.totalTime, task.id);
+    setClock(task?.data.totalTime, task!.id);
     navigate("/timer");
     currentWindow.set(1);
   };
   return (
     <Glass size={"inline"}>
-      <p>{task.id}</p>
-      <p>{task.data.finished ? "true" : "false"}</p>
-      <p>{task.data.totalTime}</p>
-      <p>{task.data.timeLeft}</p>
+      <p>{task?.id}</p>
+      <p>{task?.data.finished ? "true" : "false"}</p>
+      <p>{task?.data.totalTime}</p>
+      <p>{task?.data.timeLeft}</p>
       <p>{createdAt.toDateString()}</p>
       <DropMenuButton src={Detail} alt="more options">
         <DropMenuOption>Edit</DropMenuOption>
-        <DropMenuOption
-          callback={() => (deleteTask(task), changeRoute("back"))}
-        >
+        <DropMenuOption callback={() => deleteTask(task!)}>
           Remove
         </DropMenuOption>
       </DropMenuButton>
@@ -59,7 +50,7 @@ const TaskOverview: React.FC<TasksOverviewProps> = ({
         <input type={"text"}></input>
       </Bucket>
       <button onClick={() => setAndOpenTimer()}>uruchom</button>
-      <button onClick={() => changeRoute("back")}>back</button>
+      <button onClick={() => ""}>back</button>
     </Glass>
   );
 };
