@@ -203,8 +203,8 @@ const ColorPicker = styled.div`
   width: 50%;
 `;
 const ColorToPick = styled.div<{ current: boolean; hue: number }>`
-  width: 2vw;
-  height: 2vw;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background-color: ${({ hue }) => `hsla(${hue}, 30%, 85%, 1)`};
   margin-left: 5%;
