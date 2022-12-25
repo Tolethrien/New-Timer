@@ -45,7 +45,7 @@ const CategoryType = styled.div<{ name: string; hue: number }>`
     justify-content: center;
     left: 0;
     top: 0;
-    height: 3vw;
+    height: 1.75rem;
     width: 30%;
     background-color: ${({ hue }) => `hsla(${hue}, 85%, 85%, 1)`};
     border-radius: 5px;
