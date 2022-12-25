@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import FindData from "../../hooks/findData";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Add from "../../../Icons/Add.svg";
 import BackArrow from "../../../Icons/BackArrow.svg";
 import Detail from "../../../Icons/Detail.svg";
@@ -13,6 +13,8 @@ import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
 import { deleteProject, addTask } from "../../../API/handleDocs";
 import { colors } from "../../../API/handleDocs";
 import { useNavigate, Link, useParams } from "react-router-dom";
+import Category from "./category";
+import TaskCard from "./taskCard";
 
 interface ProjectProps {}
 interface StyleProps {}
@@ -27,16 +29,19 @@ const Project: React.FC<ProjectProps> = () => {
   } = useContext(appContext);
   const { id } = useParams();
   const project = FindData(id);
-  const taskDone = (tasks: { data: { finished: boolean } }[]) => {
-    let done = tasks.filter((e) => e.data.finished === true);
-    return done.length > 0 ? done.length : 0;
+
+  const tasksCompletion = () => {
+    let data = { done: 0, toDo: 0, totalTasks: 0, totalTime: 0, timeSpend: 0 };
+    project?.tasks.forEach((e) => {
+      e.data.finished === true ? data.done++ : data.toDo++;
+      data.totalTime += e.data.totalTime;
+      data.timeSpend += e.data.timeLeft;
+    });
+    project && (data.totalTasks = project?.tasks.length);
+    console.log(data);
+    return data;
   };
-  const totalTimeOnTasks = () => {
-    return project?.tasks.reduce(
-      (acu, element) => acu + element.data.totalTime,
-      0
-    );
-  };
+  const TasksInfo = tasksCompletion();
   const setText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
@@ -51,104 +56,132 @@ const Project: React.FC<ProjectProps> = () => {
       </>
     );
   return (
-    <Head hue={newColor}>
-      <BackAndNameAndOptions>
-        <BackButton>
-          <ButtonImg
-            src={BackArrow}
-            size={[25, 40]}
-            margin="0 3% 0 0"
-            style={{ alignSelf: "flex-end" }}
-            onClick={() => navigate("..")}
-          ></ButtonImg>
-        </BackButton>
-        <NameSlot>
-          {editTitle ? (
-            <NameEditInput
-              placeholder={project.data.name}
-              autoFocus={true}
-            ></NameEditInput>
-          ) : (
-            <Text size={1.5} weight={600}>
-              {project.data.name.length > 20
-                ? project.data.name.slice(0, 20) + "..."
-                : project.data.name}
-            </Text>
-          )}
-          {showAll && (
+    <>
+      <Head hue={newColor}>
+        <BackAndNameAndOptions>
+          <BackButton>
             <ButtonImg
-              src={Edit}
-              size={[15, 15]}
-              margin="0 0 0 5%"
-              onClick={() => setEditTitle(!editTitle)}
+              src={BackArrow}
+              size={[25, 40]}
+              margin="0 3% 0 0"
+              style={{ alignSelf: "flex-end" }}
+              onClick={() => navigate("..")}
             ></ButtonImg>
-          )}
-        </NameSlot>
-        <OptionsButton>
-          <ButtonImg
-            src={Detail}
-            size={[25, 25]}
-            margin="0 0 0 30%"
-          ></ButtonImg>
-        </OptionsButton>
-      </BackAndNameAndOptions>
-      {showAll && (
-        <>
-          <Text size={1} margin="4% 0 0 0">
-            you spend a 2 hours total on this project
-          </Text>
-          <Text size={1} margin="1% 0 3% 0">
-            Expected time is 40 hours!
-          </Text>
-          <ProjectStatus>
-            <Text size={1}>
-              Currently Project is <span>Active</span>
-            </Text>
+          </BackButton>
+          <NameSlot>
+            {editTitle ? (
+              <NameEditInput
+                placeholder={project.data.name}
+                autoFocus={true}
+              ></NameEditInput>
+            ) : (
+              <Text size={1.5} weight={600}>
+                {project.data.name.length > 20
+                  ? project.data.name.slice(0, 20) + "..."
+                  : project.data.name}
+              </Text>
+            )}
+            {showAll && (
+              <ButtonImg
+                src={Edit}
+                size={[15, 15]}
+                margin="0 0 0 5%"
+                onClick={() => setEditTitle(!editTitle)}
+              ></ButtonImg>
+            )}
+          </NameSlot>
+          <OptionsButton>
             <ButtonImg
-              src={RoundSwap}
+              src={Detail}
               size={[25, 25]}
-              margin="0 0 0 5%"
+              margin="0 0 0 30%"
             ></ButtonImg>
-          </ProjectStatus>
-          <ColorDetail>
-            <Text size={1} padding="1% 0 0 0">
-              Project color is <span>Pink</span>
+          </OptionsButton>
+        </BackAndNameAndOptions>
+        {showAll && (
+          <>
+            <Text size={1} margin="4% 0 0 0">
+              you spend a {TasksInfo.timeSpend} hours total on this project
             </Text>
-            <ColorPicker>
-              {colors.map((e) => (
-                <ColorToPick
-                  current={e === project.data.color}
-                  hue={e}
-                  key={e}
-                ></ColorToPick>
-              ))}
-            </ColorPicker>
-          </ColorDetail>
-        </>
-      )}
-      <Text size={1.5} weight={600} padding="2% 0 4% 0">
-        You have 8 task still to do! <br />
-        (15 total)
-      </Text>
-      <SearchAndAdd>
-        <SearchBox>
-          <SearchBoxImg src={Loop} alt="searchBar"></SearchBoxImg>
-          <SearchBoxInput
-            placeholder="Search..."
-            value={searchText}
-            onChange={(e) => setText(e)}
-          ></SearchBoxInput>
-        </SearchBox>
-        <NewProject onClick={() => addTask("ss", "Inter Stelaris Kanis Lupus")}>
-          <NewProjectImg src={Add} alt=""></NewProjectImg>
-          Add Task
-        </NewProject>
-      </SearchAndAdd>
-      <MoreInfo onClick={() => setShowAll((prev) => !prev)}></MoreInfo>
-    </Head>
+            <Text size={1} margin="1% 0 3% 0">
+              Expected time is {TasksInfo.totalTime} hours!
+            </Text>
+            <ProjectStatus>
+              <Text size={1}>
+                Currently Project is <span>Active</span>
+              </Text>
+              <ButtonImg
+                src={RoundSwap}
+                size={[25, 25]}
+                margin="0 0 0 5%"
+              ></ButtonImg>
+            </ProjectStatus>
+            <ColorDetail>
+              <Text size={1} padding="1% 0 0 0">
+                Project color is <span>Pink</span>
+              </Text>
+              <ColorPicker>
+                {colors.map((e) => (
+                  <ColorToPick
+                    current={e === project.data.color}
+                    hue={e}
+                    key={e}
+                  ></ColorToPick>
+                ))}
+              </ColorPicker>
+            </ColorDetail>
+          </>
+        )}
+        <Text size={1.5} weight={600} padding="2% 0 4% 0">
+          You have {TasksInfo.toDo} task still to do! <br />(
+          {TasksInfo.totalTasks} total)
+        </Text>
+        <SearchAndAdd>
+          <SearchBox>
+            <SearchBoxImg src={Loop} alt="searchBar"></SearchBoxImg>
+            <SearchBoxInput
+              placeholder="Search..."
+              value={searchText}
+              onChange={(e) => setText(e)}
+            ></SearchBoxInput>
+          </SearchBox>
+          <NewProject
+            onClick={() => addTask("ss", "Inter Stelaris Kanis Lupus")}
+          >
+            <NewProjectImg src={Add} alt=""></NewProjectImg>
+            Add Task
+          </NewProject>
+        </SearchAndAdd>
+        <MoreInfo onClick={() => setShowAll((prev) => !prev)}></MoreInfo>
+      </Head>
+      <AllTasks>
+        <Category name="Active" hue={245}>
+          {Array(3)
+            .fill(null)
+            .map((e, i) => (
+              <TaskCard key={i}></TaskCard>
+            ))}
+        </Category>
+        <Category name="On Hold" hue={360}>
+          {Array(1)
+            .fill(null)
+            .map((e, i) => (
+              <TaskCard key={i}></TaskCard>
+            ))}
+        </Category>
+        <Category name="Done" hue={115}>
+          {Array(1)
+            .fill(null)
+            .map((e, i) => (
+              <TaskCard key={i}></TaskCard>
+            ))}
+        </Category>
+      </AllTasks>
+    </>
     // <button onClick={() => navigate(`../task/sdssss`)}>ss</button>
   );
 };
+
 export default Project;
 const Head = styled.div<{ hue: number }>`
   position: relative;
@@ -335,6 +368,12 @@ const MoreInfo = styled.div`
   background-color: hsla(0, 0%, 87%, 0.68);
   align-self: center;
   border-radius: 10px;
+`;
+const AllTasks = styled.div`
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 5%;
 `;
 
 // <Glass size="inline">

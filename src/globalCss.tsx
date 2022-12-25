@@ -1,26 +1,32 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-  html{
+  
+  *{
     font-family: "Roboto";
+    ::-webkit-scrollbar {
+    width: 6px;
+    }
+  ::-webkit-scrollbar-track {
+    background: hsla(0, 0%, 31%, 1);
+    border-radius: 5px;
+    margin: 20px 0px;
+    }
+  ::-webkit-scrollbar-thumb {
+    background: hsla(0, 0%, 43%, 1);
+    border-radius: 5px;
+    }
   }
-input{
-  font-family: "Roboto";
-
-}
   p{
     margin: 0;
   }
   button{
-    font-family: "Roboto";
     font-weight: 500;
   }
   body{
     margin: 0;
     padding: 0;
-    font-family: "Roboto";
     background-color: #312c2c;
-
   }
   h1,h2,h3,h4{
     margin: 0;

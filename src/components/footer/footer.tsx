@@ -51,7 +51,7 @@ const Footer: React.FC<FooterProps> = () => {
   );
 };
 export default Footer;
-const Wrap = styled.div`
+const Wrap = styled.footer`
   position: absolute;
   bottom: 0;
   display: flex;

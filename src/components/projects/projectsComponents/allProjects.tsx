@@ -153,16 +153,4 @@ const ProjectsList = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 10px;
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: hsla(0, 0%, 31%, 1);
-    border-radius: 5px;
-    margin: 20px 0px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: hsla(0, 0%, 43%, 1);
-    border-radius: 5px;
-  }
 `;
