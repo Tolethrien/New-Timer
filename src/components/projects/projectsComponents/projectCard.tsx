@@ -1,8 +1,5 @@
 import styled from "styled-components";
-import GoTo from "../../../Icons/GoTo.svg";
-import Favorites from "../../../Icons/Favorites.svg";
-import TaskList from "../../../Icons/TaskList.svg";
-import Clock from "../../../Icons/Clock.svg";
+import { GoTo, Favorites, TaskList, Clock } from "../../utils/icons";
 import { ProjectsData } from "../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
 
@@ -13,8 +10,8 @@ interface StyleProps {}
 const ProjectCard: React.FC<ProjectCardProps> = ({
   data: { data, id, tasks },
 }) => {
-  const taskDone = (tasks: { data: { finished: boolean } }[]) => {
-    let done = tasks.filter((e) => e.data.finished === true);
+  const taskDone = (tasks: { data: { status: string } }[]) => {
+    let done = tasks.filter((e) => e.data.status === "Done");
     return done.length > 0 ? done.length : 0;
   };
   const color = data.color;

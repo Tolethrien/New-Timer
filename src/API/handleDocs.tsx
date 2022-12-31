@@ -5,10 +5,19 @@ import {
   serverTimestamp,
   deleteDoc,
   updateDoc,
+  query,
+  onSnapshot,
 } from "firebase/firestore";
 import db from "./firebase";
 
-export const colors = [41, 116, 180, 256, 330];
+export const colors = {
+  Orange: 41,
+  Green: 116,
+  Blue: 180,
+  Purple: 256,
+  Pink: 330,
+};
+export const ProjectStatuses = ["Active", "On Hold", "Done"];
 //===========PROJECTS===========================
 export const addProject = (name: string) => {
   const projectRef = doc(
@@ -17,7 +26,10 @@ export const addProject = (name: string) => {
   setDoc(projectRef, {
     name: name,
     createdAt: serverTimestamp(),
-    color: colors[Math.floor(Math.random() * colors.length)],
+    color:
+      Object.values(colors)[
+        Math.floor(Math.random() * Object.values(colors).length)
+      ],
     status: "Active",
   });
 };
@@ -42,15 +54,16 @@ export const deleteProject = ({ id, tasks }: { id: string; tasks: any[] }) => {
   });
   deleteDoc(projectRef);
 };
-export const updateProject = (id: string, value: number) => {
+
+export const updateProject = (id: string, value: {}) => {
   const projectRef = doc(
     db,
     "Users",
     "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
-    "Tasks",
+    "Projects",
     id
   );
-  updateDoc(projectRef, { totalTime: value });
+  updateDoc(projectRef, value);
 };
 //===========TASKS===========================
 export const deleteTask = ({ id }: { id: string }) => {
@@ -65,7 +78,7 @@ export const addTask = (id: string, name: string) => {
   setDoc(projectRef, {
     name: name,
     createdAt: serverTimestamp(),
-    finished: false,
+    status: "Active",
     totalTime: 25,
     timeLeft: 25,
     projectID: id,
@@ -80,4 +93,18 @@ export const updateTime = (id: string, value: number) => {
     id
   );
   updateDoc(projectRef, { totalTime: value });
+};
+const KILLALLTASKS = () => {
+  // DO NOT EVOKE!!!
+  let x: any[] = [];
+  const querySorted = query(
+    collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks")
+  );
+  onSnapshot(querySorted, (snap) => {
+    x = snap.docs.map((doc) => ({ id: doc.id }));
+    x.forEach((e) =>
+      deleteDoc(doc(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks", e.id))
+    );
+    alert("All tasks Deleted");
+  });
 };

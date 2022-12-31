@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import Glass from "../../styled/glass";
 import { useContext, useState } from "react";
 import { appContext } from "../../providers/appProvider";
-import Loop from "../../../Icons/Loop.svg";
-import Add from "../../../Icons/Add.svg";
+import { Loop, Add } from "../../utils/icons";
 import ProjectCard from "./projectCard";
 import { addProject } from "../../../API/handleDocs";
 

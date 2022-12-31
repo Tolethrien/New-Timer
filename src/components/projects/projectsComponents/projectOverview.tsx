@@ -1,27 +1,33 @@
 import styled from "styled-components";
 import FindData from "../../hooks/findData";
-import { useState, useContext, useEffect } from "react";
-import Add from "../../../Icons/Add.svg";
-import BackArrow from "../../../Icons/BackArrow.svg";
-import Detail from "../../../Icons/Detail.svg";
-import Loop from "../../../Icons/Loop.svg";
-import Edit from "../../../Icons/Edit.svg";
-import RoundSwap from "../../../Icons/RoundSwap.svg";
-import { ProjectsData } from "../../../API/getUserData";
+import { useState, useContext } from "react";
+import {
+  Add,
+  Loop,
+  Edit,
+  RoundSwap,
+  BackArrow,
+  Detail,
+} from "../../utils/icons";
 import { appContext } from "../../providers/appProvider";
 import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
-import { deleteProject, addTask } from "../../../API/handleDocs";
-import { colors } from "../../../API/handleDocs";
-import { useNavigate, Link, useParams } from "react-router-dom";
+import {
+  deleteProject,
+  updateProject,
+  ProjectStatuses,
+  colors,
+} from "../../../API/handleDocs";
+import { useNavigate, useParams } from "react-router-dom";
 import Category from "./category";
 import TaskCard from "./taskCard";
-
 interface ProjectProps {}
 interface StyleProps {}
 const Project: React.FC<ProjectProps> = () => {
   const [showAll, setShowAll] = useState(true);
   const [editTitle, setEditTitle] = useState(false);
+  const [addCardMenu, setAddCardMenu] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [changeName, setChangeName] = useState("");
   const navigate = useNavigate();
 
   const {
@@ -29,16 +35,14 @@ const Project: React.FC<ProjectProps> = () => {
   } = useContext(appContext);
   const { id } = useParams();
   const project = FindData(id);
-
   const tasksCompletion = () => {
     let data = { done: 0, toDo: 0, totalTasks: 0, totalTime: 0, timeSpend: 0 };
     project?.tasks.forEach((e) => {
-      e.data.finished === true ? data.done++ : data.toDo++;
+      e.data.status === "Done" ? data.done++ : data.toDo++;
       data.totalTime += e.data.totalTime;
       data.timeSpend += e.data.timeLeft;
     });
     project && (data.totalTasks = project?.tasks.length);
-    console.log(data);
     return data;
   };
   const TasksInfo = tasksCompletion();
@@ -47,6 +51,20 @@ const Project: React.FC<ProjectProps> = () => {
   };
   const filterByName = (value: { data: { name: string } }) => {
     return value.data.name.toLowerCase().includes(searchText.toLowerCase());
+  };
+  const updateName = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    updateProject(id!, { name: changeName });
+    setEditTitle(false);
+  };
+  const updateStatus = () => {
+    let st = ProjectStatuses.indexOf(project?.data.status);
+    let newSt = st === ProjectStatuses.length - 1 ? 0 : (st += 1);
+    // console.log(newSt);
+    updateProject(id!, { status: ProjectStatuses[newSt] });
+  };
+  const updateColor = (e: number) => {
+    updateProject(id!, { color: e });
   };
 
   if (!project)
@@ -70,10 +88,13 @@ const Project: React.FC<ProjectProps> = () => {
           </BackButton>
           <NameSlot>
             {editTitle ? (
-              <NameEditInput
-                placeholder={project.data.name}
-                autoFocus={true}
-              ></NameEditInput>
+              <NameEditForm onSubmit={(event) => updateName(event)}>
+                <NameEditInput
+                  placeholder={project.data.name}
+                  autoFocus={true}
+                  onChange={(e) => setChangeName(e.target.value)}
+                ></NameEditInput>
+              </NameEditForm>
             ) : (
               <Text size={1.5} weight={600}>
                 {project.data.name.length > 20
@@ -91,11 +112,13 @@ const Project: React.FC<ProjectProps> = () => {
             )}
           </NameSlot>
           <OptionsButton>
-            <ButtonImg
-              src={Detail}
-              size={[25, 25]}
-              margin="0 0 0 30%"
-            ></ButtonImg>
+            <DropMenuButton src={Detail} alt="more options">
+              <DropMenuOption
+                callback={() => (deleteProject(project), navigate(".."))}
+              >
+                Remove
+              </DropMenuOption>
+            </DropMenuButton>
           </OptionsButton>
         </BackAndNameAndOptions>
         {showAll && (
@@ -108,24 +131,33 @@ const Project: React.FC<ProjectProps> = () => {
             </Text>
             <ProjectStatus>
               <Text size={1}>
-                Currently Project is <span>Active</span>
+                Currently Project is <span>{project.data.status}</span>
               </Text>
               <ButtonImg
                 src={RoundSwap}
                 size={[25, 25]}
                 margin="0 0 0 5%"
+                onClick={() => updateStatus()}
               ></ButtonImg>
             </ProjectStatus>
             <ColorDetail>
               <Text size={1} padding="1% 0 0 0">
-                Project color is <span>Pink</span>
+                Project color is{" "}
+                <span>
+                  {
+                    Object.entries(colors).find(
+                      (e) => e[1] === project!.data.color
+                    )![0]
+                  }
+                </span>
               </Text>
               <ColorPicker>
-                {colors.map((e) => (
+                {Object.values(colors).map((e) => (
                   <ColorToPick
                     current={e === project.data.color}
                     hue={e}
                     key={e}
+                    onClick={() => updateColor(e)}
                   ></ColorToPick>
                 ))}
               </ColorPicker>
@@ -145,40 +177,47 @@ const Project: React.FC<ProjectProps> = () => {
               onChange={(e) => setText(e)}
             ></SearchBoxInput>
           </SearchBox>
-          <NewProject
-            onClick={() => addTask("ss", "Inter Stelaris Kanis Lupus")}
-          >
+          <NewProject onClick={() => setAddCardMenu(true)}>
             <NewProjectImg src={Add} alt=""></NewProjectImg>
             Add Task
           </NewProject>
         </SearchAndAdd>
         <MoreInfo onClick={() => setShowAll((prev) => !prev)}></MoreInfo>
       </Head>
+
       <AllTasks>
         <Category name="Active" hue={245}>
-          {Array(3)
-            .fill(null)
+          {addCardMenu && (
+            <TaskCard
+              template={true}
+              setAddCardMenu={setAddCardMenu}
+            ></TaskCard>
+          )}
+          {project.tasks
+            .filter((e) => e.data.status === "Active")
+            .filter(filterByName)
             .map((e, i) => (
-              <TaskCard key={i}></TaskCard>
+              <TaskCard key={i} data={e}></TaskCard>
             ))}
         </Category>
         <Category name="On Hold" hue={360}>
-          {Array(1)
-            .fill(null)
+          {project.tasks
+            .filter((e) => e.data.status === "On Hold")
+            .filter(filterByName)
             .map((e, i) => (
-              <TaskCard key={i}></TaskCard>
+              <TaskCard key={i} data={e}></TaskCard>
             ))}
         </Category>
         <Category name="Done" hue={115}>
-          {Array(1)
-            .fill(null)
+          {project.tasks
+            .filter((e) => e.data.status === "Done")
+            .filter(filterByName)
             .map((e, i) => (
-              <TaskCard key={i}></TaskCard>
+              <TaskCard key={i} data={e}></TaskCard>
             ))}
         </Category>
       </AllTasks>
     </>
-    // <button onClick={() => navigate(`../task/sdssss`)}>ss</button>
   );
 };
 
@@ -215,7 +254,37 @@ const NameSlot = styled.div`
 `;
 const OptionsButton = styled.div`
   width: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 `;
+const AddCard = styled.div`
+  color: black;
+  width: 100%;
+  height: 45px;
+  margin-top: 0.5%;
+  border-radius: 5px;
+  background-color: hsla(169, 77%, 88%, 1);
+  box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const AddNewForm = styled.form``;
+const AddNewInput = styled.input`
+  margin-left: 5%;
+  font-size: 1.2rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid grey;
+  outline: none;
+`;
+const AddNewCloseButton = styled.button``;
+
+const NameEditForm = styled.form`
+  width: 80%;
+`;
+
 const NameEditInput = styled.input`
   border: none;
   outline: none;
@@ -223,7 +292,7 @@ const NameEditInput = styled.input`
   background-color: transparent;
   font-size: 1.2rem;
   font-weight: 600;
-  width: 60%;
+  width: 100%;
   :focus {
     outline: none;
   }
@@ -375,51 +444,3 @@ const AllTasks = styled.div`
   overflow-x: hidden;
   padding-top: 5%;
 `;
-
-// <Glass size="inline">
-//   <Head>
-//     <BackButton
-//       src={Arrow}
-//       alt="go back"
-//       onClick={() => changeRoute("back")}
-//     />
-//     <Name>{project.data.name}</Name>
-//     <DropMenuButton src={Detail} alt="more options">
-//       <DropMenuOption>Edit</DropMenuOption>
-//       <DropMenuOption
-//         callback={() => (deleteProject(project), changeRoute("back"))}
-//       >
-//         Remove
-//       </DropMenuOption>
-//     </DropMenuButton>
-//   </Head>
-//   <Details>
-//     <TotalTime>Total Time:{totalTimeOnTasks()} min.</TotalTime>
-//     <EstimatedTime>szacowany czas</EstimatedTime>
-//     <TasksDone>
-//       zadania: {taskDone(project.tasks) + "/" + project.tasks.length}
-//     </TasksDone>
-//   </Details>
-//   <TaskData>
-//     <TasksHeader>{"head(5)"}</TasksHeader>
-//     <AddButton
-//       src={Add}
-//       alt="add new project"
-//       onClick={() => addTask(project.id, searchText)}
-//     />
-//     <SearchBar onChange={(e) => setSearchText(e.target.value)}></SearchBar>
-//     <AllTasks>
-//       {project.tasks.filter(filterByName).map((e) => (
-//         <TaskWrap
-//           key={e.id}
-//           onClick={() => changeRoute({ taskId: e.id })}
-//           color={secondaryColor}
-//         >
-//           <TaskName>{e.data.name}</TaskName>
-//           <TaskTime>{e.data.totalTime} min</TaskTime>
-//           <TaskFinished done={e.data.finished}></TaskFinished>
-//         </TaskWrap>
-//       ))}
-//     </AllTasks>
-//   </TaskData>
-// </Glass>

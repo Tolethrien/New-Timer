@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import Dashboard from "../../Icons/Dashboard.svg";
-import Timer from "../../Icons/Timer.svg";
-import Calendar from "../../Icons/Calendar.svg";
-import Data from "../../Icons/Data.svg";
-import Projects from "../../Icons/Projects.svg";
-import Options from "../../Icons/Options.svg";
+
+import {
+  Dashboard,
+  Timer,
+  Calendar,
+  Data,
+  Projects,
+  Options,
+} from "../utils/icons";
 import { useContext, useState, useEffect } from "react";
 import { appContext } from "../providers/appProvider";
 import { vibrate } from "../utils/navigatorUtils";

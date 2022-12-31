@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PageWrap from "../components/styled/pageWrap";
 import AllProjects from "../components/projects/projectsComponents/allProjects";
 import ProjectOverview from "../components/projects/projectsComponents/projectOverview";
