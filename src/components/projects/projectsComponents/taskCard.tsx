@@ -5,23 +5,22 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Clock, GoTo, Trash } from "../../utils/icons";
 import { addTask } from "../../../API/handleDocs";
 const TaskCard: React.FC<{
-  data?: TasksData;
+  task?: TasksData;
   template?: boolean;
   setAddCardMenu?: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ data, template, setAddCardMenu }) => {
+}> = ({ task, template, setAddCardMenu }) => {
   const navigate = useNavigate();
   const [newTaskName, setNewTaskName] = useState("");
-  const { id } = useParams();
-
+  const projectId = useParams().id;
   const color = 100;
   const createTask = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    newTaskName.length > 0 && addTask(id!, newTaskName);
+    newTaskName.length > 0 && addTask(projectId!, newTaskName);
     setNewTaskName("");
     setAddCardMenu!(false);
   };
   return (
-    <Wrap onClick={() => !template && navigate(`../task/${data!.id}`)}>
+    <Wrap onClick={() => !template && navigate(`../task/${task!.id}`)}>
       <TopInfo>
         <Tasks>
           <InfoBox hue={color} template={template}>
@@ -43,7 +42,7 @@ const TaskCard: React.FC<{
               ></AddNewInput>
             </AddNewForm>
           ) : (
-            data!.data.name
+            task!.data.name
           )}
         </Name>
         <GoToButton onClick={() => template && setAddCardMenu!(false)}>
@@ -70,6 +69,7 @@ const Wrap = styled.div`
   border-radius: 5px;
   background-color: hsla(169, 77%, 88%, 1);
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
+  cursor: pointer;
 `;
 const TopInfo = styled.div`
   height: 50%;
@@ -113,6 +113,7 @@ const ButtonImg = styled.img`
 const Desc = styled.div`
   height: 50%;
   margin-left: 1%;
+  font-weight: 500;
 `;
 const TemplateBox = styled.div<{ hue: number }>`
   width: 90%;

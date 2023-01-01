@@ -94,6 +94,16 @@ export const updateTime = (id: string, value: number) => {
   );
   updateDoc(projectRef, { totalTime: value });
 };
+export const updateTask = (id: string, value: {}) => {
+  const projectRef = doc(
+    db,
+    "Users",
+    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
+    "Tasks",
+    id
+  );
+  updateDoc(projectRef, value);
+};
 const KILLALLTASKS = () => {
   // DO NOT EVOKE!!!
   let x: any[] = [];

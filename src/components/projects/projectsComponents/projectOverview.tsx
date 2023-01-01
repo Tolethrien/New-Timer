@@ -20,6 +20,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import Category from "./category";
 import TaskCard from "./taskCard";
+import { ProjectsData } from "../../../API/getUserData";
 interface ProjectProps {}
 interface StyleProps {}
 const Project: React.FC<ProjectProps> = () => {
@@ -34,7 +35,7 @@ const Project: React.FC<ProjectProps> = () => {
     newColor: { newColor },
   } = useContext(appContext);
   const { id } = useParams();
-  const project = FindData(id);
+  const project = FindData(id) as ProjectsData;
   const tasksCompletion = () => {
     let data = { done: 0, toDo: 0, totalTasks: 0, totalTime: 0, timeSpend: 0 };
     project?.tasks.forEach((e) => {
@@ -197,7 +198,7 @@ const Project: React.FC<ProjectProps> = () => {
             .filter((e) => e.data.status === "Active")
             .filter(filterByName)
             .map((e, i) => (
-              <TaskCard key={i} data={e}></TaskCard>
+              <TaskCard key={i} task={e}></TaskCard>
             ))}
         </Category>
         <Category name="On Hold" hue={360}>
@@ -205,7 +206,7 @@ const Project: React.FC<ProjectProps> = () => {
             .filter((e) => e.data.status === "On Hold")
             .filter(filterByName)
             .map((e, i) => (
-              <TaskCard key={i} data={e}></TaskCard>
+              <TaskCard key={i} task={e}></TaskCard>
             ))}
         </Category>
         <Category name="Done" hue={115}>
@@ -213,7 +214,7 @@ const Project: React.FC<ProjectProps> = () => {
             .filter((e) => e.data.status === "Done")
             .filter(filterByName)
             .map((e, i) => (
-              <TaskCard key={i} data={e}></TaskCard>
+              <TaskCard key={i} task={e}></TaskCard>
             ))}
         </Category>
       </AllTasks>

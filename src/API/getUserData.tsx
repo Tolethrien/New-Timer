@@ -14,10 +14,7 @@ export interface TasksData {
 export const GetUserData = () => {
   const [projects, setProjects] = useState<ProjectsData[]>([]);
   const [tasks, setTasks] = useState<TasksData[]>([]);
-  // const finish = () => {
-  //   let build = []
-  // task.forEach(e => projects.forEach((project) => project.id === e.data.id) && e.tasks.push(e)
-  // }
+
   const GetTasks = () => {
     const querySorted = query(
       collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks")
