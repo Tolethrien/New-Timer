@@ -7,9 +7,17 @@ import { clockContext } from "../../providers/clockProvider";
 import { appContext } from "../../providers/appProvider";
 import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
 import { deleteTask, updateTask } from "../../../API/handleDocs";
-import { BackArrow, Edit, Clock, Detail } from "../../utils/icons";
+import {
+  BackArrow,
+  Edit,
+  Clock,
+  Detail,
+  CheckBoxEmpty,
+  CheckBoxFill,
+} from "../../utils/icons";
+import CheckBox from "../projectsComponents/checkbox";
 import Category from "../projectsComponents/category";
-import useResizeTextArea from "../../hooks/useResizeTextArea";
+import TaskDescriptionBox from "../projectsComponents/taskDescriptionBox";
 interface TasksOverviewProps {}
 interface StyleProps {}
 const TaskOverview: React.FC<TasksOverviewProps> = () => {
@@ -27,13 +35,6 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
   //   navigate("/timer");
   //   currentWindow.set(1);
   // };
-  const [value, setValue] = useState("");
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  useResizeTextArea(textAreaRef.current, value);
-  const handleChange = (evt: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = evt.target?.value;
-    setValue(val);
-  };
 
   const updateName = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -106,16 +107,16 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
         </NewProject>
       </Head>
       <Category hue={100} name="Description">
-        <DescriptionBox
-          onChange={handleChange}
-          placeholder="Description"
-          ref={textAreaRef}
-          rows={1}
-          value={value}
-        ></DescriptionBox>
+        <TaskDescriptionBox></TaskDescriptionBox>
       </Category>
-      <Category hue={100} name="Checkbox"></Category>
-      <Category hue={100} name="Options"></Category>
+      <Category hue={100} name="Checkbox">
+        <CheckBox></CheckBox>
+        <CheckBox></CheckBox>
+      </Category>
+      <Category hue={100} name="Options">
+        <CheckBox></CheckBox>
+        <CheckBox></CheckBox>
+      </Category>
     </>
   );
 };
@@ -233,21 +234,4 @@ const NewProject = styled.button`
 const NewProjectImg = styled.img`
   width: 15px;
   padding-right: 5px;
-`;
-const DescriptionBox = styled.textarea`
-  width: 95%;
-  height: auto;
-  background-color: hsla(0, 0%, 100%, 0.17);
-  backdrop-filter: blur(10px);
-  border: 1px solid hsla(162, 50%, 86%, 1);
-  box-shadow: 0px 0px 10px -4px black;
-  resize: none;
-  border-radius: 5px;
-  margin-top: 0.5%;
-  font-weight: 500;
-  font-size: 1.1rem;
-
-  :focus {
-    outline: none;
-  }
 `;

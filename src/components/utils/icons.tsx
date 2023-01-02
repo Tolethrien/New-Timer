@@ -15,6 +15,8 @@ import GoTo from "../../Icons/GoTo.svg";
 import Favorites from "../../Icons/Favorites.svg";
 import TaskList from "../../Icons/TaskList.svg";
 import Clock from "../../Icons/Clock.svg";
+import CheckBoxEmpty from "../../Icons/CheckBoxEmpty.svg";
+import CheckBoxFill from "../../Icons/CheckBoxFill.svg";
 export {
   Add,
   Loop,
@@ -33,4 +35,6 @@ export {
   Favorites,
   TaskList,
   Clock,
+  CheckBoxEmpty,
+  CheckBoxFill,
 };
