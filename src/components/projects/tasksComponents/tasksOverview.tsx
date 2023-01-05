@@ -2,11 +2,15 @@ import styled from "styled-components";
 import FindData from "../../hooks/findData";
 import { TasksData } from "../../../API/getUserData";
 import { useNavigate, useParams } from "react-router-dom";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useId } from "react";
 import { clockContext } from "../../providers/clockProvider";
 import { appContext } from "../../providers/appProvider";
 import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
-import { deleteTask, updateTask } from "../../../API/handleDocs";
+import {
+  deleteTask,
+  updateTask,
+  updateCheckboxes,
+} from "../../../API/handleDocs";
 import {
   BackArrow,
   Edit,
@@ -20,9 +24,11 @@ import Category from "../projectsComponents/category";
 import TaskDescriptionBox from "../projectsComponents/taskDescriptionBox";
 interface TasksOverviewProps {}
 interface StyleProps {}
+type Test = [string, boolean];
 const TaskOverview: React.FC<TasksOverviewProps> = () => {
   const { id } = useParams();
   const task = FindData(id!) as TasksData;
+  // console.log(task);
   const navigate = useNavigate();
   const [editTitle, setEditTitle] = useState(false);
   const [changeName, setChangeName] = useState("");
@@ -35,7 +41,6 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
   //   navigate("/timer");
   //   currentWindow.set(1);
   // };
-
   const updateName = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     updateTask(id!, { name: changeName });
@@ -106,17 +111,30 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
           Start
         </NewProject>
       </Head>
-      <Category hue={100} name="Description">
-        <TaskDescriptionBox></TaskDescriptionBox>
-      </Category>
-      <Category hue={100} name="Checkbox">
-        <CheckBox></CheckBox>
-        <CheckBox></CheckBox>
-      </Category>
-      <Category hue={100} name="Options">
-        <CheckBox></CheckBox>
-        <CheckBox></CheckBox>
-      </Category>
+      <AllCategories>
+        <Category hue={100} name="Description">
+          <TaskDescriptionBox
+            value={task.data.desc}
+            id={id}
+          ></TaskDescriptionBox>
+        </Category>
+        <Category hue={100} name="Checkbox">
+          {Object.entries(task.data.checkboxes)
+            .sort()
+            .map((checkbox) => (
+              <CheckBox
+                checkboxData={checkbox}
+                key={Math.random().toFixed(3)}
+                id={id}
+              ></CheckBox>
+            ))}
+          <button onClick={() => ""}>ss</button>
+        </Category>
+        <Category hue={100} name="Options">
+          {/* <CheckBox></CheckBox> */}
+          {/* <CheckBox></CheckBox> */}
+        </Category>
+      </AllCategories>
     </>
   );
 };
@@ -234,4 +252,11 @@ const NewProject = styled.button`
 const NewProjectImg = styled.img`
   width: 15px;
   padding-right: 5px;
+`;
+const AllCategories = styled.div`
+  /* margin-top: 0rem; */
+  width: 100%;
+  padding-top: 5%;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;

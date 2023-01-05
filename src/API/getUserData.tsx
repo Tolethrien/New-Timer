@@ -4,12 +4,25 @@ import db from "./firebase";
 export interface ProjectsData {
   id: string;
   tasks: TasksData[];
-  data: any;
+  data: {
+    color: number;
+    status: string;
+    name: string;
+    createdAt: { nanoseconds: number; seconds: number };
+  };
 }
 
 export interface TasksData {
   id: string;
-  data: any;
+  data: {
+    desc: string;
+    checkboxes: { [key: string]: boolean };
+    projectID: string;
+    name: string;
+    status: string;
+    timeLeft: number;
+    totalTime: number;
+  };
 }
 export const GetUserData = () => {
   const [projects, setProjects] = useState<ProjectsData[]>([]);
@@ -20,7 +33,12 @@ export const GetUserData = () => {
       collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks")
     );
     onSnapshot(querySorted, (snap) => {
-      setTasks(snap.docs.map((doc) => ({ data: doc.data(), id: doc.id })));
+      setTasks(
+        snap.docs.map((doc) => ({
+          data: doc.data(),
+          id: doc.id,
+        })) as TasksData[]
+      );
     });
   };
 
@@ -34,8 +52,8 @@ export const GetUserData = () => {
         snap.docs.map((doc) => ({
           data: doc.data(),
           id: doc.id,
-          tasks: [],
-        }))
+          tasks: [] as TasksData[],
+        })) as ProjectsData[]
       );
     });
   };

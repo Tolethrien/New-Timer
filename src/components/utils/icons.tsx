@@ -17,6 +17,7 @@ import TaskList from "../../Icons/TaskList.svg";
 import Clock from "../../Icons/Clock.svg";
 import CheckBoxEmpty from "../../Icons/CheckBoxEmpty.svg";
 import CheckBoxFill from "../../Icons/CheckBoxFill.svg";
+import TextEdit from "../../Icons/TextEdit.svg";
 export {
   Add,
   Loop,
@@ -37,4 +38,5 @@ export {
   Clock,
   CheckBoxEmpty,
   CheckBoxFill,
+  TextEdit,
 };

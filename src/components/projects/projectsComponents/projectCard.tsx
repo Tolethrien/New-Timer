@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { GoTo, Favorites, TaskList, Clock } from "../../utils/icons";
-import { ProjectsData } from "../../../API/getUserData";
+import { ProjectsData, TasksData } from "../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
 
 interface ProjectCardProps {
@@ -20,6 +20,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     (acu, element) => acu + element.data.totalTime,
     0
   );
+  // const totalTimeOnTask = 0;
   const percentOfComplete =
     tasks.length > 0 ? Math.round((taskDone(tasks) / tasks.length) * 100) : 100;
   return (

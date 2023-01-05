@@ -7,6 +7,9 @@ import {
   updateDoc,
   query,
   onSnapshot,
+  arrayUnion,
+  arrayRemove,
+  deleteField,
 } from "firebase/firestore";
 import db from "./firebase";
 
@@ -103,6 +106,19 @@ export const updateTask = (id: string, value: {}) => {
     id
   );
   updateDoc(projectRef, value);
+};
+export const updateCheckboxes = (id: string, name: string, value: boolean) => {
+  const projectRef = doc(
+    db,
+    "Users",
+    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
+    "Tasks",
+    id
+  );
+
+  // updateDoc(projectRef, { "checboxesNew.papapa": deleteField() });
+  // updateDoc(projectRef, { "checboxesNew.tes1": "random" });
+  updateDoc(projectRef, { [`checkboxes.${name}`]: !value });
 };
 const KILLALLTASKS = () => {
   // DO NOT EVOKE!!!

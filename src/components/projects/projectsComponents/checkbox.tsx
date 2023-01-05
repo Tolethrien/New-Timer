@@ -2,16 +2,21 @@ import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import ButtonImg from "../../styled/buttonImg";
 import { Edit, CheckBoxEmpty, CheckBoxFill, Trash } from "../../utils/icons";
-interface CheckBoxProps {}
-const CheckBox: React.FC<CheckBoxProps> = (props) => {
-  const [isChecked, setIsChecked] = useState(true);
+import { updateCheckboxes } from "../../../API/handleDocs";
+interface CheckBoxProps {
+  checkboxData: [string, boolean];
+  id: string | undefined;
+}
+const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, id }) => {
+  const [name, value] = checkboxData;
+  const [isChecked, setIsChecked] = useState(value);
   const [isEditing, setIsEditing] = useState(false);
-  const [value, setValue] = useState("drama");
+  const [temperaryName, settemperaryName] = useState(name);
   const focusRef = useRef<HTMLParagraphElement>(null);
   const componentRef = useRef<HTMLDivElement>(null);
   const handleClickOutside = (e: any) => {
     if (!componentRef.current?.contains(e.target)) {
-      focusRef!.current!.innerText = value;
+      focusRef!.current!.innerText = temperaryName;
       setIsEditing(false);
     }
   };
@@ -34,18 +39,20 @@ const CheckBox: React.FC<CheckBoxProps> = (props) => {
         checked={isChecked}
         type="checkbox"
         icon={isChecked ? CheckBoxFill : CheckBoxEmpty}
-        onChange={() => setIsChecked((prev) => !prev)}
+        onChange={() => updateCheckboxes(id!, name, value)}
       ></Box>
       <BoxDescDisplay
         contentEditable={isEditing}
         suppressContentEditableWarning={true}
         ref={focusRef}
         onKeyDown={(e) =>
-          e.code === "Enter" &&
-          (setIsEditing(false), setValue(focusRef!.current!.innerText))
+          e.keyCode === 13 &&
+          (console.log(e),
+          setIsEditing(false),
+          settemperaryName(focusRef!.current!.innerText))
         }
       >
-        {value}
+        {temperaryName}
       </BoxDescDisplay>
       <ButtonImg
         src={isEditing ? Trash : Edit}
