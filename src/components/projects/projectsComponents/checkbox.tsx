@@ -11,7 +11,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, id }) => {
   const [name, value] = checkboxData;
   const [isChecked, setIsChecked] = useState(value);
   const [isEditing, setIsEditing] = useState(false);
-  const [test, settest] = useState("");
+  const [test, settest] = useState("s");
   const [temperaryName, settemperaryName] = useState(name);
   const focusRef = useRef<HTMLParagraphElement>(null);
   const componentRef = useRef<HTMLDivElement>(null);
@@ -48,7 +48,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, id }) => {
         ref={focusRef}
         onKeyDown={(e) =>
           e.keyCode === 13 &&
-          (settest(e.code),
+          (alert(e.code),
           setIsEditing(false),
           settemperaryName(focusRef!.current!.innerText))
         }
