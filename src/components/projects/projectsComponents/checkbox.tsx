@@ -47,8 +47,8 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, id }) => {
         suppressContentEditableWarning={true}
         ref={focusRef}
         onKeyDown={(e) =>
-          e.keyCode === 13 &&
-          (alert(e.code),
+          e.key === "Enter" &&
+          (alert(e),
           setIsEditing(false),
           settemperaryName(focusRef!.current!.innerText))
         }
