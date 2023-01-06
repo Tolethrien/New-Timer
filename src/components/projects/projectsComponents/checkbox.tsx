@@ -2,27 +2,61 @@ import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import ButtonImg from "../../styled/buttonImg";
 import { Edit, CheckBoxEmpty, CheckBoxFill, Trash } from "../../utils/icons";
-import { updateCheckboxes } from "../../../API/handleDocs";
+import {
+  updateCheckbox,
+  addNewCheckbox,
+  deleteCheckbox,
+} from "../../../API/handleDocs";
 interface CheckBoxProps {
-  checkboxData: [string, boolean];
-  id: string | undefined;
+  template?: boolean;
+  closeCardMenu?: React.Dispatch<React.SetStateAction<boolean>>;
+  checkboxData?: [string, { createdAt: number; name: string; value: boolean }];
+  projectId: string | undefined;
 }
-const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, id }) => {
-  const [name, value] = checkboxData;
-  const [isChecked, setIsChecked] = useState(value);
-  const [isEditing, setIsEditing] = useState(false);
-  const [test, settest] = useState("s");
-  const [temperaryName, settemperaryName] = useState(name);
+
+const CheckBox: React.FC<CheckBoxProps> = ({
+  template,
+  closeCardMenu,
+  checkboxData,
+  projectId,
+}) => {
+  const [checkboxId, data] = checkboxData ?? [];
+  const [isChecked, setIsChecked] = useState(data?.value ?? false);
+  const [isEditing, setIsEditing] = useState(!template ? false : true);
+  const [temperaryName, settemperaryName] = useState(data?.name);
   const focusRef = useRef<HTMLParagraphElement>(null);
   const componentRef = useRef<HTMLDivElement>(null);
   const handleClickOutside = (e: any) => {
     if (!componentRef.current?.contains(e.target)) {
-      focusRef!.current!.innerText = temperaryName;
+      focusRef!.current!.innerText = temperaryName as string;
       setIsEditing(false);
     }
   };
+  const removeCheckbox = () => {
+    if (template) closeCardMenu!(false);
+    else deleteCheckbox(projectId!, checkboxId!);
+  };
+  const createNewCheckbox = () => {
+    // (setIsEditing(false), settemperaryName(focusRef!.current!.innerText))
+    if (template && focusRef!.current!.innerText.length === 0) {
+      closeCardMenu!(false);
+    } else if (template) {
+      setIsEditing(false);
+      addNewCheckbox(projectId!, focusRef!.current!.innerText);
+      closeCardMenu!(false);
+    } else {
+      setIsEditing(false);
+      updateCheckbox(
+        projectId!,
+        checkboxId!,
+        "name",
+        focusRef!.current!.innerText
+      );
+    }
+  };
+
   useEffect(() => {
-    if (isEditing) {
+    if (isEditing && !template) {
       const selection = window.getSelection();
       const range = document.createRange();
       selection?.removeAllRanges();
@@ -32,6 +66,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, id }) => {
       document.addEventListener("click", handleClickOutside);
       focusRef.current?.focus();
     }
+    if (template) focusRef.current?.focus();
     return () => document.removeEventListener("click", handleClickOutside);
   }, [isEditing]);
   return (
@@ -40,27 +75,24 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, id }) => {
         checked={isChecked}
         type="checkbox"
         icon={isChecked ? CheckBoxFill : CheckBoxEmpty}
-        onChange={() => updateCheckboxes(id!, name, value)}
+        onChange={() =>
+          !template &&
+          updateCheckbox(projectId!, checkboxId!, "value", !data!.value!)
+        }
       ></Box>
       <BoxDescDisplay
         contentEditable={isEditing}
         suppressContentEditableWarning={true}
         ref={focusRef}
-        onKeyDown={(e) =>
-          e.key === "Enter" &&
-          (alert(e),
-          setIsEditing(false),
-          settemperaryName(focusRef!.current!.innerText))
-        }
+        onKeyDown={(e) => e.key === "Enter" && createNewCheckbox()}
       >
         {temperaryName}
-        {test}
       </BoxDescDisplay>
       <ButtonImg
         src={isEditing ? Trash : Edit}
         size={[15, 15]}
         margin="0 5% 0 0"
-        onClick={() => (isEditing ? console.log("delete") : setIsEditing(true))}
+        onClick={() => (isEditing ? removeCheckbox() : setIsEditing(true))}
       ></ButtonImg>
     </Wrap>
   );

@@ -11,6 +11,7 @@ import {
   arrayRemove,
   deleteField,
 } from "firebase/firestore";
+import { useParams } from "react-router-dom";
 import db from "./firebase";
 
 export const colors = {
@@ -107,7 +108,23 @@ export const updateTask = (id: string, value: {}) => {
   );
   updateDoc(projectRef, value);
 };
-export const updateCheckboxes = (id: string, name: string, value: boolean) => {
+export const updateCheckbox = (
+  taskId: string,
+  checkboxId: string,
+  key: string,
+  value: any
+) => {
+  const projectRef = doc(
+    db,
+    "Users",
+    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
+    "Tasks",
+    taskId
+  );
+
+  updateDoc(projectRef, { [`checkboxes.${checkboxId}.${key}`]: value });
+};
+export const deleteCheckbox = (id: string, checkboxId: string) => {
   const projectRef = doc(
     db,
     "Users",
@@ -115,10 +132,26 @@ export const updateCheckboxes = (id: string, name: string, value: boolean) => {
     "Tasks",
     id
   );
-
-  // updateDoc(projectRef, { "checboxesNew.papapa": deleteField() });
-  // updateDoc(projectRef, { "checboxesNew.tes1": "random" });
-  updateDoc(projectRef, { [`checkboxes.${name}`]: !value });
+  updateDoc(projectRef, {
+    [`checkboxes.${checkboxId}`]: deleteField(),
+  });
+};
+export const addNewCheckbox = (taskId: string, name: string) => {
+  const newId = Math.random().toString().slice(2, -2);
+  const projectRef = doc(
+    db,
+    "Users",
+    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
+    "Tasks",
+    taskId
+  );
+  updateDoc(projectRef, {
+    [`checkboxes.${newId}`]: {
+      name: name,
+      createdAt: serverTimestamp(),
+      value: false,
+    },
+  });
 };
 const KILLALLTASKS = () => {
   // DO NOT EVOKE!!!

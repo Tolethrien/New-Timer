@@ -16,7 +16,11 @@ export interface TasksData {
   id: string;
   data: {
     desc: string;
-    checkboxes: { [key: string]: boolean };
+    check: { [key: string]: {} };
+    checkboxes: {
+      [key: string]: { createdAt: number; name: string; value: boolean };
+    };
+
     projectID: string;
     name: string;
     status: string;

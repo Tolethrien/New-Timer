@@ -6,11 +6,7 @@ import { useContext, useState, useRef, useId } from "react";
 import { clockContext } from "../../providers/clockProvider";
 import { appContext } from "../../providers/appProvider";
 import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
-import {
-  deleteTask,
-  updateTask,
-  updateCheckboxes,
-} from "../../../API/handleDocs";
+import { deleteTask, updateTask } from "../../../API/handleDocs";
 import {
   BackArrow,
   Edit,
@@ -18,20 +14,24 @@ import {
   Detail,
   CheckBoxEmpty,
   CheckBoxFill,
+  Add,
 } from "../../utils/icons";
 import CheckBox from "../projectsComponents/checkbox";
 import Category from "../projectsComponents/category";
 import TaskDescriptionBox from "../projectsComponents/taskDescriptionBox";
+import TaskOption from "../projectsComponents/taskOption";
 interface TasksOverviewProps {}
 interface StyleProps {}
 type Test = [string, boolean];
 const TaskOverview: React.FC<TasksOverviewProps> = () => {
   const { id } = useParams();
   const task = FindData(id!) as TasksData;
-  // console.log(task);
+  // task && console.log(task.data.check["randomId"]);
   const navigate = useNavigate();
   const [editTitle, setEditTitle] = useState(false);
   const [changeName, setChangeName] = useState("");
+  const [showCheckboxes, setshowCheckboxes] = useState(true);
+  const [addCardMenu, setAddCardMenu] = useState(false);
   const { setClock } = useContext(clockContext);
   const {
     newColor: { newColor },
@@ -118,21 +118,39 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
             id={id}
           ></TaskDescriptionBox>
         </Category>
-        <Category hue={100} name="Checkbox">
-          {Object.entries(task.data.checkboxes)
-            .sort()
-            .map((checkbox) => (
+        {showCheckboxes && (
+          <Category hue={100} name="Checkbox">
+            {addCardMenu && (
               <CheckBox
-                checkboxData={checkbox}
-                key={Math.random().toFixed(3)}
-                id={id}
+                template={true}
+                closeCardMenu={setAddCardMenu}
+                projectId={id}
               ></CheckBox>
-            ))}
-          <button onClick={() => ""}>ss</button>
-        </Category>
-        <Category hue={100} name="Options">
-          {/* <CheckBox></CheckBox> */}
-          {/* <CheckBox></CheckBox> */}
+            )}
+            {task.data.checkboxes &&
+              Object.entries(task.data.checkboxes)
+                .sort((timeA, timeB) => timeA[1].createdAt - timeB[1].createdAt)
+                .map((checkbox) => (
+                  <CheckBox
+                    checkboxData={checkbox}
+                    key={Math.random().toFixed(3)}
+                    projectId={id}
+                  ></CheckBox>
+                ))}
+            <NewCheckboxButton onClick={() => setAddCardMenu(true)}>
+              <NewProjectImg src={Add} alt=""></NewProjectImg>
+              add New
+            </NewCheckboxButton>
+          </Category>
+        )}
+        <Category hue={100} name="Settings">
+          <TaskOption optionName="Estimated Time" type="TextData"></TaskOption>
+          <TaskOption
+            optionName="Checkboxes"
+            type="Toggle"
+            setShowCheckboxes={setshowCheckboxes}
+            showCheckboxes={showCheckboxes}
+          ></TaskOption>
         </Category>
       </AllCategories>
     </>
@@ -240,6 +258,20 @@ const NewProject = styled.button`
   align-items: center;
   justify-content: center;
   /* margin-right: 5%; */
+  border-radius: 5px;
+  padding: 1% 2%;
+  border: 1px solid hsla(0, 0%, 66%, 1);
+  background-color: hsla(0, 0%, 87%, 0.22);
+  box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25),
+    inset 0px 1px 1px hsla(0, 0%, 100%, 0.25);
+  font-size: 1rem;
+  cursor: pointer;
+`;
+const NewCheckboxButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2%;
   border-radius: 5px;
   padding: 1% 2%;
   border: 1px solid hsla(0, 0%, 66%, 1);
