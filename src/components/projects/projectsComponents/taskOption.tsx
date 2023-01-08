@@ -1,18 +1,22 @@
 import styled, { StyledComponent } from "styled-components";
 import { useState } from "react";
+import { RoundSwap } from "../../utils/icons";
+import TimeField from "../../hooks/timefield";
 interface TaskOptionProps {
-  type: "TextData" | "Toggle";
+  type: "TextData" | "Toggle" | "Cycle";
   optionName: string;
-  setShowCheckboxes?: React.Dispatch<React.SetStateAction<boolean>>;
-  showCheckboxes?: boolean;
+  setOption?: React.Dispatch<React.SetStateAction<boolean>>;
+  showOption?: boolean | string;
+  callback?: () => void;
 }
 
 interface StyleProps {}
 const TaskOption: React.FC<TaskOptionProps> = ({
   type,
   optionName,
-  setShowCheckboxes,
-  showCheckboxes,
+  setOption,
+  showOption,
+  callback,
 }) => {
   return (
     <Wrap>
@@ -21,11 +25,23 @@ const TaskOption: React.FC<TaskOptionProps> = ({
       </Text>
       {type === "Toggle" && (
         <Toggle
-          onClick={() => setShowCheckboxes!((prev) => !prev)}
-          active={showCheckboxes!}
+          onClick={() => setOption!((prev) => !prev)}
+          active={showOption! as boolean}
         ></Toggle>
       )}
-      {type === "TextData" && <TextData>20:00:00</TextData>}
+      {type === "TextData" && (
+        <TextData>
+          <TimeField />
+        </TextData>
+      )}
+      {type === "Cycle" && (
+        <TaskStatus>
+          <Text size={1} padding="0 15% 0 0 ">
+            {showOption}
+          </Text>
+          <ButtonImg src={RoundSwap} onClick={() => callback!()}></ButtonImg>
+        </TaskStatus>
+      )}
     </Wrap>
   );
 };
@@ -34,9 +50,10 @@ const TextData = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20%;
+  width: fit-content;
   margin-right: 5%;
-  padding: 1% 0;
+  /* width: 100%; */
+  padding: 1% 5%;
   border-radius: 5px;
   background-color: hsla(0, 0%, 85%, 0.4);
   box-shadow: inset 1px 1px 1px hsla(0, 0%, 0%, 0.25);
@@ -85,7 +102,7 @@ const Text = styled.p<{
   padding?: string;
 }>`
   font-style: normal;
-  /* width: 90%; */
+  white-space: nowrap;
   font-size: ${({ size }) => size}rem;
   font-weight: ${({ weight }) => weight};
   margin: ${({ margin }) => margin};
@@ -94,4 +111,13 @@ const Text = styled.p<{
   span {
     font-weight: 900;
   }
+`;
+const TaskStatus = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+const ButtonImg = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 50%;
 `;

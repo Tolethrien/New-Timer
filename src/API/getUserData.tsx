@@ -20,7 +20,6 @@ export interface TasksData {
     checkboxes: {
       [key: string]: { createdAt: number; name: string; value: boolean };
     };
-
     projectID: string;
     name: string;
     status: string;

@@ -4,7 +4,7 @@ import { TasksData } from "../../../API/getUserData";
 import { useNavigate, useParams } from "react-router-dom";
 import { Clock, GoTo, Trash } from "../../utils/icons";
 import { addTask } from "../../../API/handleDocs";
-import ConvertToStringTime from "../../hooks/convertToTime";
+import { ConvertToStringTime } from "../../hooks/convertToTime";
 const TaskCard: React.FC<{
   task?: TasksData;
   template?: boolean;

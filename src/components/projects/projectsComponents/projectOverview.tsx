@@ -22,7 +22,7 @@ import Category from "./category";
 import TaskCard from "./taskCard";
 import { ProjectsData } from "../../../API/getUserData";
 import EditableText from "../../custom/editableText";
-import ConvertToStringTime from "../../hooks/convertToTime";
+import { ConvertToStringTime } from "../../hooks/convertToTime";
 interface ProjectProps {}
 interface StyleProps {}
 const Project: React.FC<ProjectProps> = () => {
@@ -165,7 +165,7 @@ const Project: React.FC<ProjectProps> = () => {
             Add Task
           </NewProject>
         </SearchAndAdd>
-        <MoreInfo onDragStart={() => setShowAll((prev) => !prev)}></MoreInfo>
+        <MoreInfo onClick={() => setShowAll((prev) => !prev)}></MoreInfo>
       </Head>
 
       <AllTasks>
@@ -370,7 +370,7 @@ const NewProjectImg = styled.img`
 `;
 const MoreInfo = styled.div`
   width: 30%;
-  height: 5px;
+  height: 10px;
   background-color: hsla(0, 0%, 87%, 0.68);
   align-self: center;
   border-radius: 10px;

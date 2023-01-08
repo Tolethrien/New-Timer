@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { GoTo, Favorites, TaskList, Clock } from "../../utils/icons";
 import { ProjectsData, TasksData } from "../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
-import ConvertToStringTime from "../../hooks/convertToTime";
+import { ConvertToStringTime } from "../../hooks/convertToTime";
 interface ProjectCardProps {
   data: ProjectsData;
 }

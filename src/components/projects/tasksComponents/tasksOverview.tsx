@@ -6,7 +6,11 @@ import { useContext, useState, useRef, useId } from "react";
 import { clockContext } from "../../providers/clockProvider";
 import { appContext } from "../../providers/appProvider";
 import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
-import { deleteTask, updateTask } from "../../../API/handleDocs";
+import {
+  deleteTask,
+  updateTask,
+  ProjectStatuses,
+} from "../../../API/handleDocs";
 import {
   BackArrow,
   Edit,
@@ -21,7 +25,7 @@ import Category from "../projectsComponents/category";
 import TaskDescriptionBox from "../projectsComponents/taskDescriptionBox";
 import TaskOption from "../projectsComponents/taskOption";
 import EditableText from "../../custom/editableText";
-import ConvertToStringTime from "../../hooks/convertToTime";
+import { ConvertToStringTime } from "../../hooks/convertToTime";
 interface TasksOverviewProps {}
 interface StyleProps {}
 const TaskOverview: React.FC<TasksOverviewProps> = () => {
@@ -41,6 +45,12 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
   //   currentWindow.set(1);
   // };
 
+  const updateStatus = () => {
+    let st = ProjectStatuses.indexOf(task?.data.status);
+    let newSt = st === ProjectStatuses.length - 1 ? 0 : (st += 1);
+    // console.log(newSt);
+    updateTask(id!, { status: ProjectStatuses[newSt] });
+  };
   if (!task)
     return (
       <>
@@ -126,16 +136,22 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
         <Category hue={100} name="Settings">
           <TaskOption optionName="Estimated Time" type="TextData"></TaskOption>
           <TaskOption
+            optionName="Task Status"
+            type="Cycle"
+            callback={updateStatus}
+            showOption={task.data.status}
+          ></TaskOption>
+          <TaskOption
             optionName="Show Checkboxes"
             type="Toggle"
-            setShowCheckboxes={setshowCheckboxes}
-            showCheckboxes={showCheckboxes}
+            setOption={setshowCheckboxes}
+            showOption={showCheckboxes}
           ></TaskOption>
           <TaskOption
             optionName="Show Description"
             type="Toggle"
-            setShowCheckboxes={setshowDesc}
-            showCheckboxes={showDesc}
+            setOption={setshowDesc}
+            showOption={showDesc}
           ></TaskOption>
         </Category>
       </AllCategories>
