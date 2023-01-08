@@ -71,15 +71,17 @@ const CheckBox: React.FC<CheckBoxProps> = ({
   }, [isEditing]);
   return (
     <Wrap ref={componentRef}>
-      <Box
-        checked={isChecked}
-        type="checkbox"
-        icon={isChecked ? CheckBoxFill : CheckBoxEmpty}
-        onChange={() =>
-          !template &&
-          updateCheckbox(projectId!, checkboxId!, "value", !data!.value!)
-        }
-      ></Box>
+      <BoxWrap>
+        <Box
+          checked={isChecked}
+          type="checkbox"
+          icon={isChecked ? CheckBoxFill : CheckBoxEmpty}
+          onChange={() =>
+            !template &&
+            updateCheckbox(projectId!, checkboxId!, "value", !data!.value!)
+          }
+        ></Box>
+      </BoxWrap>
       <BoxDescDisplay
         contentEditable={isEditing}
         suppressContentEditableWarning={true}
@@ -91,7 +93,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({
       <ButtonImg
         src={isEditing ? Trash : Edit}
         size={[15, 15]}
-        margin="0 5% 0 0"
+        margin="0 2%"
         onClick={() => (isEditing ? removeCheckbox() : setIsEditing(true))}
       ></ButtonImg>
     </Wrap>
@@ -110,11 +112,16 @@ const Wrap = styled.div`
   border-radius: 5px;
   filter: drop-shadow(0px 4px 4px hsla(0, 0%, 0%, 0.25));
 `;
+const BoxWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2%;
+`;
 const Box = styled.input<{ checked: boolean; icon: string }>`
   appearance: none;
   width: 1rem;
   height: 1rem;
-  margin-left: 2%;
 
   background: ${({ icon }) => `url(${icon})`};
   background-size: cover;

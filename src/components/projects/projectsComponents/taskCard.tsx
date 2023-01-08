@@ -4,6 +4,7 @@ import { TasksData } from "../../../API/getUserData";
 import { useNavigate, useParams } from "react-router-dom";
 import { Clock, GoTo, Trash } from "../../utils/icons";
 import { addTask } from "../../../API/handleDocs";
+import ConvertToStringTime from "../../hooks/convertToTime";
 const TaskCard: React.FC<{
   task?: TasksData;
   template?: boolean;
@@ -19,6 +20,12 @@ const TaskCard: React.FC<{
     setNewTaskName("");
     setAddCardMenu!(false);
   };
+  const tascDesc = () => {
+    if (task && !task.data.desc) return " No description yet";
+    return task!.data.desc.length > 45
+      ? task!.data.desc.slice(0, 45) + "..."
+      : task!.data.desc;
+  };
   return (
     <Wrap onClick={() => !template && navigate(`../task/${task!.id}`)}>
       <TopInfo>
@@ -27,7 +34,9 @@ const TaskCard: React.FC<{
             {!template && (
               <>
                 <InfoBoxImg src={Clock}></InfoBoxImg>
-                <InfoBoxValue>14 hours</InfoBoxValue>
+                <InfoBoxValue>
+                  {ConvertToStringTime(task!.data.timeLeft)}
+                </InfoBoxValue>
               </>
             )}
           </InfoBox>
@@ -41,8 +50,10 @@ const TaskCard: React.FC<{
                 onChange={(e) => setNewTaskName(e.target.value)}
               ></AddNewInput>
             </AddNewForm>
+          ) : task && task?.data.name.length > 25 ? (
+            task?.data.name.slice(0, 25) + "..."
           ) : (
-            task!.data.name
+            task?.data.name
           )}
         </Name>
         <GoToButton onClick={() => template && setAddCardMenu!(false)}>
@@ -50,11 +61,7 @@ const TaskCard: React.FC<{
         </GoToButton>
       </TopInfo>
       <Desc>
-        {template ? (
-          <TemplateBox hue={color}></TemplateBox>
-        ) : (
-          "some random description to see how it's looks..."
-        )}
+        {template ? <TemplateBox hue={color}></TemplateBox> : tascDesc()}
       </Desc>
     </Wrap>
   );

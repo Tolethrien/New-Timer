@@ -21,6 +21,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Category from "./category";
 import TaskCard from "./taskCard";
 import { ProjectsData } from "../../../API/getUserData";
+import EditableText from "../../custom/editableText";
+import ConvertToStringTime from "../../hooks/convertToTime";
 interface ProjectProps {}
 interface StyleProps {}
 const Project: React.FC<ProjectProps> = () => {
@@ -37,11 +39,17 @@ const Project: React.FC<ProjectProps> = () => {
   const { id } = useParams();
   const project = FindData(id) as ProjectsData;
   const tasksCompletion = () => {
-    let data = { done: 0, toDo: 0, totalTasks: 0, totalTime: 0, timeSpend: 0 };
+    let data = {
+      done: 0,
+      toDo: 0,
+      totalTasks: 0,
+      totalTimeOnTasks: 0,
+      currentTimeOnTasks: 0,
+    };
     project?.tasks.forEach((e) => {
       e.data.status === "Done" ? data.done++ : data.toDo++;
-      data.totalTime += e.data.totalTime;
-      data.timeSpend += e.data.timeLeft;
+      data.totalTimeOnTasks += e.data.totalTime;
+      data.currentTimeOnTasks += e.data.timeLeft;
     });
     project && (data.totalTasks = project?.tasks.length);
     return data;
@@ -53,11 +61,7 @@ const Project: React.FC<ProjectProps> = () => {
   const filterByName = (value: { data: { name: string } }) => {
     return value.data.name.toLowerCase().includes(searchText.toLowerCase());
   };
-  const updateName = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    updateProject(id!, { name: changeName });
-    setEditTitle(false);
-  };
+
   const updateStatus = () => {
     let st = ProjectStatuses.indexOf(project?.data.status);
     let newSt = st === ProjectStatuses.length - 1 ? 0 : (st += 1);
@@ -87,31 +91,7 @@ const Project: React.FC<ProjectProps> = () => {
               onClick={() => navigate("..")}
             ></ButtonImg>
           </BackButton>
-          <NameSlot>
-            {editTitle ? (
-              <NameEditForm onSubmit={(event) => updateName(event)}>
-                <NameEditInput
-                  placeholder={project.data.name}
-                  autoFocus={true}
-                  onChange={(e) => setChangeName(e.target.value)}
-                ></NameEditInput>
-              </NameEditForm>
-            ) : (
-              <Text size={1.5} weight={600}>
-                {project.data.name.length > 20
-                  ? project.data.name.slice(0, 20) + "..."
-                  : project.data.name}
-              </Text>
-            )}
-            {showAll && (
-              <ButtonImg
-                src={Edit}
-                size={[15, 15]}
-                margin="0 0 0 5%"
-                onClick={() => setEditTitle(!editTitle)}
-              ></ButtonImg>
-            )}
-          </NameSlot>
+          <EditableText text={project.data.name}></EditableText>
           <OptionsButton>
             <DropMenuButton src={Detail} alt="more options">
               <DropMenuOption
@@ -125,10 +105,12 @@ const Project: React.FC<ProjectProps> = () => {
         {showAll && (
           <>
             <Text size={1} margin="4% 0 0 0">
-              you spend a {TasksInfo.timeSpend} hours total on this project
+              you spend a {ConvertToStringTime(TasksInfo.currentTimeOnTasks)}{" "}
+              total on this project
             </Text>
             <Text size={1} margin="1% 0 3% 0">
-              Expected time is {TasksInfo.totalTime} hours!
+              Expected time is {ConvertToStringTime(TasksInfo.totalTimeOnTasks)}
+              !
             </Text>
             <ProjectStatus>
               <Text size={1}>
@@ -183,7 +165,7 @@ const Project: React.FC<ProjectProps> = () => {
             Add Task
           </NewProject>
         </SearchAndAdd>
-        <MoreInfo onClick={() => setShowAll((prev) => !prev)}></MoreInfo>
+        <MoreInfo onDragStart={() => setShowAll((prev) => !prev)}></MoreInfo>
       </Head>
 
       <AllTasks>
@@ -234,6 +216,7 @@ const Head = styled.div<{ hue: number }>`
   flex-direction: column;
   background-color: ${({ hue }) => `hsla(${hue}, 20%, 74%, 1)`};
   width: 100%;
+  height: fit-content;
   border-radius: 0 0 15px 15px;
   border-bottom: 1px solid hsla(0, 2%, 88%, 1);
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
@@ -249,59 +232,12 @@ const BackButton = styled.div`
   display: flex;
   align-items: flex-end;
 `;
-const NameSlot = styled.div`
-  width: 75%;
-  display: flex;
-`;
+
 const OptionsButton = styled.div`
   width: 10%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-`;
-const AddCard = styled.div`
-  color: black;
-  width: 100%;
-  height: 45px;
-  margin-top: 0.5%;
-  border-radius: 5px;
-  background-color: hsla(169, 77%, 88%, 1);
-  box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const AddNewForm = styled.form``;
-const AddNewInput = styled.input`
-  margin-left: 5%;
-  font-size: 1.2rem;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid grey;
-  outline: none;
-`;
-const AddNewCloseButton = styled.button``;
-
-const NameEditForm = styled.form`
-  width: 80%;
-`;
-
-const NameEditInput = styled.input`
-  border: none;
-  outline: none;
-  height: 100%;
-  background-color: transparent;
-  font-size: 1.2rem;
-  font-weight: 600;
-  width: 100%;
-  :focus {
-    outline: none;
-  }
-  ::placeholder {
-    color: #414141;
-    font-weight: 600;
-    font-size: 1.2rem;
-  }
 `;
 
 const ButtonImg = styled.button<{

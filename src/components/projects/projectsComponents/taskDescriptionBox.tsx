@@ -5,14 +5,16 @@ import { TextEdit } from "../../utils/icons";
 interface TaskDescriptionBoxProps {
   value: string;
   id: string | undefined;
+  minHeight?: number;
 }
 interface StyleProps {}
 const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
   value,
   id,
+  minHeight = 100,
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const minHeight = 100;
+  // const minHeight = minHeight;
   const [temperaryNewText, setTemperaryNewText] = useState(value);
   const [isInFocus, setisInFocus] = useState(false);
 
@@ -41,7 +43,7 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
   }, [textAreaRef, temperaryNewText]);
 
   return (
-    <div style={{ position: "relative" }}>
+    <Wrap>
       <DescriptionBox
         onChange={handleChangeText}
         placeholder="Description"
@@ -56,10 +58,13 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
           Save
         </SaveButton>
       )}
-    </div>
+    </Wrap>
   );
 };
 export default TaskDescriptionBox;
+const Wrap = styled.div`
+  position: relative;
+`;
 const DescriptionBox = styled.textarea<{ minHeight: number }>`
   /* position: relative; */
   width: 95%;
@@ -81,32 +86,31 @@ const DescriptionBox = styled.textarea<{ minHeight: number }>`
 
 const wiggle = keyframes`
     0% {
-      transform: translate(-50%,0) rotate(0deg);
+      transform: rotate(0deg);
 
     }
     80% {
-      transform: translate(-50%,0) rotate(0deg);
+      transform: rotate(0deg);
 
     }
     85% {
-      transform: translate(-50%,0) rotate(5deg);
+      transform: rotate(5deg);
 
     }
     95% {
-      transform: translate(-50%,0) rotate(-5deg);
+      transform:  rotate(-5deg);
 
     }
     100% {
-      transform: translate(-50%,0) rotate(0deg);
+      transform: rotate(0deg);
 
     }
 `;
 const SaveButton = styled.button`
   position: absolute;
   display: flex;
-  bottom: -1rem;
-  left: 50%;
-  transform: translate(-50%, 0);
+  bottom: -0.5rem;
+  right: 3%;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
@@ -116,6 +120,7 @@ const SaveButton = styled.button`
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25),
     inset 0px 1px 1px hsla(0, 0%, 100%, 0.25);
   font-size: 1rem;
+  backdrop-filter: blur(15px);
   cursor: pointer;
   animation: ${wiggle} 2.5s infinite;
 `;

@@ -22,6 +22,17 @@ const AllProjects: React.FC<ProjectsOverallProps> = () => {
   const setText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   };
+  const sortByStatus = (
+    valueA: { data: { status: string } },
+    valueB: { data: { status: string } }
+  ) => {
+    let statusIndex: { [key: string]: number } = {
+      Active: 1,
+      "On Hold": 2,
+      Done: 3,
+    };
+    return statusIndex[valueA.data.status] - statusIndex[valueB.data.status];
+  };
   return (
     <>
       <Head hue={newColor}>
@@ -29,7 +40,7 @@ const AllProjects: React.FC<ProjectsOverallProps> = () => {
           Hello! Pavel
         </Text>
         <Text size={1.8} weight={700} margin="1% 0 3% 0">
-          Projects On your List (5)
+          Projects On your List ({userData.length})
         </Text>
         <ManagingProject>
           <SearchBox>
@@ -48,9 +59,12 @@ const AllProjects: React.FC<ProjectsOverallProps> = () => {
         </ManagingProject>
       </Head>
       <ProjectsList>
-        {userData.filter(filterByName).map((e) => (
-          <ProjectCard key={e.id} data={e}></ProjectCard>
-        ))}
+        {userData
+          .filter(filterByName)
+          .sort(sortByStatus)
+          .map((e) => (
+            <ProjectCard key={e.id} data={e}></ProjectCard>
+          ))}
       </ProjectsList>
     </>
   );

@@ -20,17 +20,16 @@ import CheckBox from "../projectsComponents/checkbox";
 import Category from "../projectsComponents/category";
 import TaskDescriptionBox from "../projectsComponents/taskDescriptionBox";
 import TaskOption from "../projectsComponents/taskOption";
+import EditableText from "../../custom/editableText";
+import ConvertToStringTime from "../../hooks/convertToTime";
 interface TasksOverviewProps {}
 interface StyleProps {}
-type Test = [string, boolean];
 const TaskOverview: React.FC<TasksOverviewProps> = () => {
   const { id } = useParams();
   const task = FindData(id!) as TasksData;
-  // task && console.log(task.data.check["randomId"]);
   const navigate = useNavigate();
-  const [editTitle, setEditTitle] = useState(false);
-  const [changeName, setChangeName] = useState("");
   const [showCheckboxes, setshowCheckboxes] = useState(true);
+  const [showDesc, setshowDesc] = useState(true);
   const [addCardMenu, setAddCardMenu] = useState(false);
   const { setClock } = useContext(clockContext);
   const {
@@ -41,11 +40,7 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
   //   navigate("/timer");
   //   currentWindow.set(1);
   // };
-  const updateName = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    updateTask(id!, { name: changeName });
-    setEditTitle(false);
-  };
+
   if (!task)
     return (
       <>
@@ -65,30 +60,7 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
               onClick={() => navigate(`../project/${task.data.projectID}`)}
             ></ButtonImg>
           </BackButton>
-          <NameSlot>
-            {editTitle ? (
-              <NameEditForm onSubmit={(event) => updateName(event)}>
-                <NameEditInput
-                  placeholder={task.data.name}
-                  autoFocus={true}
-                  onChange={(e) => setChangeName(e.target.value)}
-                ></NameEditInput>
-              </NameEditForm>
-            ) : (
-              <Text size={1.5} weight={600}>
-                {task.data.name.length > 20
-                  ? task.data.name.slice(0, 20) + "..."
-                  : task.data.name}
-              </Text>
-            )}
-
-            <ButtonImg
-              src={Edit}
-              size={[15, 15]}
-              margin="0 0 0 5%"
-              onClick={() => setEditTitle(!editTitle)}
-            ></ButtonImg>
-          </NameSlot>
+          <EditableText text={task.data.name}></EditableText>
           <OptionsButton>
             <DropMenuButton src={Detail} alt="more options">
               <DropMenuOption
@@ -102,9 +74,11 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
             </DropMenuButton>
           </OptionsButton>
         </BackAndNameAndOptions>
-        <Text size={1}>2 hours spend on task so far</Text>
+        <Text size={1}>
+          {ConvertToStringTime(task.data.timeLeft)} spend on task so far
+        </Text>
         <Text size={1} margin="0 0 2% 0">
-          expected 5 hours
+          expected {ConvertToStringTime(task.data.totalTime)}
         </Text>
         <NewProject onClick={() => ""}>
           <NewProjectImg src={Clock} alt=""></NewProjectImg>
@@ -112,14 +86,30 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
         </NewProject>
       </Head>
       <AllCategories>
-        <Category hue={100} name="Description">
-          <TaskDescriptionBox
-            value={task.data.desc}
-            id={id}
-          ></TaskDescriptionBox>
-        </Category>
+        {showDesc && (
+          <Category hue={100} name="Description">
+            <TaskDescriptionBox
+              value={task.data.desc}
+              id={id}
+            ></TaskDescriptionBox>
+          </Category>
+        )}
         {showCheckboxes && (
           <Category hue={100} name="Checkbox">
+            {task.data.checkboxes &&
+              Object.entries(task.data.checkboxes)
+                .sort((timeA, timeB) => timeA[1].createdAt - timeB[1].createdAt)
+                .sort(
+                  (valueA, valueB) =>
+                    Number(valueA[1].value) - Number(valueB[1].value)
+                )
+                .map((checkbox) => (
+                  <CheckBox
+                    checkboxData={checkbox}
+                    key={Math.random().toFixed(5)}
+                    projectId={id}
+                  ></CheckBox>
+                ))}
             {addCardMenu && (
               <CheckBox
                 template={true}
@@ -127,16 +117,6 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
                 projectId={id}
               ></CheckBox>
             )}
-            {task.data.checkboxes &&
-              Object.entries(task.data.checkboxes)
-                .sort((timeA, timeB) => timeA[1].createdAt - timeB[1].createdAt)
-                .map((checkbox) => (
-                  <CheckBox
-                    checkboxData={checkbox}
-                    key={Math.random().toFixed(3)}
-                    projectId={id}
-                  ></CheckBox>
-                ))}
             <NewCheckboxButton onClick={() => setAddCardMenu(true)}>
               <NewProjectImg src={Add} alt=""></NewProjectImg>
               add New
@@ -146,10 +126,16 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
         <Category hue={100} name="Settings">
           <TaskOption optionName="Estimated Time" type="TextData"></TaskOption>
           <TaskOption
-            optionName="Checkboxes"
+            optionName="Show Checkboxes"
             type="Toggle"
             setShowCheckboxes={setshowCheckboxes}
             showCheckboxes={showCheckboxes}
+          ></TaskOption>
+          <TaskOption
+            optionName="Show Description"
+            type="Toggle"
+            setShowCheckboxes={setshowDesc}
+            showCheckboxes={showDesc}
           ></TaskOption>
         </Category>
       </AllCategories>
@@ -184,10 +170,7 @@ const BackButton = styled.div`
   display: flex;
   align-items: flex-end;
 `;
-const NameSlot = styled.div`
-  width: 75%;
-  display: flex;
-`;
+
 const OptionsButton = styled.div`
   width: 10%;
   display: flex;
@@ -212,27 +195,7 @@ const ButtonImg = styled.button<{
   border: none;
   cursor: pointer;
 `;
-const NameEditForm = styled.form`
-  width: 80%;
-`;
 
-const NameEditInput = styled.input`
-  border: none;
-  outline: none;
-  height: 100%;
-  background-color: transparent;
-  font-size: 1.2rem;
-  font-weight: 600;
-  width: 100%;
-  :focus {
-    outline: none;
-  }
-  ::placeholder {
-    color: #414141;
-    font-weight: 600;
-    font-size: 1.2rem;
-  }
-`;
 const Text = styled.p<{
   size: number;
   weight?: number;
@@ -259,7 +222,7 @@ const NewProject = styled.button`
   justify-content: center;
   /* margin-right: 5%; */
   border-radius: 5px;
-  padding: 1% 2%;
+  padding: 1% 4%;
   border: 1px solid hsla(0, 0%, 66%, 1);
   background-color: hsla(0, 0%, 87%, 0.22);
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25),
@@ -279,6 +242,7 @@ const NewCheckboxButton = styled.button`
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25),
     inset 0px 1px 1px hsla(0, 0%, 100%, 0.25);
   font-size: 1rem;
+  backdrop-filter: blur(15px);
   cursor: pointer;
 `;
 const NewProjectImg = styled.img`

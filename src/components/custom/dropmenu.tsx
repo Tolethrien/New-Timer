@@ -38,12 +38,12 @@ const Button = styled.div<{ config?: {} }>`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  ${({ config }) => config}
+  ${({ config }) => config};
 `;
 const OptionsBox = styled.div<{ visible: boolean }>`
   display: ${({ visible }) => (visible ? "block" : "none")};
   position: absolute;
-  right: 0;
+  right: -50%;
   top: 100%;
   z-index: 100;
 `;
@@ -66,7 +66,11 @@ export const DropMenuOption: React.FC<DropMenuOptionProps> = ({
   );
 };
 const Option = styled.div<{ config?: {} }>`
-  background-color: grey;
+  background-color: hsla(220, 95%, 88%, 1);
+  border: 1px solid hsla(0, 0%, 100%, 0.33);
+  box-shadow: 2px 4px 4px hsla(0, 0%, 0%, 0.25);
+  border-radius: 5px;
+  color: black;
   padding: 5px;
   ${({ config }) => config}
 `;

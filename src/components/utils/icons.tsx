@@ -18,6 +18,7 @@ import Clock from "../../Icons/Clock.svg";
 import CheckBoxEmpty from "../../Icons/CheckBoxEmpty.svg";
 import CheckBoxFill from "../../Icons/CheckBoxFill.svg";
 import TextEdit from "../../Icons/TextEdit.svg";
+import Collapse from "../../Icons/Collapse.svg";
 export {
   Add,
   Loop,
@@ -39,4 +40,5 @@ export {
   CheckBoxEmpty,
   CheckBoxFill,
   TextEdit,
+  Collapse,
 };

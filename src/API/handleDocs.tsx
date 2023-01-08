@@ -83,8 +83,8 @@ export const addTask = (id: string, name: string) => {
     name: name,
     createdAt: serverTimestamp(),
     status: "Active",
-    totalTime: 25,
-    timeLeft: 25,
+    timeSpend: 0,
+    timeExpected: 25 * 60,
     projectID: id,
   });
 };

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { GoTo, Favorites, TaskList, Clock } from "../../utils/icons";
 import { ProjectsData, TasksData } from "../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
-
+import ConvertToStringTime from "../../hooks/convertToTime";
 interface ProjectCardProps {
   data: ProjectsData;
 }
@@ -32,15 +32,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         </InfoBox>
         <InfoBox hue={color}>
           <InfoBoxImg src={Clock}></InfoBoxImg>
-          <InfoBoxValue>
-            {totalTimeOnTask > 99
-              ? `${totalTimeOnTask} h`
-              : `${totalTimeOnTask} hours`}
-          </InfoBoxValue>
+          <InfoBoxValue>{data.status ?? "on Hold"}</InfoBoxValue>
         </InfoBox>
         <InfoBox hue={color}>
           <InfoBoxImg src={Clock}></InfoBoxImg>
-          <InfoBoxValue>{data.status ?? "on Hold"}</InfoBoxValue>
+          <InfoBoxValue>{ConvertToStringTime(totalTimeOnTask)}</InfoBoxValue>
         </InfoBox>
       </Info>
       <Name wrapWord={data.name.length > 21 ?? false}>{data.name} </Name>
