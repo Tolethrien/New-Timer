@@ -30,7 +30,7 @@ interface TasksOverviewProps {}
 interface StyleProps {}
 const TaskOverview: React.FC<TasksOverviewProps> = () => {
   const { id } = useParams();
-  const task = FindData(id!) as TasksData;
+  const task = FindData(id) as TasksData;
   const navigate = useNavigate();
   const [showCheckboxes, setshowCheckboxes] = useState(true);
   const [showDesc, setshowDesc] = useState(true);
@@ -46,17 +46,12 @@ const TaskOverview: React.FC<TasksOverviewProps> = () => {
   // };
 
   const updateStatus = () => {
-    let st = ProjectStatuses.indexOf(task?.data.status);
+    let st = ProjectStatuses.indexOf(task.data.status);
     let newSt = st === ProjectStatuses.length - 1 ? 0 : (st += 1);
     // console.log(newSt);
     updateTask(id!, { status: ProjectStatuses[newSt] });
   };
-  if (!task)
-    return (
-      <>
-        <p>Loading...</p>
-      </>
-    );
+
   return (
     <>
       <Head hue={newColor}>

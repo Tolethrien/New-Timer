@@ -41,7 +41,7 @@ const Provider: React.FC<props> = (props) => {
   const [newColor, setNewColor] = useState(153);
   const [currenWindow, setCurrentWindow] = useState(0);
 
-  const userData = GetUserData();
+  const userData = GetUserData() ?? null;
   return (
     <appContext.Provider
       value={{

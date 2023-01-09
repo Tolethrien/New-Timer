@@ -36,6 +36,9 @@ const firebaseConfig = {
 };
 export const FirebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth();
+signInWithEmailAndPassword(auth, "tolethrien@gmail.com", "Radenes11");
+// signOut(auth);
+// console.log(auth);
 // export const signup = (email: string, password: string) => {
 //   return createUserWithEmailAndPassword(auth, email, password);
 // };

@@ -1,6 +1,17 @@
 import { useState, useEffect } from "react";
-import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  doc,
+} from "firebase/firestore";
 import db from "./firebase";
+
+// export interface UserData {
+//   Meta: {};
+//   ProjectsData: ProjectsData[];
+// }
 export interface ProjectsData {
   id: string;
   tasks: TasksData[];
@@ -27,10 +38,11 @@ export interface TasksData {
     totalTime: number;
   };
 }
+export interface MetaData {}
 export const GetUserData = () => {
   const [projects, setProjects] = useState<ProjectsData[]>([]);
   const [tasks, setTasks] = useState<TasksData[]>([]);
-
+  // const [metaData, setMetaData] = useState<{} | undefined>({});
   const GetTasks = () => {
     const querySorted = query(
       collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks")
@@ -60,8 +72,21 @@ export const GetUserData = () => {
       );
     });
   };
+  // const GetMeta = () => {
+  //   const querySorted = doc(
+  //     db,
+  //     "Users",
+  //     "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
+  //     "Meta",
+  //     "Settings"
+  //   );
+  //   onSnapshot(querySorted, (doc) => {
+  //     setMetaData(doc.data());
+  //   });
+  // };
 
   useEffect(() => {
+    // GetMeta();
     GetProjects();
     GetTasks();
   }, []);
@@ -70,6 +95,11 @@ export const GetUserData = () => {
     data.forEach(
       (e) => (e.tasks = tasks.filter((t) => t.data.projectID === e.id))
     );
+    // Object.keys(metaData).length &&
+    //   (test = {
+    //     meta: metaData,
+    //     projects: data,
+    //   });
     return data;
   };
   return makeData();
