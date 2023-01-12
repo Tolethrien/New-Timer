@@ -45,6 +45,7 @@ const Checkboxes: React.FC<ChecboxesProps> = ({ checkboxes }) => {
         alt=""
         onClick={() => setTemplateTask(true)}
         text="Add New"
+        reference={buttonNewRef}
       ></ButtonWithIcon>
     </ComponentBody>
   );
