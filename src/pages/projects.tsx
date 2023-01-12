@@ -4,12 +4,7 @@ import ProjectOverview from "../components/projects/projectsComponents/projectOv
 import TaskOverview from "../components/projects/tasksComponents/tasksOverview";
 import { Route, Routes } from "react-router-dom";
 
-interface ProjectsProps {}
-interface AllRoutes {
-  [key: string]: JSX.Element;
-}
-
-const Projects: React.FC<ProjectsProps> = (props) => {
+const Projects: React.FC = (props) => {
   return (
     <PageWrap>
       <Routes>

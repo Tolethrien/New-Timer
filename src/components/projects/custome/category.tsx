@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { appContext } from "../../providers/appProvider";
 import { Collapse } from "../../utils/icons";
@@ -6,18 +6,14 @@ const Category: React.FC<{
   name: string;
   hue: number;
   children?: React.ReactNode;
-}> = ({ name, hue, children }) => {
+  isEmpty?: boolean;
+}> = ({ name, hue, children, isEmpty = false }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const [isEmpty, setIsEmpty] = useState<boolean>(false);
   const divChildrenRef = useRef<HTMLDivElement>(null);
   const {
     text: { textColor },
   } = useContext(appContext);
-  useEffect(() => {
-    divChildrenRef?.current &&
-      divChildrenRef.current.children.length === 0 &&
-      setIsEmpty(true);
-  }, [divChildrenRef.current]);
+
   return (
     <ComponentBody hue={hue}>
       <TopBar hue={hue}>

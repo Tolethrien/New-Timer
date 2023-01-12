@@ -40,6 +40,9 @@ const Project: React.FC<ProjectProps> = () => {
   const openTempateProject = () => {
     setTemplateTask(true);
   };
+  const isEmpty = (status: string) => {
+    return !project.tasks.some((e) => e.data.status === status);
+  };
   function tasksCompletion() {
     let data = {
       done: 0,
@@ -128,7 +131,7 @@ const Project: React.FC<ProjectProps> = () => {
       </Head>
 
       <AllTasks>
-        <Category name="Active" hue={245}>
+        <Category name="Active" hue={245} isEmpty={isEmpty("Active")}>
           {templateTask && (
             <TaskCardTemplate
               referenceButton={buttonNewRef}
@@ -142,7 +145,7 @@ const Project: React.FC<ProjectProps> = () => {
               <TaskCard key={i} task={e}></TaskCard>
             ))}
         </Category>
-        <Category name="On Hold" hue={360}>
+        <Category name="On Hold" hue={360} isEmpty={isEmpty("On Hold")}>
           {project.tasks
             .filter((e) => e.data.status === "On Hold")
             .filter((task) => filterTPByName(task, searchText))
@@ -150,7 +153,7 @@ const Project: React.FC<ProjectProps> = () => {
               <TaskCard key={i} task={e}></TaskCard>
             ))}
         </Category>
-        <Category name="Done" hue={115}>
+        <Category name="Done" hue={115} isEmpty={isEmpty("Done")}>
           {project.tasks
             .filter((e) => e.data.status === "Done")
             .filter((task) => filterTPByName(task, searchText))
