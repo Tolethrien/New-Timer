@@ -1,5 +1,5 @@
 import PageWrap from "../components/styled/pageWrap";
-import AllProjects from "../components/projects/projectsComponents/allProjects";
+import AllProjects from "../components/projects/allProjects";
 import ProjectOverview from "../components/projects/projectsComponents/projectOverview";
 import TaskOverview from "../components/projects/tasksComponents/tasksOverview";
 import { Route, Routes } from "react-router-dom";

@@ -7,15 +7,7 @@ interface OptionProps {
 }
 
 const Option: React.FC<OptionProps> = ({ children, optionName }) => {
-  const {
-    secondary: { secondaryColor },
-  } = useContext(appContext);
-  return (
-    <Wrap onClick={() => console.log("sss")} color={secondaryColor}>
-      <Name>{optionName}</Name>
-      {children}
-    </Wrap>
-  );
+  return <p></p>;
 };
 export default Option;
 const Wrap = styled.div<{ color: string }>`

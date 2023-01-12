@@ -45,7 +45,7 @@ const Footer: React.FC<FooterProps> = () => {
           to={key.link}
           key={key.id}
           onClick={() => (currentWindow.set(key.id), vibrate("short"))}
-          color={currentWindow.id === key.id ? primaryColor : secondaryColor}
+          color={"#6e6e6ea5"}
         >
           <ButtonImg src={key.icon} alt={`${key.name} button`}></ButtonImg>
         </ButtonLink>

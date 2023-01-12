@@ -19,7 +19,7 @@ const Clock: React.FC<CounterProps> = (props) => {
 
   return (
     <Glass size={"inline"} margin={"20% 0"}>
-      <ProgressBar>
+      {/* <ProgressBar>
         <CircularProgressBar
           config={{
             size: 170,
@@ -37,10 +37,7 @@ const Clock: React.FC<CounterProps> = (props) => {
         </CircularProgressBar>
       </ProgressBar>
       <Buttons>
-        <Button
-          onClick={() => (playClock(), vibrate("short"))}
-          color={primaryColor}
-        >
+        <Button onClick={() => (playClock(), vibrate("short"))}>
           <ButtonSvg src={Play} alt={"s"}></ButtonSvg>
         </Button>
         <Button
@@ -61,7 +58,7 @@ const Clock: React.FC<CounterProps> = (props) => {
         >
           <ButtonSvg src={Done} alt={"s"}></ButtonSvg>
         </Button>
-      </Buttons>
+      </Buttons> */}
     </Glass>
   );
 };

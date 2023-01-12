@@ -20,34 +20,30 @@ function App() {
   const height = window.innerHeight;
   const {
     text: { textColor },
-    newColor: { newColor },
+    primary: { primaryColor },
+
     userData,
   } = useStore("app");
-  console.log(userData);
-  document
-    .querySelector('meta[name="theme-color"]')!
-    .setAttribute("content", `hsla(${newColor}, 20%, 74%, 1)`);
-  //
+  // document
+  //   .querySelector('meta[name="theme-color"]')!
+  //   .setAttribute("content", `hsla(${primaryColor}, 20%, 74%, 1)`);
+  // //
   return (
     <MainBody height={height} textColor={textColor}>
-      {userData.length === 0 ? (
-        <p>sram...</p>
-      ) : (
-        <>
-          <Clock>
-            <Routes>
-              <Route path={"/"} element={<Dashboard />}></Route>
-              <Route path={"/timer"} element={<Timer />}></Route>
-              <Route path={"/calendar"} element={<Calendar />}></Route>
-              <Route path={"/data"} element={<Data />}></Route>
-              <Route path={"/projects/*"} element={<Projects />}></Route>
-              <Route path={"/options"} element={<Options />}></Route>
-              <Route path={"/login"} element={<Login />}></Route>
-            </Routes>
-          </Clock>
-          <Footer />
-        </>
-      )}
+      <>
+        <Clock>
+          <Routes>
+            <Route path={"/"} element={<Dashboard />}></Route>
+            <Route path={"/timer"} element={<Timer />}></Route>
+            <Route path={"/calendar"} element={<Calendar />}></Route>
+            <Route path={"/data"} element={<Data />}></Route>
+            <Route path={"/projects/*"} element={<Projects />}></Route>
+            <Route path={"/options"} element={<Options />}></Route>
+            <Route path={"/login"} element={<Login />}></Route>
+          </Routes>
+        </Clock>
+        <Footer />
+      </>
     </MainBody>
   );
 }

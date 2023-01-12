@@ -7,16 +7,16 @@ interface props {
 
 interface provider {
   primary: {
-    primaryColor: string;
-    setPrimaryColor: React.Dispatch<React.SetStateAction<string>>;
+    primaryColor: number;
+    setPrimaryColor: React.Dispatch<React.SetStateAction<number>>;
   };
   secondary: {
     secondaryColor: string;
     setSecondaryColor: React.Dispatch<React.SetStateAction<string>>;
   };
   text: {
-    textColor: string;
-    setTextColor: React.Dispatch<React.SetStateAction<string>>;
+    textColor: number;
+    setTextColor: React.Dispatch<React.SetStateAction<number>>;
   };
   newColor: {
     newColor: number;
@@ -35,13 +35,13 @@ export const appContext = createContext<provider>({} as provider);
 const Provider: React.FC<props> = (props) => {
   // main Colors to set by user
   const [backgroundColor, setBackgroundColor] = useState("#6e6e6ea5");
-  const [primaryColor, setPrimaryColor] = useState("#84bc7a7d");
+  const [primaryColor, setPrimaryColor] = useState(200);
   const [secondaryColor, setSecondaryColor] = useState("#c5dc14");
-  const [textColor, setTextColor] = useState("#f8f8f8");
+  const [textColor, setTextColor] = useState(20);
   const [newColor, setNewColor] = useState(153);
   const [currenWindow, setCurrentWindow] = useState(0);
 
-  const userData = GetUserData() ?? null;
+  const userData = GetUserData();
   return (
     <appContext.Provider
       value={{

@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { appContext } from "../../providers/appProvider";
 import { Collapse } from "../../utils/icons";
 const Category: React.FC<{
   name: string;
@@ -7,10 +8,20 @@ const Category: React.FC<{
   children?: React.ReactNode;
 }> = ({ name, hue, children }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(false);
+  const divChildrenRef = useRef<HTMLDivElement>(null);
+  const {
+    text: { textColor },
+  } = useContext(appContext);
+  useEffect(() => {
+    divChildrenRef?.current &&
+      divChildrenRef.current.children.length === 0 &&
+      setIsEmpty(true);
+  }, [divChildrenRef.current]);
   return (
-    <CategoryType name={name} hue={hue}>
+    <ComponentBody hue={hue}>
       <TopBar hue={hue}>
-        <TopBarName>{name}</TopBarName>
+        <TopBarName hue={textColor}>{name}</TopBarName>
         <CollapseIcon
           isCollapsed={isCollapsed}
           src={Collapse}
@@ -18,22 +29,20 @@ const Category: React.FC<{
           onClick={() => setIsCollapsed((prev) => !prev)}
         ></CollapseIcon>
       </TopBar>
-      {!isCollapsed && <TaskWrapper>{children}</TaskWrapper>}
-    </CategoryType>
+      {!isCollapsed && !isEmpty && (
+        <TaskWrapper ref={divChildrenRef}>{children}</TaskWrapper>
+      )}
+    </ComponentBody>
   );
 };
 export default Category;
 
-const CategoryType = styled.div<{ name: string; hue: number }>`
+const ComponentBody = styled.div<{ hue: number }>`
   display: flex;
-  align-items: center;
+  position: relative;
   justify-content: center;
   width: 100%;
-  margin-left: 1%;
-  position: relative;
-  height: fit-content;
   margin-bottom: 2rem;
-
   :before {
     content: "";
     position: absolute;
@@ -43,14 +52,14 @@ const CategoryType = styled.div<{ name: string; hue: number }>`
     height: calc(100% + 1rem);
     width: 5%;
     background-color: ${({ hue }) => `hsla(${hue}, 85%, 85%, 1)`};
-    border-radius: 5px;
+    border-radius: 0 0 5px 0;
   }
 `;
 
 const TaskWrapper = styled.div`
   width: 94%;
   z-index: 2;
-  margin-top: 1.75rem;
+  margin-top: 1.9rem;
 `;
 const CollapseIcon = styled.img<{ isCollapsed: boolean }>`
   width: 0.8rem;
@@ -63,8 +72,6 @@ const CollapseIcon = styled.img<{ isCollapsed: boolean }>`
 `;
 const TopBar = styled.div<{ hue: number }>`
   position: absolute;
-  color: black;
-  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -73,8 +80,10 @@ const TopBar = styled.div<{ hue: number }>`
   height: 1.75rem;
   width: 30%;
   background-color: ${({ hue }) => `hsla(${hue}, 85%, 85%, 1)`};
-  border-radius: 5px;
+  border-radius: 0 5px 5px 0;
 `;
-const TopBarName = styled.p`
+const TopBarName = styled.p<{ hue: number }>`
+  color: ${({ hue }) => `hsla(0, 0%, ${hue}%, 1)`};
+  font-weight: 500;
   padding-left: 5%;
 `;

@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-  
+ 
   *{
     font-family: "Roboto";
     ::-webkit-scrollbar {
@@ -27,6 +27,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     background-color: #312c2c;
+
   }
   h1,h2,h3,h4{
     margin: 0;

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import LineDevider from "../components/styled/lineDevider";
 import Glass from "../components/styled/glass";
 import Option from "../components/options/option";
 interface OptionsProps {}
@@ -9,7 +8,6 @@ const Options: React.FC<OptionsProps> = (props) => {
     <Wrap>
       <Glass size={"inline"}>
         <Name>Settings</Name>
-        <LineDevider width={80} margin={1} thickness={3} />
         <Option optionName={"string"}>
           <Button>s</Button>
         </Option>

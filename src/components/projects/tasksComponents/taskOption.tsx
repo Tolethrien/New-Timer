@@ -29,11 +29,7 @@ const TaskOption: React.FC<TaskOptionProps> = ({
           active={showOption! as boolean}
         ></Toggle>
       )}
-      {type === "TextData" && (
-        <TextData>
-          <TimeField />
-        </TextData>
-      )}
+      {type === "TextData" && <TextData>{/* <TimeField /> */}</TextData>}
       {type === "Cycle" && (
         <TaskStatus>
           <Text size={1} padding="0 15% 0 0 ">
@@ -46,6 +42,20 @@ const TaskOption: React.FC<TaskOptionProps> = ({
   );
 };
 export default TaskOption;
+const Wrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: fit-content;
+  color: black;
+  /* padding: 5px 0; */
+  /* margin-top: 0.5%; */
+  margin-bottom: 0.1rem;
+  background-color: hsla(169, 77%, 88%, 1);
+  border-radius: 5px;
+  filter: drop-shadow(0px 4px 4px hsla(0, 0%, 0%, 0.25));
+`;
 const TextData = styled.div`
   display: flex;
   align-items: center;
@@ -81,19 +91,6 @@ const Toggle = styled.div<{ active: boolean }>`
     ${({ active }) =>
       active ? `left:5%;` : `left:95%; transform:translate(-100%);`}
   }
-`;
-const Wrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: fit-content;
-  color: black;
-  /* padding: 5px 0; */
-  margin-top: 0.5%;
-  background-color: hsla(169, 77%, 88%, 1);
-  border-radius: 5px;
-  filter: drop-shadow(0px 4px 4px hsla(0, 0%, 0%, 0.25));
 `;
 const Text = styled.p<{
   size: number;

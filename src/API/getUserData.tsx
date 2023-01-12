@@ -27,50 +27,60 @@ export interface TasksData {
   id: string;
   data: {
     desc: string;
-    check: { [key: string]: {} };
-    checkboxes: {
-      [key: string]: { createdAt: number; name: string; value: boolean };
-    };
+    checkboxes: checkboxes;
     projectID: string;
     name: string;
     status: string;
-    timeLeft: number;
-    totalTime: number;
+    timeSpend: number;
+    timeExpected: number;
+    showCheckboxes: boolean;
+    showDescription: boolean;
   };
+}
+export interface checkboxes {
+  [key: string]: { createdAt: number; name: string; value: boolean };
 }
 export interface MetaData {}
 export const GetUserData = () => {
   const [projects, setProjects] = useState<ProjectsData[]>([]);
   const [tasks, setTasks] = useState<TasksData[]>([]);
   // const [metaData, setMetaData] = useState<{} | undefined>({});
-  const GetTasks = () => {
+  const GetTasks = async () => {
     const querySorted = query(
       collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks")
     );
-    onSnapshot(querySorted, (snap) => {
-      setTasks(
-        snap.docs.map((doc) => ({
-          data: doc.data(),
-          id: doc.id,
-        })) as TasksData[]
-      );
-    });
+    await onSnapshot(
+      querySorted,
+      (snap) => {
+        setTasks(
+          snap.docs.map((doc) => ({
+            data: doc.data(),
+            id: doc.id,
+          })) as TasksData[]
+        );
+      },
+      (err) => console.log("cos sie nie udalo", err)
+    );
   };
 
-  const GetProjects = () => {
+  const GetProjects = async () => {
     const querySorted = query(
       collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Projects"),
       orderBy("createdAt", "desc")
     );
-    onSnapshot(querySorted, (snap) => {
-      setProjects(
-        snap.docs.map((doc) => ({
-          data: doc.data(),
-          id: doc.id,
-          tasks: [] as TasksData[],
-        })) as ProjectsData[]
-      );
-    });
+    await onSnapshot(
+      querySorted,
+      (snap) => {
+        setProjects(
+          snap.docs.map((doc) => ({
+            data: doc.data(),
+            id: doc.id,
+            tasks: [] as TasksData[],
+          })) as ProjectsData[]
+        );
+      },
+      (err) => console.log("cos sie nie udalo", err)
+    );
   };
   // const GetMeta = () => {
   //   const querySorted = doc(

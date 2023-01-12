@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import Glass from "../components/styled/glass";
-import LineDevider from "../components/styled/lineDevider";
 import { login, auth } from "../API/firebase";
 import { useRef } from "react";
 import PageWrap from "../components/styled/pageWrap";
@@ -27,7 +26,6 @@ const Login: React.FC<LoginProps> = (props) => {
     <PageWrap>
       <Glass size={"inline"}>
         <Name>Account</Name>
-        <LineDevider width={80} margin={1} thickness={3}></LineDevider>
         <LoginText>Login</LoginText>
         <Form onSubmit={(e) => handleLogin(e)}>
           <UserInput

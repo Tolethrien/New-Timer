@@ -29,7 +29,7 @@ const Glass: React.FC<GlassProps> = ({
   return (
     <GlassStyle
       size={size}
-      color={primaryColor}
+      color={"100"}
       padding={padding}
       margin={margin}
       direction={direction}

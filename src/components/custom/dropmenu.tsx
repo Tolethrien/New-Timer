@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import { ButtonAsIcon } from "../styled/buttonAsIcon";
+import { appContext } from "../providers/appProvider";
 interface DropMenuButtonProps {
   children?: React.ReactNode;
   config?: {};
@@ -8,12 +10,11 @@ interface DropMenuButtonProps {
 }
 export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
   children,
-  config,
   src,
-  alt,
 }) => {
   const [visible, setVisible] = useState(false);
-  const myRef = useRef<null | HTMLImageElement>(null);
+  const myRef = useRef<HTMLButtonElement>(null);
+
   const handleClickOutside = (e: any) => {
     if (!myRef.current?.contains(e.target)) {
       setVisible(false);
@@ -26,20 +27,16 @@ export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
   });
 
   return (
-    <Button ref={myRef} onClick={() => setVisible(!visible)} config={config}>
-      <img src={src} alt={alt}></img>
+    <ButtonAsIcon
+      src={src}
+      onClick={() => setVisible((prev) => !prev)}
+      ref={myRef}
+      size={[1.4, 1.4]}
+    >
       <OptionsBox visible={visible}>{children}</OptionsBox>
-    </Button>
+    </ButtonAsIcon>
   );
 };
-const Button = styled.div<{ config?: {} }>`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  ${({ config }) => config};
-`;
 const OptionsBox = styled.div<{ visible: boolean }>`
   display: ${({ visible }) => (visible ? "block" : "none")};
   position: absolute;
@@ -59,18 +56,23 @@ export const DropMenuOption: React.FC<DropMenuOptionProps> = ({
   children,
   config,
 }) => {
+  const {
+    text: { textColor },
+  } = useContext(appContext);
   return (
-    <Option config={config} onClick={() => callback?.()}>
+    <Option config={config} onClick={() => callback?.()} hue={textColor}>
       {children}
     </Option>
   );
 };
-const Option = styled.div<{ config?: {} }>`
-  background-color: hsla(220, 95%, 88%, 1);
-  border: 1px solid hsla(0, 0%, 100%, 0.33);
-  box-shadow: 2px 4px 4px hsla(0, 0%, 0%, 0.25);
+const Option = styled.div<{ config?: {}; hue: number }>`
+  border: 1px solid hsla(0, 0%, 66%, 1);
+  background-color: hsla(0, 0%, 87%, 0.22);
+  box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25),
+    inset 0px 1px 1px hsla(0, 0%, 100%, 0.25);
+  backdrop-filter: blur(15px);
   border-radius: 5px;
-  color: black;
+  color: ${({ hue }) => `hsla(0, 0%, ${hue}%, 1)`};
   padding: 5px;
   ${({ config }) => config}
 `;

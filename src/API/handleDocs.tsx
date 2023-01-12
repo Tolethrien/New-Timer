@@ -86,6 +86,8 @@ export const addTask = (id: string, name: string) => {
     timeSpend: 0,
     timeExpected: 25 * 60,
     projectID: id,
+    showCheckboxes: true,
+    showDescription: true,
   });
 };
 export const updateTime = (id: string, value: number) => {
@@ -153,16 +155,18 @@ export const addNewCheckbox = (taskId: string, name: string) => {
     },
   });
 };
-const KILLALLTASKS = () => {
+export const KILLALLTASKS = () => {
   // DO NOT EVOKE!!!
   let x: any[] = [];
   const querySorted = query(
-    collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks")
+    collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Projects")
   );
   onSnapshot(querySorted, (snap) => {
     x = snap.docs.map((doc) => ({ id: doc.id }));
     x.forEach((e) =>
-      deleteDoc(doc(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks", e.id))
+      deleteDoc(
+        doc(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Projects", e.id)
+      )
     );
     alert("All tasks Deleted");
   });
