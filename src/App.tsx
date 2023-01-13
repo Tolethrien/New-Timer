@@ -11,23 +11,17 @@ import { Routes, Route } from "react-router-dom";
 import Clock from "./components/providers/clockProvider";
 import useStore from "./components/hooks/useStore";
 //=======TYPES========
-interface styleProps {
-  // height: number;
-  textColor: string;
-}
+
 //=======COMPONENT========
 function App() {
-  // const height = window.innerHeight;
   const {
     text: { textColor },
     primary: { primaryColor },
-
-    userData,
   } = useStore("app");
-  // document
-  //   .querySelector('meta[name="theme-color"]')!
-  //   .setAttribute("content", `hsla(${primaryColor}, 20%, 74%, 1)`);
-  // //
+  document
+    .querySelector('meta[name="theme-color"]')!
+    .setAttribute("content", `hsla(${primaryColor}, 20%, 74%, 1)`);
+  //
   return (
     <MainBody textColor={textColor}>
       <>
@@ -49,7 +43,7 @@ function App() {
 }
 export default App;
 //=======STYLES========
-const MainBody = styled.main<styleProps>`
+const MainBody = styled.main<{ textColor: number }>`
   position: relative;
   color: ${({ textColor }) => textColor};
   width: 100vw;
@@ -58,7 +52,8 @@ const MainBody = styled.main<styleProps>`
   background: hsla(220, 95%, 88%, 1);
   margin: auto;
   overflow: hidden;
-  background-image: url("./LofiMain.jpg");
-  background-size: cover;
+  /* background-image: url("./LofiMain.jpg"); */
+  /* background-size: cover; */
+  /* background-repeat: no-repeat; */
   overflow-y: auto;
 `;
