@@ -22,7 +22,14 @@ function App() {
   } = useStore("app");
   document
     .querySelector('meta[name="theme-color"]')!
-    .setAttribute("content", `hsla(${primaryColor}, 20%, 74%, 1)`);
+    .setAttribute(
+      "content",
+      `${
+        displayMode === "light"
+          ? `hsla(40, 76%, 69%, 0.8)`
+          : `hsla(261, 16%, 40%, 0.8)`
+      }`
+    );
   //
   return (
     <MainBody displayMode={displayMode}>
