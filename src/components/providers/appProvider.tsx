@@ -22,6 +22,10 @@ interface provider {
     newColor: number;
     setNewColor: React.Dispatch<React.SetStateAction<number>>;
   };
+  displayMode: {
+    displayMode: string;
+    setDisplayMode: React.Dispatch<React.SetStateAction<string>>;
+  };
   currentWindow: {
     id: number;
     set: React.Dispatch<React.SetStateAction<number>>;
@@ -39,6 +43,7 @@ const Provider: React.FC<props> = (props) => {
   const [secondaryColor, setSecondaryColor] = useState("#c5dc14");
   const [textColor, setTextColor] = useState(20);
   const [newColor, setNewColor] = useState(153);
+  const [displayMode, setDisplayMode] = useState("light");
   const [currenWindow, setCurrentWindow] = useState(0);
 
   const userData = GetUserData();
@@ -51,6 +56,7 @@ const Provider: React.FC<props> = (props) => {
         newColor: { newColor, setNewColor },
         userData,
         currentWindow: { id: currenWindow, set: setCurrentWindow },
+        displayMode: { displayMode, setDisplayMode },
       }}
     >
       {props.children}

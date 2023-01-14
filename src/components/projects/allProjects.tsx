@@ -11,13 +11,20 @@ import ButtonWithIcon from "../custom/buttonWithIcon";
 import { filterTPByName, sortTPByStatus } from "./utils/filtersAndSorters";
 
 const AllProjects: React.FC = () => {
-  const { userData } = useContext(appContext);
+  const {
+    userData,
+    displayMode: { setDisplayMode, displayMode },
+  } = useContext(appContext);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const [searchText, setSearchText] = useState("");
   const [templateProject, setTemplateProject] = useState(false);
 
   const openTempateProject = () => {
     setTemplateProject(true);
+  };
+  const setMode = () => {
+    if (displayMode === "light") setDisplayMode("dark");
+    else if (displayMode === "dark") setDisplayMode("light");
   };
   return (
     <>
@@ -54,6 +61,7 @@ const AllProjects: React.FC = () => {
             <ProjectCard key={e.id} data={e}></ProjectCard>
           ))}
       </ProjectsList>
+      <button onClick={() => setMode()}>swap mode</button>
     </>
   );
 };
@@ -63,7 +71,6 @@ const ManagingProject = styled.div`
   width: 100%;
   display: flex;
   margin: 3% 0;
-
   justify-content: space-between;
 `;
 

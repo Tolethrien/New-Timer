@@ -4,7 +4,7 @@ import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
 import { BackArrow, Detail } from "../../utils/icons";
 import { useNavigate } from "react-router-dom";
 import { deleteTask, deleteProject } from "../../../API/handleDocs";
-import { ButtonAsIcon } from "../../styled/buttonAsIcon";
+import ButtonAsIcon from "../../styled/buttonAsIcon";
 import { ProjectsData, TasksData } from "../../../API/getUserData";
 interface TitleHeadingProps {
   type: string;

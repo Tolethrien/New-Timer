@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Edit, CheckBoxEmpty, CheckBoxFill, Trash } from "../../../utils/icons";
 import { updateCheckbox, deleteCheckbox } from "../../../../API/handleDocs";
 import { useParams } from "react-router-dom";
-import { ButtonAsIcon } from "../../../styled/buttonAsIcon";
+import ButtonAsIcon from "../../../styled/buttonAsIcon";
 import focusOnEndOfLine from "../../utils/focusOnEndOfLine";
+import { appContext } from "../../../providers/appProvider";
 interface CheckBoxProps {
   checkboxData: [string, { createdAt: number; name: string; value: boolean }];
 }
@@ -14,6 +15,9 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
   const [isEditing, setIsEditing] = useState(false);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const componentRef = useRef<HTMLDivElement>(null);
+  const {
+    displayMode: { displayMode },
+  } = useContext(appContext);
   const taskId = useParams().id;
 
   const handleClickOutside = (e: any) => {
@@ -46,11 +50,12 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [isEditing]);
   return (
-    <ComponentBody ref={componentRef}>
+    <ComponentBody ref={componentRef} displayMode={displayMode}>
       <BoxWrap>
         <Box
           checked={data.value}
           type="checkbox"
+          displayMode={displayMode}
           icon={data.value ? CheckBoxFill : CheckBoxEmpty}
           onChange={() =>
             updateCheckbox(taskId!, checkboxId!, "value", !data!.value!)
@@ -75,12 +80,15 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
   );
 };
 export default CheckBox;
-const ComponentBody = styled.div`
+const ComponentBody = styled.div<{ displayMode: string }>`
   display: flex;
   padding-block: 0.2rem;
   margin-bottom: 0.1rem;
-  background-color: hsla(169, 77%, 88%, 1);
+  background-color: ${({ displayMode }) =>
+    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
   border-radius: 5px;
+  backdrop-filter: blur(20px);
+
   box-shadow: 2px 2px 4px 1px hsla(0, 0%, 0%, 0.25);
 `;
 const BoxWrap = styled.div`
@@ -89,12 +97,19 @@ const BoxWrap = styled.div`
   justify-content: center;
   margin-left: 2%;
 `;
-const Box = styled.input<{ checked: boolean; icon: string }>`
+const Box = styled.input<{
+  checked: boolean;
+  icon: string;
+  displayMode: string;
+}>`
   appearance: none;
   width: 1rem;
   height: 1rem;
   background: ${({ icon }) => `url(${icon})`};
   background-size: cover;
+  filter: brightness(0)
+    invert(${({ displayMode }) => (displayMode === "light" ? 0 : 1)});
+
   cursor: pointer;
 `;
 const BoxDescDisplay = styled.p`

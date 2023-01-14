@@ -3,12 +3,16 @@ import { TasksData } from "../../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
 import { Clock, GoTo } from "../../../utils/icons";
 import { ConvertToStringTime } from "../../../hooks/convertToTime";
-import { ButtonAsIcon } from "../../../styled/buttonAsIcon";
+import { useContext } from "react";
+import { appContext } from "../../../providers/appProvider";
+import DisplayIcon from "../../../styled/displayIcon";
 const TaskCard: React.FC<{
   task: TasksData;
 }> = ({ task }) => {
+  const {
+    displayMode: { displayMode },
+  } = useContext(appContext);
   const navigate = useNavigate();
-  const color = 100;
 
   const tascDesc = () => {
     if (task && !task.data.desc) return " No description yet";
@@ -17,10 +21,13 @@ const TaskCard: React.FC<{
       : task.data.desc;
   };
   return (
-    <ComponentBody onClick={() => navigate(`../task/${task.id}`)}>
+    <ComponentBody
+      onClick={() => navigate(`../task/${task.id}`)}
+      displayMode={displayMode}
+    >
       <TopBar>
-        <InfoBox hue={color}>
-          <InfoBoxImg src={Clock}></InfoBoxImg>
+        <InfoBox displayMode={displayMode}>
+          <DisplayIcon src={Clock} alt=""></DisplayIcon>
           <InfoBoxValue>
             {ConvertToStringTime(task!.data.timeSpend)}
           </InfoBoxValue>
@@ -30,7 +37,7 @@ const TaskCard: React.FC<{
             ? task.data.name.slice(0, 25) + "..."
             : task.data.name}
         </Name>
-        <ButtonAsIcon src={GoTo} size={[1.2, 1.2]}></ButtonAsIcon>
+        <DisplayIcon src={GoTo} alt=""></DisplayIcon>
       </TopBar>
       <Description>{tascDesc()}</Description>
     </ComponentBody>
@@ -38,8 +45,11 @@ const TaskCard: React.FC<{
 };
 export default TaskCard;
 
-const ComponentBody = styled.div`
-  background-color: hsla(169, 77%, 88%, 1);
+const ComponentBody = styled.div<{ displayMode: string }>`
+  background-color: ${({ displayMode }) =>
+    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+  backdrop-filter: blur(20px);
+
   width: 100%;
   height: fit-content;
   margin-bottom: 0.1rem;
@@ -54,22 +64,19 @@ const TopBar = styled.div`
   align-items: center;
   padding-inline: 2%;
 `;
-const InfoBox = styled.div<{ hue: number }>`
+const InfoBox = styled.div<{ displayMode: string }>`
   display: flex;
-  background-color: ${({ hue }) => `hsla(${hue}, 30%, 85%, 100%)`};
+  align-items: center;
+  background-color: ${({ displayMode }) =>
+    displayMode === "light"
+      ? `hsla(40, 76%,70%,0.5)`
+      : `hsla(260,26%,65%,0.5)`};
   border-radius: 5px;
   width: fit-content;
   padding: 0.2rem 0.2rem;
   gap: 0.1rem;
-  color: hsla(0, 0%, 43%, 1);
 `;
 
-const InfoBoxImg = styled.img`
-  width: 0.9rem;
-  height: 0.9rem;
-  filter: invert(46%) sepia(9%) saturate(0%) hue-rotate(161deg) brightness(90%)
-    contrast(97%);
-`;
 const InfoBoxValue = styled.p`
   font-weight: 500;
   font-size: 0.8rem;

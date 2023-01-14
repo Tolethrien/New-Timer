@@ -3,13 +3,18 @@ import { GoTo, Favorites, TaskList, Clock } from "../../../utils/icons";
 import { ProjectsData } from "../../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
 import { ConvertToStringTime } from "../../../hooks/convertToTime";
+import { useContext } from "react";
+import { appContext } from "../../../providers/appProvider";
+import DisplayIcon from "../../../styled/displayIcon";
 interface ProjectCardProps {
   data: ProjectsData;
 }
-interface StyleProps {}
 const ProjectCard: React.FC<ProjectCardProps> = ({
   data: { data, id, tasks },
 }) => {
+  const {
+    displayMode: { displayMode },
+  } = useContext(appContext);
   const navigate = useNavigate();
 
   const taskDone = (tasks: { data: { status: string } }[]) => {
@@ -25,18 +30,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     tasks.length > 0 ? Math.round((taskDone(tasks) / tasks.length) * 100) : 100;
 
   return (
-    <ComponentBody onClick={() => navigate(`./project/${id}`)} hue={data.color}>
+    <ComponentBody
+      onClick={() => navigate(`./project/${id}`)}
+      hue={data.color}
+      displayMode={displayMode}
+    >
       <InfoConteiner>
-        <InfoBox hue={data.color}>
-          <InfoBoxImg src={TaskList}></InfoBoxImg>
+        <InfoBox hue={data.color} displayMode={displayMode}>
+          <DisplayIcon src={TaskList} alt=""></DisplayIcon>
           <InfoBoxValue>{taskDone(tasks) + "/" + tasks.length}</InfoBoxValue>
         </InfoBox>
-        <InfoBox hue={data.color}>
-          <InfoBoxImg src={Clock}></InfoBoxImg>
+        <InfoBox hue={data.color} displayMode={displayMode}>
+          <DisplayIcon src={Clock} alt=""></DisplayIcon>
           <InfoBoxValue>{data.status}</InfoBoxValue>
         </InfoBox>
-        <InfoBox hue={data.color}>
-          <InfoBoxImg src={Clock}></InfoBoxImg>
+        <InfoBox hue={data.color} displayMode={displayMode}>
+          <DisplayIcon src={Clock} alt=""></DisplayIcon>
           <InfoBoxValue>{ConvertToStringTime(totalTimeOnTask)}</InfoBoxValue>
         </InfoBox>
       </InfoConteiner>
@@ -47,19 +56,31 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         value={percentOfComplete}
         max="100"
         hue={data.color}
+        displayMode={displayMode}
       ></ProgressBar>
-      <Icon src={GoTo} pos={[0.3, 1]}></Icon>
-      <Icon src={Favorites} pos={[2, 1.5]}></Icon>
+      <DisplayIcon
+        src={GoTo}
+        alt=""
+        size={[1.2, 1.2]}
+        absolute={{ x: "top: 0.3rem", y: "right: 1%" }}
+      ></DisplayIcon>
+      <DisplayIcon
+        src={Favorites}
+        alt=""
+        size={[1.2, 1.2]}
+        absolute={{ x: "top: 2rem", y: "right: 1%" }}
+      ></DisplayIcon>
     </ComponentBody>
   );
 };
 export default ProjectCard;
-const ComponentBody = styled.div<{ hue: number }>`
+const ComponentBody = styled.div<{ hue: number; displayMode: string }>`
   display: flex;
   position: relative;
   width: 98%;
   border-radius: 10px;
-  background-color: ${({ hue }) => `hsla(${hue}, 27%, 90%, 1)`};
+  background-color: ${({ displayMode, hue }) =>
+    `hsla(${hue}, 27%, ${displayMode === "light" ? 80 : 20}%, 1)`};
   margin: 0.4rem 0;
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
   cursor: pointer;
@@ -68,26 +89,25 @@ const InfoConteiner = styled.div`
   width: 25%;
   margin-left: 2%;
 `;
-const InfoBox = styled.div<{ hue: number }>`
+const InfoBox = styled.div<{ hue: number; displayMode: string }>`
   display: flex;
-  background-color: ${({ hue }) => `hsla(${hue}, 30%, 85%, 100%)`};
+  align-items: center;
+  gap: 0.2rem;
+  background-color: ${({ displayMode, hue }) =>
+    `hsla(${hue}, 30%, ${displayMode === "light" ? 70 : 30}%, 100%)`};
   border-radius: 5px;
   width: fit-content;
   padding: 0rem 0.3rem;
   margin: 0.3rem 0;
-  color: hsla(0, 0%, 43%, 1);
+  color: ${({ displayMode }) =>
+    `hsla(0, 0%, ${displayMode === "light" ? 40 : 65}%, 100%)`};
 `;
 
-const InfoBoxImg = styled.img`
-  width: 1rem;
-  filter: invert(46%) sepia(9%) saturate(0%) hue-rotate(161deg) brightness(90%)
-    contrast(97%);
-`;
 const InfoBoxValue = styled.p`
   font-weight: 500;
   font-size: 1rem;
 `;
-const ProgressBar = styled.progress<{ hue: number }>`
+const ProgressBar = styled.progress<{ hue: number; displayMode: string }>`
   position: absolute;
   bottom: 0.3rem;
   left: 27%;
@@ -95,11 +115,13 @@ const ProgressBar = styled.progress<{ hue: number }>`
   height: 0.5rem;
   -webkit-appearance: none;
   ::-webkit-progress-bar {
-    background-color: ${({ hue }) => `hsla(${hue}, 30%, 75%, 1)`};
+    background-color: ${({ hue, displayMode }) =>
+      `hsla(${hue}, 30%, ${displayMode === "light" ? 70 : 30}%, 1)`};
     border-radius: 5px;
   }
   ::-webkit-progress-value {
-    background-color: hsla(0, 0%, 31%, 1);
+    background-color: ${({ displayMode }) =>
+      `hsla(0, 0%, ${displayMode === "light" ? 30 : 70}%, 1)`};
     border-radius: 5px;
   }
 `;
@@ -111,10 +133,4 @@ const Name = styled.div<{ wrapWord: boolean }>`
   width: 60%;
   font-size: 1.6rem;
   font-weight: 700;
-`;
-const Icon = styled.img<{ pos: [number, number] }>`
-  position: absolute;
-  top: ${({ pos }) => pos[0]}rem;
-  right: ${({ pos }) => pos[1]}%;
-  height: 1.3rem;
 `;

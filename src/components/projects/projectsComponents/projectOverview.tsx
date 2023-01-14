@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import FindData from "../../hooks/findData";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { Add, RoundSwap } from "../../utils/icons";
 import {
   updateProject,
@@ -16,13 +16,14 @@ import LoadingData from "../../custom/loadingData";
 import Head from "../../styled/head";
 import DisplayText from "../../styled/displayText";
 import TitleHeading from "../custome/titleHeading";
-import { ButtonAsIcon } from "../../styled/buttonAsIcon";
+import ButtonAsIcon from "../../styled/buttonAsIcon";
 import { randomKey } from "../../utils/randomKey";
 import ButtonWithIcon from "../../custom/buttonWithIcon";
 import SearchBox from "../custome/searchBox";
 import { filterTPByName } from "../utils/filtersAndSorters";
 import TaskCardTemplate from "../tasksComponents/taskCard/taskCardTemplate";
 import updateStatus from "../utils/updateStatus";
+import { appContext } from "../../providers/appProvider";
 interface ProjectProps {}
 interface StyleProps {}
 const Project: React.FC<ProjectProps> = () => {
@@ -30,6 +31,9 @@ const Project: React.FC<ProjectProps> = () => {
   const [templateTask, setTemplateTask] = useState(false);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const [searchText, setSearchText] = useState("");
+  const {
+    displayMode: { displayMode },
+  } = useContext(appContext);
   const { id } = useParams();
   const project = FindData(id) as ProjectsData;
   const TasksInfo = tasksCompletion();
@@ -103,6 +107,7 @@ const Project: React.FC<ProjectProps> = () => {
                   <ColorToPick
                     current={e === project.data.color}
                     hue={e}
+                    displayMode={displayMode}
                     key={randomKey()}
                     onClick={() => updateColor(e)}
                   ></ColorToPick>
@@ -131,7 +136,7 @@ const Project: React.FC<ProjectProps> = () => {
       </Head>
 
       <AllTasks>
-        <Category name="Active" hue={245} isEmpty={isEmpty("Active")}>
+        <Category name="Active">
           {templateTask && (
             <TaskCardTemplate
               referenceButton={buttonNewRef}
@@ -145,7 +150,7 @@ const Project: React.FC<ProjectProps> = () => {
               <TaskCard key={i} task={e}></TaskCard>
             ))}
         </Category>
-        <Category name="On Hold" hue={360} isEmpty={isEmpty("On Hold")}>
+        <Category name="On Hold">
           {project.tasks
             .filter((e) => e.data.status === "On Hold")
             .filter((task) => filterTPByName(task, searchText))
@@ -153,7 +158,7 @@ const Project: React.FC<ProjectProps> = () => {
               <TaskCard key={i} task={e}></TaskCard>
             ))}
         </Category>
-        <Category name="Done" hue={115} isEmpty={isEmpty("Done")}>
+        <Category name="Done">
           {project.tasks
             .filter((e) => e.data.status === "Done")
             .filter((task) => filterTPByName(task, searchText))
@@ -181,11 +186,16 @@ const ColorPicker = styled.div`
   justify-content: flex-end;
   gap: 5px;
 `;
-const ColorToPick = styled.div<{ current: boolean; hue: number }>`
+const ColorToPick = styled.div<{
+  current: boolean;
+  hue: number;
+  displayMode: string;
+}>`
   width: 1.3rem;
   height: 1.3rem;
   border-radius: 50%;
-  background-color: ${({ hue }) => `hsla(${hue}, 30%, 85%, 1)`};
+  background-color: ${({ hue, displayMode }) =>
+    `hsla(${hue}, 30%, ${displayMode === "light" ? 80 : 20}%, 1)`};
   box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.25);
   ${({ current }) =>
     current &&

@@ -15,18 +15,15 @@ import ButtonWithIcon from "../../custom/buttonWithIcon";
 import Head from "../../styled/head";
 import Checkboxes from "./checkboxes";
 import TaskOptions from "./taskOptions";
-
 const TaskOverview: React.FC = () => {
   const { id } = useParams();
   const task = FindData(id) as TasksData;
   const { setClock } = useContext(clockContext);
-
   // const setAndOpenTimer = () => {
   //   setClock(task?.data.totalTime, task!.id);
   //   navigate("/timer");
   //   currentWindow.set(1);
   // };
-
   const playTask = () => {
     console.log("sram");
   };
@@ -53,16 +50,16 @@ const TaskOverview: React.FC = () => {
 
       <AllCategories>
         {task.data.showDescription && (
-          <Category hue={100} name="Description">
+          <Category name="Description">
             <TaskDescriptionBox value={task.data.desc}></TaskDescriptionBox>
           </Category>
         )}
         {task.data.showCheckboxes && (
-          <Category hue={100} name="Checkbox">
+          <Category name="Checkbox">
             <Checkboxes checkboxes={task.data.checkboxes} />
           </Category>
         )}
-        <Category hue={100} name="Settings">
+        <Category name="Settings">
           <TaskOptions task={task} />
         </Category>
       </AllCategories>

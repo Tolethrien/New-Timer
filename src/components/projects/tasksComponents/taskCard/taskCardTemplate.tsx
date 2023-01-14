@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addTask } from "../../../../API/handleDocs";
 import { appContext } from "../../../providers/appProvider";
-import { ButtonAsIcon } from "../../../styled/buttonAsIcon";
+import ButtonAsIcon from "../../../styled/buttonAsIcon";
 import { Trash } from "../../../utils/icons";
 interface TaskCardTemplateProps {
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;
@@ -16,10 +16,9 @@ const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
   const [newTaskName, setNewTaskName] = useState("");
   const componentRef = useRef<HTMLDivElement>(null);
   const {
-    text: { textColor },
+    displayMode: { displayMode },
   } = useContext(appContext);
   const projectId = useParams().id;
-  const color = 100;
 
   const createTask = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -42,12 +41,11 @@ const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
   }, []);
 
   return (
-    <ComponentBody ref={componentRef}>
+    <ComponentBody ref={componentRef} displayMode={displayMode}>
       <TopBar>
-        <TimerTemplate hue={color}></TimerTemplate>
+        <TimerTemplate displayMode={displayMode}></TimerTemplate>
         <NameForm onSubmit={(e) => createTask(e)}>
           <NameInput
-            textColor={textColor}
             autoFocus={true}
             placeholder="Name of Project..."
             onChange={(e) => setNewTaskName(e.target.value)}
@@ -59,14 +57,17 @@ const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
           onClick={() => setTemplateTask(false)}
         ></ButtonAsIcon>
       </TopBar>
-      <Description hue={color}></Description>
+      <Description displayMode={displayMode}></Description>
     </ComponentBody>
   );
 };
 export default TaskCardTemplate;
 
-const ComponentBody = styled.div`
-  background-color: hsla(169, 77%, 88%, 1);
+const ComponentBody = styled.div<{ displayMode: string }>`
+  background-color: ${({ displayMode }) =>
+    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+  backdrop-filter: blur(20px);
+
   width: 100%;
   height: fit-content;
   margin-bottom: 0.1rem;
@@ -80,8 +81,11 @@ const TopBar = styled.div`
   align-items: center;
   padding-inline: 2%;
 `;
-const TimerTemplate = styled.div<{ hue: number }>`
-  background-color: ${({ hue }) => `hsla(${hue}, 30%, 85%, 100%)`};
+const TimerTemplate = styled.div<{ displayMode: string }>`
+  background-color: ${({ displayMode }) =>
+    displayMode === "light"
+      ? `hsla(40, 76%,70%,0.5)`
+      : `hsla(260,26%,65%,0.5)`};
   border-radius: 5px;
   padding: 0.2rem 0.2rem;
   width: 18%;
@@ -94,19 +98,25 @@ const NameForm = styled.form`
   padding-left: 2%;
 `;
 
-const NameInput = styled.input<{ textColor: number }>`
+const NameInput = styled.input`
   width: 100%;
   font-size: 1.4rem;
   font-weight: 700;
   background: transparent;
-  color: ${({ textColor }) => `hsla(0, 0%, ${textColor}%, 1)`};
   border: none;
   outline: none;
+  color: inherit;
+  ::placeholder {
+    color: inherit;
+  }
 `;
-const Description = styled.div<{ hue: number }>`
+const Description = styled.div<{ displayMode: string }>`
   width: 80%;
   height: 1rem;
   border-radius: 5px;
   margin-left: 1%;
-  background-color: ${({ hue }) => `hsla(${hue}, 30%, 85%, 100%)`};
+  background-color: ${({ displayMode }) =>
+    displayMode === "light"
+      ? `hsla(40, 76%,70%,0.5)`
+      : `hsla(260,26%,65%,0.5)`};
 `;

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 import { useContext } from "react";
 import { appContext } from "../providers/appProvider";
 interface ChildrenProps {
@@ -8,6 +8,8 @@ interface StyleProps {
   size?: number;
   weight?: number;
   margin?: string;
+  extendedStyle?: StyledComponent<"p", any, {}, never>;
+  extendedProps?: {};
 }
 type DisplayTextProps = ChildrenProps & StyleProps;
 const DisplayText: React.FC<DisplayTextProps> = ({
@@ -15,22 +17,24 @@ const DisplayText: React.FC<DisplayTextProps> = ({
   size = 1,
   weight,
   margin,
+  extendedStyle,
 }) => {
-  const {
-    text: { textColor },
-  } = useContext(appContext);
   return (
-    <ComponentBody size={size} weight={weight} margin={margin} hue={textColor}>
+    <ComponentBody
+      size={size}
+      weight={weight}
+      margin={margin}
+      as={extendedStyle}
+    >
       {children}
     </ComponentBody>
   );
 };
 export default DisplayText;
-const ComponentBody = styled.p<StyleProps & { hue: number }>`
+const ComponentBody = styled.p<StyleProps>`
   font-style: normal;
   width: 100%;
   font-size: ${({ size }) => size}rem;
   font-weight: ${({ weight }) => weight};
   margin: ${({ margin }) => margin};
-  color: ${({ hue }) => `hsla(0, 0%, ${hue}%, 1)`};
 `;

@@ -18,7 +18,7 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
   const { id } = useParams();
 
   const {
-    text: { textColor },
+    displayMode: { displayMode },
   } = useContext(appContext);
   const updateDocText = () => {
     updateTask(id!, { desc: textValue });
@@ -45,24 +45,32 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
       minHeight={minHeight}
       value={textValue}
       onBlur={() => updateDocText()}
-      hue={textColor}
+      displayMode={displayMode}
     ></ComponentBody>
   );
 };
 export default TaskDescriptionBox;
 
-const ComponentBody = styled.textarea<{ minHeight: number; hue: number }>`
+const ComponentBody = styled.textarea<{
+  minHeight: number;
+  displayMode: string;
+}>`
   width: 95%;
   height: ${({ minHeight }) => minHeight}px;
-  background-color: hsla(0, 0%, 100%, 0.17);
+  background-color: ${({ displayMode }) =>
+    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
   backdrop-filter: blur(20px);
-  border: 1px solid hsla(162, 50%, 86%, 1);
-  box-shadow: 0px 0px 10px -4px hsla(0, 0%, 0%, 1);
+  border: ${({ displayMode }) =>
+    `1px solid hsla(162, 50%, 86%, ${displayMode === "light" ? 1 : 0.2})`};
+  /* border: none; */
+  outline: none;
+  /* box-shadow: 0px 0px 10px -4px hsla(0, 0%, 0%, 1); */
   resize: none;
   border-radius: 5px;
   padding: 0.3rem 0.3rem;
   font-size: 1.1rem;
-  color: ${({ hue }) => `hsla(0, 0%, ${hue}%, 1)`};
+  color: ${({ displayMode }) =>
+    `hsla(0, 0%, ${displayMode === "light" ? 20 : 90}%, 1)`};
 
   :focus {
     outline: none;

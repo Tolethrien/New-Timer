@@ -4,7 +4,6 @@ import { useState, useRef, useContext } from "react";
 import { updateTask } from "../../API/handleDocs";
 import { useParams } from "react-router-dom";
 import { ConvertToNumber, ConvertToStringTime } from "./convertToTime";
-import { appContext } from "../providers/appProvider";
 interface TimeFieldProps {
   extendedStyle?: StyledComponent<"div", any, {}, never>;
   expectedTime: number;
@@ -15,9 +14,6 @@ const TimeField: React.FC<TimeFieldProps> = ({
 }) => {
   const [time, setTime] = useState(ConvertToStringTime(expectedTime));
   const fieldRef = useRef<HTMLDivElement>(null);
-  const {
-    text: { textColor },
-  } = useContext(appContext);
   const { id } = useParams();
 
   const TimeUpdate = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -36,7 +32,6 @@ const TimeField: React.FC<TimeFieldProps> = ({
       <NumberInput
         as={TimeF}
         value={time}
-        hue={textColor}
         onChange={(_, value) => setTime(value)}
         colon=":"
         showSeconds={true}
@@ -47,7 +42,7 @@ const TimeField: React.FC<TimeFieldProps> = ({
 export default TimeField;
 const ComponentBody = styled.div``;
 
-const NumberInput = styled.input<{ hue: number }>`
+const NumberInput = styled.input`
   background: transparent;
   border: none;
   font-size: inherit;
@@ -55,7 +50,7 @@ const NumberInput = styled.input<{ hue: number }>`
   padding: 0;
   width: fit-content !important;
   text-align: center;
-  color: ${({ hue }) => `hsla(0, 0%, ${hue}%, 1)`};
+  color: inherit;
 
   :focus {
     outline: none;

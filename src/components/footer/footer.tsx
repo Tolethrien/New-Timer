@@ -21,6 +21,7 @@ const Footer: React.FC<FooterProps> = () => {
     primary: { primaryColor },
     secondary: { secondaryColor },
     currentWindow,
+    displayMode: { displayMode },
   } = useContext(appContext);
   const linkData = {
     dashboard: { id: 0, name: "Dashboard", link: "./", icon: Dashboard },
@@ -44,6 +45,7 @@ const Footer: React.FC<FooterProps> = () => {
           as={NavLink}
           to={key.link}
           key={key.id}
+          displayMode={displayMode}
           onClick={() => (currentWindow.set(key.id), vibrate("short"))}
           color={"#6e6e6ea5"}
         >
@@ -64,15 +66,19 @@ const Wrap = styled.footer`
   width: 100%;
   border-radius: 7px 7px 0 0;
   background-color: hsla(360, 90%, 14%, 0.19);
+  backdrop-filter: blur(10px);
 `;
-const ButtonLink = styled.div<styleProps>`
+const ButtonLink = styled.div<{ displayMode: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 35px;
   height: 35px;
   border-radius: 10px;
-  background-color: ${({ color }) => color};
+  background-color: ${({ displayMode }) =>
+    displayMode === "light"
+      ? `hsla(40, 76%, 69%, 0.8)`
+      : `hsla(261, 16%, 40%, 0.8)`};
 `;
 const ButtonImg = styled.img`
   width: 70%;

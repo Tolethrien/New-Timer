@@ -10,12 +10,14 @@ import Options from "./pages/options";
 import { Routes, Route } from "react-router-dom";
 import Clock from "./components/providers/clockProvider";
 import useStore from "./components/hooks/useStore";
-//=======TYPES========
+import BodyImg from "./backgrounds/LofiMain.jpg";
+import MainNight from "./backgrounds/mainNight.jpg";
 
+//=======TYPES========
 //=======COMPONENT========
 function App() {
   const {
-    text: { textColor },
+    displayMode: { displayMode },
     primary: { primaryColor },
   } = useStore("app");
   document
@@ -23,7 +25,7 @@ function App() {
     .setAttribute("content", `hsla(${primaryColor}, 20%, 74%, 1)`);
   //
   return (
-    <MainBody textColor={textColor}>
+    <MainBody displayMode={displayMode}>
       <>
         <Clock>
           <Routes>
@@ -43,17 +45,17 @@ function App() {
 }
 export default App;
 //=======STYLES========
-const MainBody = styled.main<{ textColor: number }>`
+const MainBody = styled.main<{ displayMode: string }>`
   position: relative;
-  color: ${({ textColor }) => textColor};
   width: 100vw;
   max-width: 420px;
   height: 100vh;
-  background: hsla(220, 95%, 88%, 1);
   margin: auto;
   overflow: hidden;
-  /* background-image: url("./LofiMain.jpg"); */
-  /* background-size: cover; */
-  /* background-repeat: no-repeat; */
+  background-image: ${({ displayMode }) =>
+    `url(${displayMode === "light" ? BodyImg : MainNight})`};
+  background-size: cover;
   overflow-y: auto;
+  color: ${({ displayMode }) =>
+    `hsla(0, 0%, ${displayMode === "light" ? 25 : 80}%, 1)`};
 `;

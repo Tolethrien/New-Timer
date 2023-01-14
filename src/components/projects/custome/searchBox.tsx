@@ -1,4 +1,7 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import { appContext } from "../../providers/appProvider";
+import DisplayIcon from "../../styled/displayIcon";
 import { Loop } from "../../utils/icons";
 
 interface SearchBoxProps {
@@ -13,7 +16,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 }) => {
   return (
     <ComponentBody>
-      <SearchBoxImg src={Loop} alt="search Icon"></SearchBoxImg>
+      <DisplayIcon src={Loop} alt="search Icon"></DisplayIcon>
       <SearchBoxInput
         placeholder={placeholder}
         value={value}
@@ -27,6 +30,8 @@ const ComponentBody = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.2rem;
+  padding-left: 0.5rem;
   border-radius: 5px;
   background-color: hsla(0, 0%, 87%, 0.22);
   box-shadow: inset 1px 1px 1px hsla(0, 0%, 0%, 0.25);
@@ -36,22 +41,17 @@ const ComponentBody = styled.div`
 const SearchBoxInput = styled.input`
   background-color: transparent;
   border: none;
-  /* padding-left: 10px; */
   width: 100%;
   height: 100%;
   font-size: 1rem;
   font-weight: 700;
+  color: inherit;
 
   :focus {
     outline: none;
   }
   ::placeholder {
-    color: #414141;
+    color: inherit;
     font-weight: 600;
   }
-`;
-const SearchBoxImg = styled.img.attrs(() => ({ draggable: false }))`
-  height: 1rem;
-  width: 1rem;
-  padding: 0 4%;
 `;

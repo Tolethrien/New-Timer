@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import { Edit } from "../utils/icons";
 import { updateProject, updateTask } from "../../API/handleDocs";
 import { useParams } from "react-router-dom";
-import { ButtonAsIcon } from "../styled/buttonAsIcon";
+import ButtonAsIcon from "../styled/buttonAsIcon";
 import { appContext } from "../providers/appProvider";
 import focusOnEndOfLine from "../projects/utils/focusOnEndOfLine";
 interface EditableTitleProps {
@@ -14,9 +14,7 @@ const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
   const paragraphfocusRef = useRef<HTMLParagraphElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [route, id] = useParams()["*"]!.split("/");
-  const {
-    text: { textColor },
-  } = useContext(appContext);
+
   const handleClickOutside = (event: any) => {
     if (!componentRef.current?.contains(event.target)) {
       paragraphfocusRef.current!.innerText = text;
@@ -33,8 +31,8 @@ const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
       updateTask(id!, { name: paragraphfocusRef!.current!.innerText });
     else if (route === "project") {
       updateProject(id!, { name: paragraphfocusRef!.current!.innerText });
-      setIsEditing(false);
     }
+    setIsEditing(false);
   };
 
   useEffect(() => {
@@ -48,7 +46,6 @@ const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
     <ComponentBody ref={componentRef}>
       <NameEditable
         contentEditable={isEditing}
-        hue={textColor}
         suppressContentEditableWarning={true}
         onKeyDown={(e) => e.key === "Enter" && updateName()}
         ref={paragraphfocusRef}
@@ -70,10 +67,9 @@ const ComponentBody = styled.div`
   flex-grow: 1;
   max-width: 75%;
 `;
-const NameEditable = styled.p<{ hue: number }>`
+const NameEditable = styled.p`
   font-size: 1.5rem;
   font-weight: 600;
-  color: ${({ hue }) => `hsla(0, 0%, ${hue}%, 1)`};
   outline: none;
   width: fit-content;
   white-space: nowrap;
