@@ -1,4 +1,6 @@
-import { createContext, useState } from "react";
+import { User } from "firebase/auth";
+import { createContext, useEffect, useState } from "react";
+import { useAuth } from "../../API/firebase";
 import { GetUserData } from "../../API/getUserData";
 import { ProjectsData } from "../../API/getUserData";
 interface props {
@@ -31,6 +33,7 @@ interface provider {
     set: React.Dispatch<React.SetStateAction<number>>;
   };
   userData: ProjectsData[];
+  currentUser: User | null | undefined;
 }
 export const appContext = createContext<provider>({} as provider);
 /**
@@ -45,7 +48,8 @@ const Provider: React.FC<props> = (props) => {
   const [newColor, setNewColor] = useState(153);
   const [displayMode, setDisplayMode] = useState("light");
   const [currenWindow, setCurrentWindow] = useState(0);
-
+  // const [userData,setUserData] = useState(GetUserData())
+  const currentUser = useAuth();
   const userData = GetUserData();
   return (
     <appContext.Provider
@@ -57,6 +61,7 @@ const Provider: React.FC<props> = (props) => {
         userData,
         currentWindow: { id: currenWindow, set: setCurrentWindow },
         displayMode: { displayMode, setDisplayMode },
+        currentUser,
       }}
     >
       {props.children}

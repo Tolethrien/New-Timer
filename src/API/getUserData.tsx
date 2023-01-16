@@ -6,7 +6,7 @@ import {
   orderBy,
   doc,
 } from "firebase/firestore";
-import db from "./firebase";
+import db, { auth } from "./firebase";
 
 // export interface UserData {
 //   Meta: {};
@@ -96,10 +96,12 @@ export const GetUserData = () => {
   // };
 
   useEffect(() => {
-    // GetMeta();
-    GetProjects();
-    GetTasks();
-  }, []);
+    if (auth.currentUser) {
+      // GetMeta();
+      GetProjects();
+      GetTasks();
+    }
+  }, [auth.currentUser]);
   const makeData = () => {
     let data = projects;
     data.forEach(

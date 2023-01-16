@@ -24,6 +24,7 @@ import {
   signOut,
   sendEmailVerification,
   updateProfile,
+  User,
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -36,8 +37,9 @@ const firebaseConfig = {
 };
 export const FirebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth();
-signInWithEmailAndPassword(auth, "tolethrien@gmail.com", "Radenes11");
-// signOut(auth);
+// console.log(auth);
+// signInWithEmailAndPassword(auth, "tolethrien@gmail.com", "Radenes11");
+signOut(auth);
 // console.log(auth);
 // export const signup = (email: string, password: string) => {
 //   return createUserWithEmailAndPassword(auth, email, password);
@@ -55,14 +57,14 @@ export const login = (email: string, password: string) => {
 // export const logout = () => {
 //   return signOut(auth);
 // };
-// export const useAuth = () => {
-//   const [currentUser, setCurrentUser] = useState();
-//   useEffect(() => {
-//     const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
-//     return unsub;
-//   }, []);
-//   return currentUser;
-// };
+export const useAuth = () => {
+  const [currentUser, setCurrentUser] = useState<User | null>();
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
+    return unsub;
+  }, []);
+  return currentUser;
+};
 
 // export const GetData = async () => {
 //   const [data, setData] = useState([]);

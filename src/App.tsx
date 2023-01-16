@@ -10,8 +10,10 @@ import Options from "./pages/options";
 import { Routes, Route } from "react-router-dom";
 import Clock from "./components/providers/clockProvider";
 import useStore from "./components/hooks/useStore";
-import BodyImg from "./backgrounds/LofiMain.jpg";
-import MainNight from "./backgrounds/mainNight.jpg";
+import mainLight from "./backgrounds/LofiMain.jpg";
+import mainDark from "./backgrounds/mainNight.jpg";
+import loginLight from "./backgrounds/loginLight.jpg";
+import loginDark from "./backgrounds/loginDark.jpg";
 
 //=======TYPES========
 //=======COMPONENT========
@@ -19,6 +21,7 @@ function App() {
   const {
     displayMode: { displayMode },
     primary: { primaryColor },
+    currentUser,
   } = useStore("app");
   document
     .querySelector('meta[name="theme-color"]')!
@@ -31,8 +34,14 @@ function App() {
       }`
     );
   //
+  if (!currentUser)
+    return (
+      <MainBody displayMode={displayMode} user={false}>
+        <Login />;
+      </MainBody>
+    );
   return (
-    <MainBody displayMode={displayMode}>
+    <MainBody displayMode={displayMode} user={true}>
       <>
         <Clock>
           <Routes>
@@ -47,21 +56,31 @@ function App() {
         </Clock>
         <Footer />
       </>
+      {/* <Login></Login> */}
     </MainBody>
   );
 }
 export default App;
 //=======STYLES========
-const MainBody = styled.main<{ displayMode: string }>`
+const MainBody = styled.main<{ displayMode: string; user: boolean }>`
   position: relative;
   width: 100vw;
   max-width: 420px;
   height: 100vh;
   margin: auto;
   overflow: hidden;
-  background-image: ${({ displayMode }) =>
-    `url(${displayMode === "light" ? BodyImg : MainNight})`};
+  background-image: ${({ displayMode, user }) =>
+    `url(${
+      displayMode === "light"
+        ? user
+          ? mainLight
+          : loginLight
+        : user
+        ? mainDark
+        : loginDark
+    })`};
   background-size: cover;
+  background-position: center;
   overflow-y: auto;
   color: ${({ displayMode }) =>
     `hsla(0, 0%, ${displayMode === "light" ? 25 : 80}%, 1)`};

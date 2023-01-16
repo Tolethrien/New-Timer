@@ -1,93 +1,127 @@
 import styled from "styled-components";
 import Glass from "../components/styled/glass";
 import { login, auth } from "../API/firebase";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import PageWrap from "../components/styled/pageWrap";
+import Head from "../components/styled/head";
+import DisplayText from "../components/styled/displayText";
+import { appContext } from "../components/providers/appProvider";
+import ButtonWithIcon from "../components/custom/buttonWithIcon";
+import { Logout } from "../components/utils/icons";
 //=======TYPES========
 interface LoginProps {}
-interface StyleProps {}
 
 //=======COMPONENT========
 const Login: React.FC<LoginProps> = (props) => {
-  const userLogin = useRef<HTMLInputElement>(null);
-  const userPassword = useRef<HTMLInputElement>(null);
-
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      await login(userLogin!.current!.value, userPassword!.current!.value);
-      console.log(auth.currentUser);
-    } catch (error: any) {
-      alert(error.code);
-    }
+  const mailRef = useRef<HTMLInputElement>(null);
+  const passRef = useRef<HTMLInputElement>(null);
+  const {
+    displayMode: { displayMode },
+  } = useContext(appContext);
+  const handleLogin = () => {
+    login(mailRef.current!.value, passRef.current!.value);
   };
-
   return (
     <PageWrap>
-      <Glass size={"inline"}>
-        <Name>Account</Name>
-        <LoginText>Login</LoginText>
-        <Form onSubmit={(e) => handleLogin(e)}>
-          <UserInput
-            type={"login"}
-            ref={userLogin}
-            placeholder={"login..."}
-          ></UserInput>
-          <UserInput
-            type={"password"}
-            ref={userPassword}
-            placeholder={"Password..."}
-          ></UserInput>
-          <input type="submit" value="Submit" hidden={true} />
-        </Form>
-        <CreateAccountText>Do not have account yet? </CreateAccountText>
-        <CreateAccountLink>Register</CreateAccountLink>
-      </Glass>
+      <Head>
+        <DisplayText size={1.5} weight={600} margin="0 0 3% 0">
+          Welcome to New Timer
+        </DisplayText>
+        <DisplayText margin="0 0 3% 0">
+          your personal Projects Time measuring App
+        </DisplayText>
+      </Head>
+      <LoginBody>
+        <DisplayText size={1.5} weight={500} extendedStyle={ExtendedText}>
+          Login to begin <br />
+          your productivity
+        </DisplayText>
+        <UserForm onSubmit={(e) => (e.preventDefault(), handleLogin())}>
+          <UserInput ref={mailRef} type="email" placeholder="email..." />
+          <UserInput ref={passRef} type="password" placeholder="password..." />
+          <ButtonWithIcon
+            src={Logout}
+            alt={""}
+            onClick={handleLogin}
+            extendedStyle={ExtendedLoginButton}
+            text={"Login"}
+          ></ButtonWithIcon>
+        </UserForm>
+        <CreateAcc>
+          <DarkModeBackground displayMode={displayMode}>
+            <DisplayText>Don’t have account yet?</DisplayText>
+          </DarkModeBackground>
+          <ButtonWithIcon
+            src={Logout}
+            alt={""}
+            onClick={function (): void {}}
+            text={"Click Here"}
+            extendedStyle={ExtendedRegisterButton}
+          ></ButtonWithIcon>
+        </CreateAcc>
+      </LoginBody>
     </PageWrap>
   );
 };
 export default Login;
 //=======STYLES========
-
-const Name = styled.h3<StyleProps>`
-  padding-top: 2%;
-  font-size: 1.3em;
-`;
-const LoginText = styled.p<StyleProps>`
-  font-size: 2em;
-  padding-top: 20%;
-  padding-bottom: 5%;
-`;
-const Form = styled.form<StyleProps>`
+const LoginBody = styled.div`
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  width: 100%;
-  padding-bottom: 10%;
+  padding: 2rem 0;
 `;
-const UserInput = styled.input<StyleProps>`
-  border-radius: 5px;
+const UserForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-block: 25%;
+  gap: 1rem;
+`;
+const UserInput = styled.input`
+  background: hsla(0, 0%, 87%, 0.3);
+  box-shadow: inset 1.56px 1.56px 1.56px hsla(0, 0%, 100%, 0.25);
+  backdrop-filter: blur(5px);
   border: none;
-  box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.25);
-  margin: 2% 0;
+  outline: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  padding-block: 0.5rem;
+  color: inherit;
   text-align: center;
-  width: 50%;
-  height: 2em;
-  background: #d4d3d3;
-  :focus {
-    outline: none;
+  ::placeholder {
+    color: inherit;
   }
 `;
-const CreateAccountText = styled.div<StyleProps>`
-  font-size: 1.6em;
-  padding-bottom: 2%;
+const CreateAcc = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-block: 25%;
+  gap: 0.5rem;
 `;
-const CreateAccountLink = styled.div<StyleProps>`
-  background: none;
+const DarkModeBackground = styled.div<{ displayMode: string }>`
+  white-space: nowrap;
+  background-color: ${({ displayMode }) =>
+    displayMode === "light" ? `transparent` : `hsla(0, 0%, 0%, 0.4)`};
+  padding: 5% 3%;
+  border-radius: 5px;
+  backdrop-filter: blur(1px);
+`;
+const ExtendedText = styled.p`
+  text-align: center;
+`;
+const ExtendedLoginButton = styled.button`
+  padding: 0.3rem 0.9em;
   border: none;
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 1.2em;
-  padding-bottom: 20%;
+  box-shadow: 0px 4.16px 4.16px rgba(0, 0, 0, 0.25),
+    inset 0px 1.04px 1.04px rgba(255, 255, 255, 0.25);
+`;
+const ExtendedRegisterButton = styled.button`
+  padding: 0.3rem 0.4em;
+  border: none;
+  box-shadow: 0px 4.16px 4.16px rgba(0, 0, 0, 0.25),
+    inset 0px 1.04px 1.04px rgba(255, 255, 255, 0.25);
+  align-self: flex-start;
 `;

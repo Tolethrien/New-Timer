@@ -45,7 +45,7 @@ const Footer: React.FC<FooterProps> = () => {
           as={NavLink}
           to={key.link}
           key={key.id}
-          displayMode={displayMode}
+          displaymode={displayMode}
           onClick={() => (currentWindow.set(key.id), vibrate("short"))}
           color={"#6e6e6ea5"}
         >
@@ -56,7 +56,7 @@ const Footer: React.FC<FooterProps> = () => {
   );
 };
 export default Footer;
-const Wrap = styled.footer`
+export const Wrap = styled.footer`
   position: absolute;
   bottom: 0;
   display: flex;
@@ -68,15 +68,15 @@ const Wrap = styled.footer`
   background-color: hsla(360, 90%, 14%, 0.19);
   backdrop-filter: blur(10px);
 `;
-const ButtonLink = styled.div<{ displayMode: string }>`
+const ButtonLink = styled.div<{ displaymode: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 35px;
   height: 35px;
   border-radius: 10px;
-  background-color: ${({ displayMode }) =>
-    displayMode === "light"
+  background-color: ${({ displaymode }) =>
+    displaymode === "light"
       ? `hsla(40, 76%, 69%, 0.8)`
       : `hsla(261, 16%, 40%, 0.8)`};
 `;

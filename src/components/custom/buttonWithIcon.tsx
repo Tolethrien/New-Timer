@@ -39,7 +39,6 @@ const ComponentBody = styled.button<{ displayMode: string }>`
   justify-content: center;
   border-radius: 5px;
   padding: 1% 2%;
-  border: 1px solid hsla(0, 0%, 66%, 1);
   border: ${({ displayMode }) =>
     `1px solid hsla(0, 0%, ${displayMode === "light" ? 66 : 55}%, 1)`};
   background-color: hsla(0, 0%, 87%, 0.22);
