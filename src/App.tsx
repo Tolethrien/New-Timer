@@ -23,16 +23,16 @@ function App() {
     primary: { primaryColor },
     currentUser,
   } = useStore("app");
-  document
-    .querySelector('meta[name="theme-color"]')!
-    .setAttribute(
-      "content",
-      `${
-        displayMode === "light"
-          ? `hsla(40, 76%, 69%, 0.8)`
-          : `hsla(261, 16%, 40%, 0.8)`
-      }`
-    );
+  // document
+  //   .querySelector('meta[name="theme-color"]')!
+  //   .setAttribute(
+  //     "content",
+  //     `${
+  //       displayMode === "light"
+  //         ? `hsla(40, 76%, 69%, 0.8)`
+  //         : `hsla(261, 16%, 40%, 0.8)`
+  //     }`
+  //   );
   //
   if (!currentUser)
     return (

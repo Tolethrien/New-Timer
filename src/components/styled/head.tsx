@@ -33,6 +33,9 @@ const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
       }
     }
   };
+  document
+    .querySelector('meta[name="theme-color"]')!
+    .setAttribute("content", `${test()}`);
   return (
     <ComponentBody
       displayMode={displayMode}
