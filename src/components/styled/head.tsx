@@ -18,28 +18,22 @@ const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
     },
     app: { light: "hsla(40, 76%, 69%, 0.8)", dark: "hsla(261, 16%, 40%, 0.8)" },
   };
-  const test = () => {
+  const pickHeadColor = () => {
     if (!currentUser) {
-      if (displayMode === "light") {
-        return ComponentBodyColors.login.light;
-      } else if (displayMode === "dark") {
-        return ComponentBodyColors.login.dark;
-      }
+      if (displayMode === "light") return ComponentBodyColors.login.light;
+      else if (displayMode === "dark") return ComponentBodyColors.login.dark;
     } else if (currentUser) {
-      if (displayMode === "light") {
-        return ComponentBodyColors.app.light;
-      } else if (displayMode === "dark") {
-        return ComponentBodyColors.app.dark;
-      }
+      if (displayMode === "light") return ComponentBodyColors.app.light;
+      else if (displayMode === "dark") return ComponentBodyColors.app.dark;
     }
   };
   document
     .querySelector('meta[name="theme-color"]')!
-    .setAttribute("content", `${test()}`);
+    .setAttribute("content", `${pickHeadColor()}`);
   return (
     <ComponentBody
       displayMode={displayMode}
-      bodyColor={test()}
+      bodyColor={pickHeadColor()}
       as={extendedStyle}
     >
       {children}

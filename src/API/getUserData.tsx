@@ -45,11 +45,11 @@ export const GetUserData = () => {
   const [projects, setProjects] = useState<ProjectsData[]>([]);
   const [tasks, setTasks] = useState<TasksData[]>([]);
   // const [metaData, setMetaData] = useState<{} | undefined>({});
-  const GetTasks = async () => {
+  const GetTasks = () => {
     const querySorted = query(
-      collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks")
+      collection(db, "Users", auth.currentUser?.uid!, "Tasks")
     );
-    await onSnapshot(
+    onSnapshot(
       querySorted,
       (snap) => {
         setTasks(
@@ -63,12 +63,12 @@ export const GetUserData = () => {
     );
   };
 
-  const GetProjects = async () => {
+  const GetProjects = () => {
     const querySorted = query(
-      collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Projects"),
+      collection(db, "Users", auth.currentUser?.uid!, "Projects"),
       orderBy("createdAt", "desc")
     );
-    await onSnapshot(
+    onSnapshot(
       querySorted,
       (snap) => {
         setProjects(

@@ -39,6 +39,7 @@ export const appContext = createContext<provider>({} as provider);
 /**
  * @desc Context Provider for App
  */
+// localStorage.setItem("mode", "dark");
 const Provider: React.FC<props> = (props) => {
   // main Colors to set by user
   const [backgroundColor, setBackgroundColor] = useState("#6e6e6ea5");
@@ -46,7 +47,9 @@ const Provider: React.FC<props> = (props) => {
   const [secondaryColor, setSecondaryColor] = useState("#c5dc14");
   const [textColor, setTextColor] = useState(20);
   const [newColor, setNewColor] = useState(153);
-  const [displayMode, setDisplayMode] = useState("light");
+  const [displayMode, setDisplayMode] = useState(
+    localStorage.getItem("mode") as string
+  );
   const [currenWindow, setCurrentWindow] = useState(0);
   // const [userData,setUserData] = useState(GetUserData())
   const currentUser = useAuth();

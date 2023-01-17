@@ -1,16 +1,38 @@
 import styled from "styled-components";
 import Glass from "../components/styled/glass";
 import Option from "../components/options/option";
+import { logout } from "../API/firebase";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { appContext } from "../components/providers/appProvider";
 interface OptionsProps {}
 interface StyleProps {}
 const Options: React.FC<OptionsProps> = (props) => {
+  const {
+    currentUser,
+    displayMode: { setDisplayMode },
+  } = useContext(appContext);
+  const navigate = useNavigate();
+  const signout = async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  };
+  const switchMode = () => {
+    if (localStorage.getItem("mode") === "light") {
+      localStorage.setItem("mode", "dark");
+      setDisplayMode(localStorage.getItem("mode") as string);
+    } else if (localStorage.getItem("mode") === "dark") {
+      localStorage.setItem("mode", "light");
+      setDisplayMode(localStorage.getItem("mode") as string);
+    }
+  };
+  if (!currentUser) return <Navigate to="/login" replace />;
   return (
     <Wrap>
       <Glass size={"inline"}>
         <Name>Settings</Name>
-        <Option optionName={"string"}>
-          <Button>s</Button>
-        </Option>
+        <button onClick={() => signout()}>wyloguj</button>
+        <button onClick={() => switchMode()}>switch mode</button>
       </Glass>
     </Wrap>
   );

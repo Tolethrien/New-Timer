@@ -20,6 +20,7 @@ import CheckBoxFill from "../../Icons/CheckBoxFill.svg";
 import TextEdit from "../../Icons/TextEdit.svg";
 import Collapse from "../../Icons/Collapse.svg";
 import Logout from "../../Icons/Logout.svg";
+import CreateAcc from "../../Icons/CreateAcc.svg";
 export {
   Add,
   Loop,
@@ -43,4 +44,5 @@ export {
   TextEdit,
   Collapse,
   Logout,
+  CreateAcc,
 };

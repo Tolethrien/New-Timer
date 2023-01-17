@@ -7,56 +7,44 @@ import Timer from "./pages/timer";
 import Data from "./pages/data";
 import Projects from "./pages/projects";
 import Options from "./pages/options";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Clock from "./components/providers/clockProvider";
 import useStore from "./components/hooks/useStore";
 import mainLight from "./backgrounds/LofiMain.jpg";
 import mainDark from "./backgrounds/mainNight.jpg";
 import loginLight from "./backgrounds/loginLight.jpg";
 import loginDark from "./backgrounds/loginDark.jpg";
+import Register from "./pages/register";
 
 //=======TYPES========
 //=======COMPONENT========
 function App() {
   const {
     displayMode: { displayMode },
-    primary: { primaryColor },
     currentUser,
   } = useStore("app");
-  // document
-  //   .querySelector('meta[name="theme-color"]')!
-  //   .setAttribute(
-  //     "content",
-  //     `${
-  //       displayMode === "light"
-  //         ? `hsla(40, 76%, 69%, 0.8)`
-  //         : `hsla(261, 16%, 40%, 0.8)`
-  //     }`
-  //   );
-  //
-  if (!currentUser)
-    return (
-      <MainBody displayMode={displayMode} user={false}>
-        <Login />;
-      </MainBody>
-    );
+
+  const Redirect = () => {
+    return <Navigate to="/login" replace />;
+  };
   return (
-    <MainBody displayMode={displayMode} user={true}>
+    <MainBody displayMode={displayMode} user={currentUser ? true : false}>
       <>
         <Clock>
           <Routes>
-            <Route path={"/"} element={<Dashboard />}></Route>
+            <Route path="/" element={<Redirect />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path={"/timer"} element={<Timer />}></Route>
             <Route path={"/calendar"} element={<Calendar />}></Route>
             <Route path={"/data"} element={<Data />}></Route>
             <Route path={"/projects/*"} element={<Projects />}></Route>
             <Route path={"/options"} element={<Options />}></Route>
             <Route path={"/login"} element={<Login />}></Route>
+            <Route path={"/register"} element={<Register />}></Route>
           </Routes>
         </Clock>
-        <Footer />
+        {currentUser && <Footer />}
       </>
-      {/* <Login></Login> */}
     </MainBody>
   );
 }

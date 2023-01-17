@@ -8,6 +8,7 @@ import DisplayText from "../components/styled/displayText";
 import { appContext } from "../components/providers/appProvider";
 import ButtonWithIcon from "../components/custom/buttonWithIcon";
 import { Logout } from "../components/utils/icons";
+import { Navigate, useNavigate } from "react-router-dom";
 //=======TYPES========
 interface LoginProps {}
 
@@ -17,9 +18,15 @@ const Login: React.FC<LoginProps> = (props) => {
   const passRef = useRef<HTMLInputElement>(null);
   const {
     displayMode: { displayMode },
+    currentUser,
   } = useContext(appContext);
+  const navigate = useNavigate();
   const handleLogin = () => {
     login(mailRef.current!.value, passRef.current!.value);
+  };
+  if (currentUser) return <Navigate to="/dashboard" replace={true} />;
+  const redirectToRegister = () => {
+    navigate("/register", { replace: true });
   };
   return (
     <PageWrap>
@@ -36,7 +43,7 @@ const Login: React.FC<LoginProps> = (props) => {
           Login to begin <br />
           your productivity
         </DisplayText>
-        <UserForm onSubmit={(e) => (e.preventDefault(), handleLogin())}>
+        <UserForm onSubmit={(e) => e.preventDefault()}>
           <UserInput ref={mailRef} type="email" placeholder="email..." />
           <UserInput ref={passRef} type="password" placeholder="password..." />
           <ButtonWithIcon
@@ -54,7 +61,7 @@ const Login: React.FC<LoginProps> = (props) => {
           <ButtonWithIcon
             src={Logout}
             alt={""}
-            onClick={function (): void {}}
+            onClick={redirectToRegister}
             text={"Click Here"}
             extendedStyle={ExtendedRegisterButton}
           ></ButtonWithIcon>

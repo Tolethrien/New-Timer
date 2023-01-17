@@ -14,6 +14,7 @@ const AllProjects: React.FC = () => {
   const {
     userData,
     displayMode: { setDisplayMode, displayMode },
+    currentUser,
   } = useContext(appContext);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const [searchText, setSearchText] = useState("");
@@ -30,7 +31,7 @@ const AllProjects: React.FC = () => {
     <>
       <Head>
         <DisplayText size={1.1} weight={500}>
-          Hello! {`userName`}
+          Hello, {currentUser!.displayName}!
         </DisplayText>
         <DisplayText size={1.8} weight={700} margin="1% 0 0 0">
           Projects On your List ({userData.length})

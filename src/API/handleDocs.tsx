@@ -11,8 +11,8 @@ import {
   arrayRemove,
   deleteField,
 } from "firebase/firestore";
-import { useParams } from "react-router-dom";
 import db from "./firebase";
+import { auth } from "./firebase";
 
 export const colors = {
   Orange: 41,
@@ -25,7 +25,7 @@ export const ProjectStatuses = ["Active", "On Hold", "Done"];
 //===========PROJECTS===========================
 export const addProject = (name: string) => {
   const projectRef = doc(
-    collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Projects")
+    collection(db, "Users", auth.currentUser?.uid!, "Projects")
   );
   setDoc(projectRef, {
     name: name,
@@ -39,45 +39,27 @@ export const addProject = (name: string) => {
 };
 
 export const deleteProject = ({ id, tasks }: { id: string; tasks: any[] }) => {
-  const projectRef = doc(
-    db,
-    "Users",
-    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
-    "Projects",
-    id
-  );
+  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Projects", id);
   tasks.forEach((e) => {
-    let taskRef = doc(
-      db,
-      "Users",
-      "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
-      "Tasks",
-      e.id
-    );
+    let taskRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", e.id);
     deleteDoc(taskRef);
   });
   deleteDoc(projectRef);
 };
 
 export const updateProject = (id: string, value: {}) => {
-  const projectRef = doc(
-    db,
-    "Users",
-    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
-    "Projects",
-    id
-  );
+  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Projects", id);
   updateDoc(projectRef, value);
 };
 //===========TASKS===========================
 export const deleteTask = ({ id }: { id: string }) => {
-  const taskRef = doc(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks", id);
+  const taskRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", id);
 
   deleteDoc(taskRef);
 };
 export const addTask = (id: string, name: string) => {
   const projectRef = doc(
-    collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Tasks")
+    collection(db, "Users", auth.currentUser?.uid!, "Tasks")
   );
   setDoc(projectRef, {
     name: name,
@@ -91,23 +73,11 @@ export const addTask = (id: string, name: string) => {
   });
 };
 export const updateTime = (id: string, value: number) => {
-  const projectRef = doc(
-    db,
-    "Users",
-    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
-    "Tasks",
-    id
-  );
+  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", id);
   updateDoc(projectRef, { totalTime: value });
 };
 export const updateTask = (id: string, value: {}) => {
-  const projectRef = doc(
-    db,
-    "Users",
-    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
-    "Tasks",
-    id
-  );
+  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", id);
   updateDoc(projectRef, value);
 };
 export const updateCheckbox = (
@@ -116,37 +86,19 @@ export const updateCheckbox = (
   key: string,
   value: any
 ) => {
-  const projectRef = doc(
-    db,
-    "Users",
-    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
-    "Tasks",
-    taskId
-  );
+  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", taskId);
 
   updateDoc(projectRef, { [`checkboxes.${checkboxId}.${key}`]: value });
 };
 export const deleteCheckbox = (id: string, checkboxId: string) => {
-  const projectRef = doc(
-    db,
-    "Users",
-    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
-    "Tasks",
-    id
-  );
+  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", id);
   updateDoc(projectRef, {
     [`checkboxes.${checkboxId}`]: deleteField(),
   });
 };
 export const addNewCheckbox = (taskId: string, name: string) => {
   const newId = Math.random().toString().slice(2, -2);
-  const projectRef = doc(
-    db,
-    "Users",
-    "T5vA38SaQRMIqNj0Sa4mGn3QS3e2",
-    "Tasks",
-    taskId
-  );
+  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", taskId);
   updateDoc(projectRef, {
     [`checkboxes.${newId}`]: {
       name: name,
@@ -159,14 +111,12 @@ export const KILLALLTASKS = () => {
   // DO NOT EVOKE!!!
   let x: any[] = [];
   const querySorted = query(
-    collection(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Projects")
+    collection(db, "Users", auth.currentUser?.uid!, "Projects")
   );
   onSnapshot(querySorted, (snap) => {
     x = snap.docs.map((doc) => ({ id: doc.id }));
     x.forEach((e) =>
-      deleteDoc(
-        doc(db, "Users", "T5vA38SaQRMIqNj0Sa4mGn3QS3e2", "Projects", e.id)
-      )
+      deleteDoc(doc(db, "Users", auth.currentUser?.uid!, "Projects", e.id))
     );
     alert("All tasks Deleted");
   });
