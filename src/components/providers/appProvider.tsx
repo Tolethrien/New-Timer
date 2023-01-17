@@ -48,7 +48,7 @@ const Provider: React.FC<props> = (props) => {
   const [textColor, setTextColor] = useState(20);
   const [newColor, setNewColor] = useState(153);
   const [displayMode, setDisplayMode] = useState(
-    localStorage.getItem("mode") as string
+    (localStorage.getItem("mode") as string) ?? "light"
   );
   const [currenWindow, setCurrentWindow] = useState(0);
   // const [userData,setUserData] = useState(GetUserData())
