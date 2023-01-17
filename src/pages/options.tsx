@@ -18,6 +18,7 @@ const Options: React.FC<OptionsProps> = (props) => {
     navigate("/login", { replace: true });
   };
   const switchMode = () => {
+    if (!localStorage.getItem("mode")) localStorage.setItem("mode", "light");
     if (localStorage.getItem("mode") === "light") {
       localStorage.setItem("mode", "dark");
       setDisplayMode(localStorage.getItem("mode") as string);
