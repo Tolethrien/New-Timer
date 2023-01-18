@@ -24,7 +24,7 @@ const Login: React.FC<LoginProps> = (props) => {
   const handleLogin = () => {
     login(mailRef.current!.value, passRef.current!.value);
   };
-  if (currentUser) return <Navigate to="/dashboard" replace={true} />;
+  if (currentUser) return <Navigate to="/projects" replace={true} />;
   const redirectToRegister = () => {
     navigate("/register", { replace: true });
   };

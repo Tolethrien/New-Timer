@@ -37,4 +37,5 @@ const ComponentBody = styled.p<StyleProps>`
   font-size: ${({ size }) => size}rem;
   font-weight: ${({ weight }) => weight};
   margin: ${({ margin }) => margin};
+  /* transition: 0.5s; */
 `;

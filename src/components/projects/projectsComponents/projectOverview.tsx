@@ -44,9 +44,6 @@ const Project: React.FC<ProjectProps> = () => {
   const openTempateProject = () => {
     setTemplateTask(true);
   };
-  const isEmpty = (status: string) => {
-    return !project.tasks.some((e) => e.data.status === status);
-  };
   function tasksCompletion() {
     let data = {
       done: 0,
@@ -64,6 +61,8 @@ const Project: React.FC<ProjectProps> = () => {
     return data;
   }
 
+  if (TasksInfo.totalTasks > 0 && TasksInfo.done === TasksInfo.totalTasks)
+    updateProject(id!, { status: "Done" });
   if (!project) return <LoadingData />;
   return (
     <>

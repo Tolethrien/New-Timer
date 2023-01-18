@@ -54,6 +54,8 @@ const ComponentBody = styled.div<{ displayMode: string; bodyColor: string }>`
   backdrop-filter: blur(10px);
   width: 100%;
   border-radius: 0 0 15px 15px;
+  transition: 0.5s;
+
   border-bottom: 1px solid
     ${({ displayMode }) =>
       displayMode === "light" ? `hsla(0, 2%, 88%, 1)` : `hsla(0, 0%, 37%, 1)`};

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import FindData from "../../hooks/findData";
 import { TasksData } from "../../../API/getUserData";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { clockContext } from "../../providers/clockProvider";
 import { Clock } from "../../utils/icons";
@@ -19,13 +19,15 @@ const TaskOverview: React.FC = () => {
   const { id } = useParams();
   const task = FindData(id) as TasksData;
   const { setClock } = useContext(clockContext);
-  // const setAndOpenTimer = () => {
-  //   setClock(task?.data.totalTime, task!.id);
-  //   navigate("/timer");
-  //   currentWindow.set(1);
-  // };
+  const navigate = useNavigate();
+
   const playTask = () => {
-    console.log("sram");
+    setClock({
+      time: task.data.timeSpend,
+      project: task.data.projectID,
+      task: id!,
+    });
+    navigate("/timer");
   };
   if (!task) return <LoadingData />;
 

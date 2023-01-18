@@ -38,6 +38,7 @@ const ComponentBody = styled.div<{ displayMode: string }>`
   justify-content: center;
   width: 100%;
   margin-bottom: 2rem;
+
   :before {
     content: "";
     position: absolute;
@@ -46,6 +47,8 @@ const ComponentBody = styled.div<{ displayMode: string }>`
     top: 0;
     height: calc(100% + 1rem);
     width: 5%;
+    transition: 0.5s;
+
     background-color: ${({ displayMode }) =>
       `hsla(245, 84%, ${displayMode === "light" ? 85 : 15}%, 1)`};
     border-radius: 0 0 5px 0;
@@ -60,7 +63,6 @@ const TaskWrapper = styled.div`
 const CollapseIcon = styled.img<{ isCollapsed: boolean; displayMode: string }>`
   width: 0.8rem;
   height: 0.8rem;
-  padding: 0 5%;
   transition: 0.5s;
   cursor: pointer;
   transform: ${({ isCollapsed }) =>
@@ -82,12 +84,14 @@ const TopBar = styled.div<{ displayMode: string }>`
   left: 0;
   top: 0;
   height: 1.75rem;
-  width: 30%;
+  min-width: 6rem;
+  padding-inline: 2%;
+  gap: 0.5rem;
+  transition: 0.5s;
   background-color: ${({ displayMode }) =>
     `hsla(245, 84%, ${displayMode === "light" ? 85 : 15}%, 1)`};
   border-radius: 0 5px 5px 0;
 `;
 const TopBarName = styled.p`
   font-weight: 500;
-  padding-left: 5%;
 `;

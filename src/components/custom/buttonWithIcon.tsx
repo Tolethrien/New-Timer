@@ -48,12 +48,17 @@ const ComponentBody = styled.button<{ displayMode: string }>`
   font-size: 1rem;
   font-weight: 400;
   backdrop-filter: blur(15px);
+  white-space: nowrap;
+  transition: 0.5s;
+
   cursor: pointer;
 `;
 const ButtonIcon = styled.img<{ displayMode: string }>`
   width: 1rem;
   height: 1rem;
   padding-right: 0.4rem;
+  transition: 0.5s;
+
   ${({ displayMode }) =>
     displayMode === "light"
       ? `

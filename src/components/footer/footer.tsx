@@ -24,10 +24,10 @@ const Footer: React.FC<FooterProps> = () => {
     displayMode: { displayMode },
   } = useContext(appContext);
   const linkData = {
-    dashboard: { id: 0, name: "Dashboard", link: "./", icon: Dashboard },
+    // dashboard: { id: 0, name: "Dashboard", link: "./", icon: Dashboard },
     timer: { id: 1, name: "Timer", link: "./timer", icon: Timer },
-    Calendar: { id: 2, name: "Calendar", link: "./calendar", icon: Calendar },
-    Data: { id: 3, name: "Data", link: "./data", icon: Data },
+    // Calendar: { id: 2, name: "Calendar", link: "./calendar", icon: Calendar },
+    // Data: { id: 3, name: "Data", link: "./data", icon: Data },
     Projects: { id: 4, name: "Projects", link: "./projects", icon: Projects },
     Options: { id: 5, name: "Options", link: "./options", icon: Options },
   };
@@ -75,6 +75,8 @@ const ButtonLink = styled.div<{ displaymode: string }>`
   width: 35px;
   height: 35px;
   border-radius: 10px;
+  transition: 0.5s;
+
   background-color: ${({ displaymode }) =>
     displaymode === "light"
       ? `hsla(40, 76%, 69%, 0.8)`

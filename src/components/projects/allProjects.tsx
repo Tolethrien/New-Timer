@@ -62,7 +62,6 @@ const AllProjects: React.FC = () => {
             <ProjectCard key={e.id} data={e}></ProjectCard>
           ))}
       </ProjectsList>
-      <button onClick={() => setMode()}>swap mode</button>
     </>
   );
 };

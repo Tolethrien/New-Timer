@@ -51,7 +51,6 @@ const Provider: React.FC<props> = (props) => {
     (localStorage.getItem("mode") as string) ?? "light"
   );
   const [currenWindow, setCurrentWindow] = useState(0);
-  // const [userData,setUserData] = useState(GetUserData())
   const currentUser = useAuth();
   const userData = GetUserData();
   return (

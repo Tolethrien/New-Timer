@@ -88,7 +88,6 @@ const ComponentBody = styled.div<{ displayMode: string }>`
     `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
   border-radius: 5px;
   backdrop-filter: blur(20px);
-
   box-shadow: 2px 2px 4px 1px hsla(0, 0%, 0%, 0.25);
 `;
 const BoxWrap = styled.div`
@@ -107,10 +106,15 @@ const Box = styled.input<{
   height: 1rem;
   background: ${({ icon }) => `url(${icon})`};
   background-size: cover;
-  filter: brightness(0)
-    invert(${({ displayMode }) => (displayMode === "light" ? 0 : 1)});
-
   cursor: pointer;
+  ${({ displayMode }) =>
+    displayMode === "light"
+      ? `
+  filter: brightness(0) invert(0.3);
+  `
+      : `
+  filter: brightness(0) invert(0.7);
+      `};
 `;
 const BoxDescDisplay = styled.p`
   flex-grow: 1;

@@ -28,7 +28,7 @@ const Register: React.FC<RegisterProps> = (props) => {
       nameRef.current?.value!
     );
   };
-  if (currentUser) return <Navigate to="/dashboard" replace={true} />;
+  if (currentUser) return <Navigate to="/projects" replace={true} />;
   return (
     <PageWrap>
       <Head>

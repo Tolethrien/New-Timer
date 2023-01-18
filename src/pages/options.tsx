@@ -1,51 +1,46 @@
 import styled from "styled-components";
 import Glass from "../components/styled/glass";
-import Option from "../components/options/option";
+import Option from "../components/options/optionBar";
 import { logout } from "../API/firebase";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { appContext } from "../components/providers/appProvider";
+import Head from "../components/styled/head";
+import PageWrap from "../components/styled/pageWrap";
+import DisplayText from "../components/styled/displayText";
+import Category from "../components/projects/custome/category";
+import ButtonWithIcon from "../components/custom/buttonWithIcon";
+import { Logout, RoundSwap } from "../components/utils/icons";
+import AccountOptions from "../components/options/accountOptions";
+import PersonalisationOptions from "../components/options/personalisationOptions";
+import DangerZone from "../components/options/dangerZone";
 interface OptionsProps {}
 interface StyleProps {}
 const Options: React.FC<OptionsProps> = (props) => {
-  const {
-    currentUser,
-    displayMode: { setDisplayMode },
-  } = useContext(appContext);
-  const navigate = useNavigate();
-  const signout = async () => {
-    await logout();
-    navigate("/login", { replace: true });
-  };
-  const switchMode = () => {
-    if (!localStorage.getItem("mode")) localStorage.setItem("mode", "light");
-    if (localStorage.getItem("mode") === "light") {
-      localStorage.setItem("mode", "dark");
-      setDisplayMode(localStorage.getItem("mode") as string);
-    } else if (localStorage.getItem("mode") === "dark") {
-      localStorage.setItem("mode", "light");
-      setDisplayMode(localStorage.getItem("mode") as string);
-    }
-  };
-  if (!currentUser) return <Navigate to="/login" replace />;
+  // if (!currentUser) return <Navigate to="/login" replace />;
   return (
-    <Wrap>
-      <Glass size={"inline"}>
-        <Name>Settings</Name>
-        <button onClick={() => signout()}>wyloguj</button>
-        <button onClick={() => switchMode()}>switch mode</button>
-      </Glass>
-    </Wrap>
+    <PageWrap>
+      <Head>
+        <DisplayText>Settings</DisplayText>
+      </Head>
+      <Body>
+        <Category name="Account">
+          <AccountOptions />
+        </Category>
+        <Category name="Personalization">
+          <PersonalisationOptions />
+        </Category>
+        <Category name="Danger Zone">
+          <DangerZone />
+        </Category>
+      </Body>
+    </PageWrap>
   );
 };
 export default Options;
-const Wrap = styled.div<StyleProps>`
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
+const Body = styled.div`
+  margin-top: 1rem;
   width: 100%;
-  height: calc(100% - 45px);
 `;
 const Name = styled.h3<StyleProps>`
   padding-top: 2%;

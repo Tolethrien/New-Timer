@@ -57,6 +57,7 @@ const MainBody = styled.main<{ displayMode: string; user: boolean }>`
   height: 100vh;
   margin: auto;
   overflow: hidden;
+  transition: 1.5s;
   background-image: ${({ displayMode, user }) =>
     `url(${
       displayMode === "light"

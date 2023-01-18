@@ -9,17 +9,24 @@ import { vibrate } from "../utils/navigatorUtils";
 import { useContext } from "react";
 import { clockContext } from "../providers/clockProvider";
 import { appContext } from "../providers/appProvider";
+import { ConvertToStringTime } from "../hooks/convertToTime";
 interface CounterProps {}
 const Clock: React.FC<CounterProps> = (props) => {
-  const { timeLeft, pauseClock, playClock, barProgress, stopClock } =
-    useContext(clockContext);
+  const {
+    timeLeft,
+    pauseClock,
+    playClock,
+    barProgress,
+    stopClock,
+    onComplete,
+  } = useContext(clockContext);
   const {
     primary: { primaryColor },
   } = useContext(appContext);
 
   return (
     <Glass size={"inline"} margin={"20% 0"}>
-      {/* <ProgressBar>
+      <ProgressBar>
         <CircularProgressBar
           config={{
             size: 170,
@@ -33,32 +40,23 @@ const Clock: React.FC<CounterProps> = (props) => {
           }}
           progress={barProgress}
         >
-          {timeLeft}
+          {ConvertToStringTime(timeLeft)}
         </CircularProgressBar>
       </ProgressBar>
       <Buttons>
         <Button onClick={() => (playClock(), vibrate("short"))}>
           <ButtonSvg src={Play} alt={"s"}></ButtonSvg>
         </Button>
-        <Button
-          onClick={() => (pauseClock(), vibrate("short"))}
-          color={primaryColor}
-        >
+        <Button onClick={() => (pauseClock(), vibrate("short"))}>
           <ButtonSvg src={Pause} alt={"s"}></ButtonSvg>
         </Button>
-        <Button
-          onClick={() => (stopClock(), vibrate("short"))}
-          color={primaryColor}
-        >
+        <Button onClick={() => (stopClock(), vibrate("short"))}>
           <ButtonSvg src={Stop} alt={"s"}></ButtonSvg>
         </Button>
-        <Button
-          onClick={() => (stopClock(), vibrate("short"))}
-          color={primaryColor}
-        >
+        <Button onClick={() => (onComplete(), vibrate("short"))}>
           <ButtonSvg src={Done} alt={"s"}></ButtonSvg>
         </Button>
-      </Buttons> */}
+      </Buttons>
     </Glass>
   );
 };
@@ -77,7 +75,7 @@ const Buttons = styled.div`
   justify-content: space-around;
   padding: 5% 0;
 `;
-const Button = styled.button<{ color: string }>`
+const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
