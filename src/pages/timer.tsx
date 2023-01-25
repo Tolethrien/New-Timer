@@ -96,7 +96,6 @@ const ButtomHead = styled.div<{ displayMode: string }>`
     displayMode === "light"
       ? `hsla(40, 76%, 69%, 0.8)`
       : `hsla(261, 16%, 40%, 0.8)`};
-  overflow: hidden;
   border-radius: 10px 10px 0 0;
   backdrop-filter: blur(15px);
   border: 1px solid
@@ -124,6 +123,7 @@ const CheckboxTitleBar = styled.div`
 `;
 const CheckboxesScroller = styled.div`
   width: 100%;
+  height: 35vh;
   overflow-y: scroll;
   padding-block: 0.7rem;
   box-sizing: border-box;
