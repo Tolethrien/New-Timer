@@ -2,7 +2,7 @@ import { useContext } from "react";
 import styled from "styled-components";
 import { appContext } from "../providers/appProvider";
 import { clockContext } from "../providers/clockProvider";
-import { Done, Pause, Play, Stop } from "../utils/icons";
+import { Done, Play, Stop } from "../utils/icons";
 import { vibrate } from "../utils/navigatorUtils";
 interface TimerButtonsProps {
   showCheckboxComponent?: boolean;
@@ -16,7 +16,10 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
     displayMode: { displayMode },
   } = useContext(appContext);
   return (
-    <ComponentBody showCheckboxComponent={showCheckboxComponent}>
+    <ComponentBody
+      showCheckboxComponent={showCheckboxComponent}
+      displayMode={displayMode}
+    >
       <ButtonWithDescription>
         <Button
           displayMode={displayMode}
@@ -46,10 +49,14 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
   );
 };
 export default TimerButtons;
-const ComponentBody = styled.div<{ showCheckboxComponent?: boolean }>`
+const ComponentBody = styled.div<{
+  showCheckboxComponent?: boolean;
+  displayMode: string;
+}>`
   display: flex;
   align-items: center;
-  background-color: hsla(0, 0%, 57%, 0.5);
+  background-color: ${({ displayMode }) =>
+    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
   backdrop-filter: blur(15px);
   color: inherit;
   border-radius: 10px;

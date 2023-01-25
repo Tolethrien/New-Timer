@@ -4,16 +4,16 @@ import styled from "styled-components";
 
 interface CircularProps {
   config: {
-    /** width and height of element in pixels*/
-    size: number;
-    /**stroke width of back circle*/
-    trackWidth: number;
-    /** hsla hue of back circle*/
-    trackHue: number;
-    /**stroke width of front circle*/
-    indicatorWidth: number;
-    /** hsla hue of front circle */
-    indicatorHue: number;
+    /** width and height of element in rem*/
+    size: string;
+    /**stroke width of back circle in rem*/
+    trackWidth: string;
+    /** hsla  of back circle*/
+    trackColor: string;
+    /**stroke width of front circle in rem*/
+    indicatorWidth: string;
+    /** hsla  of front circle */
+    indicatorColor: string;
     /** line cap of front circle*/
     indicatorCap: "inherit" | "butt" | "round" | "square";
     /** glow effect on back circle
@@ -22,8 +22,8 @@ interface CircularProps {
     glow?: {
       /**@desc strength of glow "aura" in pixels */
       strength: number;
-      /**@desc hsla hue of glow */
-      hue: number;
+      /**@desc hsla of glow */
+      color: string;
     };
     /** font data of children element(center text)
      * @optional
@@ -35,10 +35,12 @@ interface CircularProps {
       size?: number;
       /** @desc background with color. @default false */
       background?: boolean;
-      /** @desc background opacity. @default 1 (none) */
-      opacity?: number;
+      /** @desc background color. @default hsla(0,0%,0%,0.5) */
+      backgroundColor?: string;
       /** @desc background backblur. @default 0 (none) */
       backBlur?: number;
+      /** @desc padding-block in rems. @default 0 (none) */
+      paddingBlock?: number;
     };
   };
   /**children element e.g. Text in center of component */
@@ -63,53 +65,50 @@ const CircularProgressBar: React.FC<CircularProps> = ({
   const {
     size,
     trackWidth,
-    trackHue,
+    trackColor,
     indicatorWidth,
-    indicatorHue,
+    indicatorColor,
     indicatorCap,
     glow,
     text,
   } = config;
   // center position of svg element
-  const center = size / 2;
-  //radius of circles
-  const radius =
-    center -
-    (trackWidth > indicatorWidth ? trackWidth / 2 : indicatorWidth / 2);
-  // filling of "Full" circles
-  const dashArray = 2 * Math.PI * radius;
-  // filling of front circle based on progress
-  const dashOffset = dashArray * ((100 - progress) / 100);
+  const componentCenter = `${size}/2`;
 
+  const radius = `${size}/2 - ${
+    trackWidth > indicatorWidth ? trackWidth : indicatorWidth
+  }/2`;
+  const strokeDasharray = `2 *  ${Math.PI} * (${size}/2 - ${indicatorWidth}/2)`;
+  const strokeDashoffset = `(${strokeDasharray}) * ((100 - ${progress}) / 100)`;
   return (
     <>
       <ComponentBody width={size} height={size} glow={glow}>
-        <SvgClock width={size} height={size}>
+        <SvgClock width="100%" height="100%">
           <CirclePath
-            cx={center}
-            cy={center}
-            r={radius}
-            stroke={`hsla(${trackHue}, 70%, 60%, 1)`}
+            cx={`calc(${componentCenter})`}
+            cy={`calc(${componentCenter})`}
+            r={`calc(${radius})`}
+            stroke={trackColor}
             strokeWidth={trackWidth}
           />
           <CirclePath
-            cx={center}
-            cy={center}
-            r={radius}
-            stroke={`hsla(${indicatorHue}, 70%, 60%, 1)`}
+            cx={`calc(${componentCenter})`}
+            cy={`calc(${componentCenter})`}
+            r={`calc(${radius})`}
+            stroke={indicatorColor}
             strokeWidth={indicatorWidth}
-            strokeDasharray={dashArray}
-            strokeDashoffset={dashOffset}
+            strokeDasharray={`calc(${strokeDasharray})`}
+            strokeDashoffset={`calc(${strokeDashoffset})`}
             strokeLinecap={indicatorCap}
           />
         </SvgClock>
         <TimerOnCenter
-          backgroundColor={trackHue}
           fontFamily={text?.family ?? "inherit"}
           fontSize={text?.size ?? 1}
           background={text?.background ?? false}
-          opacity={text?.opacity ?? 1}
+          backgroundColor={text?.backgroundColor ?? "hsla(0,0%,0%,0.5)"}
           backBlur={text?.backBlur ?? 0}
+          paddingBlock={text?.paddingBlock ?? 0}
         >
           {children}
         </TimerOnCenter>
@@ -122,23 +121,21 @@ export default CircularProgressBar;
 //=======STYLES========
 
 const ComponentBody = styled.div<{
-  width: number;
-  height: number;
-  glow?: { strength: number; hue: number };
+  width: string;
+  height: string;
+  glow?: { strength: number; color: string };
 }>`
   position: relative;
   border-radius: 100%;
-  border: 1px solid black;
   box-sizing: border-box;
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
+  width: ${({ width }) => width};
+  height: ${({ height }) => height};
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   ${({ glow }) =>
-    glow &&
-    `filter: drop-shadow(0px 0px ${glow.strength}px hsla(${glow.hue}, 100%, 50%,0.5))`};
+    glow && `filter: drop-shadow(0px 0px ${glow.strength}px ${glow.color})`};
 `;
 
 const SvgClock = styled.svg`
@@ -156,16 +153,17 @@ const TimerOnCenter = styled.p<{
   fontFamily: string;
   fontSize: number;
   background: boolean;
-  backgroundColor: number;
-  opacity: number;
+  backgroundColor: string;
   backBlur: number;
+  paddingBlock: number;
 }>`
   width: 100%;
-  background-color: ${({ background, backgroundColor, opacity }) =>
-    background && `hsla(${backgroundColor}, 70%, 60%, ${opacity})`};
+  background-color: ${({ background, backgroundColor }) =>
+    background && backgroundColor};
   backdrop-filter: ${({ backBlur }) => `blur(${backBlur}px)`};
   overflow: hidden;
   text-align: center;
   font-family: ${({ fontFamily }) => fontFamily};
   font-size: ${({ fontSize }) => fontSize}rem;
+  padding-block: ${({ paddingBlock }) => paddingBlock}rem;
 `;

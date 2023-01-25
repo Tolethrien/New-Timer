@@ -9,6 +9,7 @@ import Checkboxes from "../components/projects/tasksComponents/checkboxes";
 import CircularProgressBar from "../components/styled/circularProgresBar";
 import { ConvertToStringTime } from "../components/hooks/convertToTime";
 import TimerButtons from "../components/timer/timerButtons";
+import Clock from "../components/timer/clockComponent";
 const Timer: React.FC = () => {
   const {
     userData,
@@ -33,29 +34,7 @@ const Timer: React.FC = () => {
             : "You Are now in Free Mode"}
         </DisplayText>
       </Head>
-      <Clock showCheckboxComponent={showCheckboxComponent}>
-        <CircularProgressBar
-          config={{
-            size: 220,
-            trackWidth: 16,
-            trackHue: 200,
-            indicatorWidth: 16,
-            indicatorHue: 320,
-            indicatorCap: "round",
-            glow: { strength: 10, hue: 108 },
-            text: {
-              family: "roboto",
-              size: 2.8,
-              background: true,
-              opacity: 0.5,
-            },
-          }}
-          progress={barProgress}
-        >
-          {ConvertToStringTime(timeLeft)}
-        </CircularProgressBar>
-        <TimerButtons showCheckboxComponent={showCheckboxComponent} />
-      </Clock>
+      <Clock showCheckboxComponent={showCheckboxComponent} />
       <ButtomHead displayMode={displayMode}>
         <CheckboxTitleBar
           onClick={() => setShowCheckboxComponent((prev) => !prev)}
@@ -81,16 +60,16 @@ const Timer: React.FC = () => {
 };
 export default Timer;
 
-const Clock = styled.div<{ showCheckboxComponent: boolean }>`
-  display: flex;
-  flex-direction: ${({ showCheckboxComponent }) =>
-    showCheckboxComponent ? "row" : "column"};
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-block: 1rem;
-  flex-grow: 1;
-`;
+// const Clock = styled.div<{ showCheckboxComponent: boolean }>`
+//   display: flex;
+//   flex-direction: ${({ showCheckboxComponent }) =>
+//     showCheckboxComponent ? "row" : "column"};
+//   align-items: center;
+//   justify-content: center;
+//   gap: 1rem;
+//   margin-block: 1rem;
+//   flex-grow: 1;
+// `;
 const ButtomHead = styled.div<{ displayMode: string }>`
   display: grid;
   width: 100%;
