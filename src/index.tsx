@@ -7,8 +7,6 @@ import { BrowserRouter } from "react-router-dom";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-var myScreenOrientation = window.screen.orientation;
-myScreenOrientation.lock("portrait");
 root.render(
   <React.StrictMode>
     <BrowserRouter>
