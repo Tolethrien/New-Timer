@@ -19,7 +19,6 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
     displayMode: { displayMode },
   } = useContext(appContext);
   const taskId = useParams().id;
-
   const handleClickOutside = (e: any) => {
     if (!componentRef.current?.contains(e.target)) {
       paragraphRef.current!.innerText = data.name;

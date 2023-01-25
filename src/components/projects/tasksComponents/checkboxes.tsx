@@ -8,8 +8,12 @@ import CheckBox from "./checkbox/checkbox";
 import CheckboxTemplate from "./checkbox/checkboxTemplate";
 interface ChecboxesProps {
   checkboxes: checkboxes;
+  displayOnly?: boolean;
 }
-const Checkboxes: React.FC<ChecboxesProps> = ({ checkboxes }) => {
+const Checkboxes: React.FC<ChecboxesProps> = ({
+  checkboxes,
+  displayOnly = false,
+}) => {
   const [templateTask, setTemplateTask] = useState(false);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
 
@@ -34,19 +38,21 @@ const Checkboxes: React.FC<ChecboxesProps> = ({ checkboxes }) => {
           .map((checkbox) => (
             <CheckBox checkboxData={checkbox} key={randomKey()}></CheckBox>
           ))}
-      {templateTask && (
+      {templateTask && !displayOnly && (
         <CheckboxTemplate
           setTemplateTask={setTemplateTask}
           referenceButton={buttonNewRef}
         />
       )}
-      <ButtonWithIcon
-        src={Add}
-        alt=""
-        onClick={() => setTemplateTask(true)}
-        text="Add New"
-        reference={buttonNewRef}
-      ></ButtonWithIcon>
+      {!displayOnly && (
+        <ButtonWithIcon
+          src={Add}
+          alt=""
+          onClick={() => setTemplateTask(true)}
+          text="Add New"
+          reference={buttonNewRef}
+        ></ButtonWithIcon>
+      )}
     </ComponentBody>
   );
 };

@@ -34,7 +34,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Redirect />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path={"/timer"} element={<Timer />}></Route>
+            <Route path={"/timer/:id"} element={<Timer />}></Route>
             <Route path={"/calendar"} element={<Calendar />}></Route>
             <Route path={"/data"} element={<Data />}></Route>
             <Route path={"/projects/*"} element={<Projects />}></Route>

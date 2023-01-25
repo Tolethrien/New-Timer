@@ -4,8 +4,7 @@ import { updateTask, updateTime } from "../../API/handleDocs";
 interface provider {
   timeLeft: number;
   barProgress: number;
-  pauseClock: () => void;
-  playClock: () => void;
+  playPauseClock: () => void;
   stopClock: () => void;
   onComplete: () => void;
   setClock: ({ time, project, task }: SetClock) => void;
@@ -43,22 +42,29 @@ const Clock: React.FC<props> = (props) => {
       setBarProgress(barProgress + minutesToPercent);
     }, 1000);
   };
-  const pauseClock = () => {
-    clearInterval(interval.current);
-    setIsRunning(false);
-    updateDB();
-  };
-  const playClock = () => {
-    if (isRunning) return;
-    createInterval();
-    setIsRunning(true);
+
+  const playPauseClock = () => {
+    if (isRunning) {
+      clearInterval(interval.current);
+      setIsRunning(false);
+      if (taskInProgress !== undefined) updateDB();
+    } else {
+      createInterval();
+      setIsRunning(true);
+    }
   };
   const stopClock = () => {
-    updateDB();
     clearInterval(interval.current);
     setTimeLeft(0);
     setBarProgress(0);
     setIsRunning(false);
+    console.log("w undefined");
+    if (taskInProgress !== undefined) {
+      updateDB();
+      setTaskInProgress(undefined);
+      navigate("/timer/undefined");
+      console.log("w tasku");
+    }
   };
   const setClock = ({ time, project, task }: SetClock) => {
     setTimeLeft(time);
@@ -80,8 +86,7 @@ const Clock: React.FC<props> = (props) => {
       value={{
         timeLeft,
         barProgress,
-        pauseClock,
-        playClock,
+        playPauseClock,
         stopClock,
         setClock,
         onComplete,

@@ -1,11 +1,12 @@
 import { useContext, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 import { appContext } from "../../providers/appProvider";
 import { Collapse } from "../../utils/icons";
 const Category: React.FC<{
   name: string;
   children?: React.ReactNode;
-}> = ({ name, children }) => {
+  extendedStyle?: StyledComponent<"div", any, {}, never>;
+}> = ({ name, children, extendedStyle }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const divChildrenRef = useRef<HTMLDivElement>(null);
   const {
@@ -13,7 +14,7 @@ const Category: React.FC<{
   } = useContext(appContext);
 
   return (
-    <ComponentBody displayMode={displayMode}>
+    <ComponentBody displayMode={displayMode} as={extendedStyle}>
       <TopBar displayMode={displayMode}>
         <TopBarName>{name}</TopBarName>
         <CollapseIcon

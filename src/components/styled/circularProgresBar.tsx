@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 //=======TYPES========
 
@@ -8,50 +8,51 @@ interface CircularProps {
     size: number;
     /**stroke width of back circle*/
     trackWidth: number;
-    /** color of back circle*/
-    trackColor: string;
+    /** hsla hue of back circle*/
+    trackHue: number;
     /**stroke width of front circle*/
     indicatorWidth: number;
-    /** color of front circle */
-    indicatorColor: string;
+    /** hsla hue of front circle */
+    indicatorHue: number;
     /** line cap of front circle*/
     indicatorCap: "inherit" | "butt" | "round" | "square";
     /** glow effect on back circle
      * @optional
-     * @param strength strength of glow "aura" in pixels
-     * @param color color of glow
      */
-    glow?: { strength: number; color: string };
+    glow?: {
+      /**@desc strength of glow "aura" in pixels */
+      strength: number;
+      /**@desc hsla hue of glow */
+      hue: number;
+    };
     /** font data of children element(center text)
      * @optional
-     * @param family font family
-     * @param size font size in em
      */
-    font?: { family: string; size: number };
+    text?: {
+      /** @desc font family. @default "inherit" */
+      family?: string;
+      /** @desc font size. @default "1rem" */
+      size?: number;
+      /** @desc background with color. @default false */
+      background?: boolean;
+      /** @desc background opacity. @default 1 (none) */
+      opacity?: number;
+      /** @desc background backblur. @default 0 (none) */
+      backBlur?: number;
+    };
   };
   /**children element e.g. Text in center of component */
   children?: React.ReactNode;
   /**percent of complition*/
   progress: number;
 }
-interface CircleStyle {
-  cx: number;
-  cy: number;
-  r: number;
-  stroke: string;
-  strokeWidth: number;
-  strokeDasharray?: number;
-  strokeDashoffset?: number;
-  strokeLinecap?: string;
-  glow?: { strength: number; color: string };
-}
 
 //=======COMPONENT========
 /**
  *@desc costomize circular progress bar with text
- * @param {Object} config configuration data
- * @param {text} children displayed text on center
- * @param {number} progress percent of complition
+ * @param config configuration data
+ * @param  children displayed text on center
+ * @param  progress percent of complition
  * @returns JSX
  */
 const CircularProgressBar: React.FC<CircularProps> = ({
@@ -62,18 +63,19 @@ const CircularProgressBar: React.FC<CircularProps> = ({
   const {
     size,
     trackWidth,
-    trackColor,
+    trackHue,
     indicatorWidth,
-    indicatorColor,
+    indicatorHue,
     indicatorCap,
     glow,
-    font,
+    text,
   } = config;
   // center position of svg element
   const center = size / 2;
   //radius of circles
   const radius =
-    center - (trackWidth > indicatorWidth ? trackWidth : indicatorWidth);
+    center -
+    (trackWidth > indicatorWidth ? trackWidth / 2 : indicatorWidth / 2);
   // filling of "Full" circles
   const dashArray = 2 * Math.PI * radius;
   // filling of front circle based on progress
@@ -81,34 +83,37 @@ const CircularProgressBar: React.FC<CircularProps> = ({
 
   return (
     <>
-      <Wrap width={size} height={size}>
-        <SvgCircle width={size} height={size}>
+      <ComponentBody width={size} height={size} glow={glow}>
+        <SvgClock width={size} height={size}>
           <CirclePath
             cx={center}
             cy={center}
             r={radius}
-            stroke={trackColor}
+            stroke={`hsla(${trackHue}, 70%, 60%, 1)`}
             strokeWidth={trackWidth}
-            glow={glow}
           />
           <CirclePath
             cx={center}
             cy={center}
             r={radius}
-            stroke={indicatorColor}
+            stroke={`hsla(${indicatorHue}, 70%, 60%, 1)`}
             strokeWidth={indicatorWidth}
             strokeDasharray={dashArray}
             strokeDashoffset={dashOffset}
             strokeLinecap={indicatorCap}
           />
-        </SvgCircle>
-        <Time
-          fontFamily={font ? font.family : "inherit"}
-          fontSize={font ? font.size : 1}
+        </SvgClock>
+        <TimerOnCenter
+          backgroundColor={trackHue}
+          fontFamily={text?.family ?? "inherit"}
+          fontSize={text?.size ?? 1}
+          background={text?.background ?? false}
+          opacity={text?.opacity ?? 1}
+          backBlur={text?.backBlur ?? 0}
         >
-          <span>{children}</span>
-        </Time>
-      </Wrap>
+          {children}
+        </TimerOnCenter>
+      </ComponentBody>
     </>
   );
 };
@@ -116,26 +121,49 @@ export default CircularProgressBar;
 
 //=======STYLES========
 
-const Wrap = styled.div<{ width: number; height: number }>`
+const ComponentBody = styled.div<{
+  width: number;
+  height: number;
+  glow?: { strength: number; hue: number };
+}>`
   position: relative;
+  border-radius: 100%;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
   display: flex;
+  align-items: center;
   justify-content: center;
+  overflow: hidden;
+  ${({ glow }) =>
+    glow &&
+    `filter: drop-shadow(0px 0px ${glow.strength}px hsla(${glow.hue}, 100%, 50%,0.5))`};
 `;
-const SvgCircle = styled.svg<{ width: number; height: number }>`
+
+const SvgClock = styled.svg`
+  position: absolute;
   vertical-align: middle;
   transform: rotate(-90deg);
   overflow: visible;
+  z-index: 2;
 `;
-const CirclePath = styled.circle<CircleStyle>`
+const CirclePath = styled.circle`
   fill: transparent;
-  ${({ glow }) =>
-    glow && `filter: drop-shadow(0px 0px ${glow!.strength}px ${glow!.color})`};
 `;
-const Time = styled.div<{ fontFamily: string; fontSize: number }>`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+
+const TimerOnCenter = styled.p<{
+  fontFamily: string;
+  fontSize: number;
+  background: boolean;
+  backgroundColor: number;
+  opacity: number;
+  backBlur: number;
+}>`
+  width: 100%;
+  background-color: ${({ background, backgroundColor, opacity }) =>
+    background && `hsla(${backgroundColor}, 70%, 60%, ${opacity})`};
+  backdrop-filter: ${({ backBlur }) => `blur(${backBlur}px)`};
+  overflow: hidden;
+  text-align: center;
   font-family: ${({ fontFamily }) => fontFamily};
-  font-size: ${({ fontSize }) => fontSize}em;
+  font-size: ${({ fontSize }) => fontSize}rem;
 `;

@@ -12,6 +12,7 @@ import {
 import { useContext, useState, useEffect } from "react";
 import { appContext } from "../providers/appProvider";
 import { vibrate } from "../utils/navigatorUtils";
+import { clockContext } from "../providers/clockProvider";
 interface FooterProps {}
 interface styleProps {
   color: string;
@@ -23,9 +24,16 @@ const Footer: React.FC<FooterProps> = () => {
     currentWindow,
     displayMode: { displayMode },
   } = useContext(appContext);
+  const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
+
   const linkData = {
     // dashboard: { id: 0, name: "Dashboard", link: "./", icon: Dashboard },
-    timer: { id: 1, name: "Timer", link: "./timer", icon: Timer },
+    timer: {
+      id: 1,
+      name: "Timer",
+      link: `./timer/${taskInProgress?.task ?? undefined}`,
+      icon: Timer,
+    },
     // Calendar: { id: 2, name: "Calendar", link: "./calendar", icon: Calendar },
     // Data: { id: 3, name: "Data", link: "./data", icon: Data },
     Projects: { id: 4, name: "Projects", link: "./projects", icon: Projects },
