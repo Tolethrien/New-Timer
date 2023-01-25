@@ -128,6 +128,8 @@ const ComponentBody = styled.div<{
 }>`
   position: relative;
   border-radius: 100%;
+  border: 1px solid black;
+  box-sizing: border-box;
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   display: flex;

@@ -33,7 +33,7 @@ const Timer: React.FC = () => {
             : "You Are now in Free Mode"}
         </DisplayText>
       </Head>
-      <Clock>
+      <Clock showCheckboxComponent={showCheckboxComponent}>
         <CircularProgressBar
           config={{
             size: 220,
@@ -54,7 +54,7 @@ const Timer: React.FC = () => {
         >
           {ConvertToStringTime(timeLeft)}
         </CircularProgressBar>
-        <TimerButtons />
+        <TimerButtons showCheckboxComponent={showCheckboxComponent} />
       </Clock>
       <ButtomHead displayMode={displayMode}>
         <CheckboxTitleBar
@@ -81,9 +81,12 @@ const Timer: React.FC = () => {
 };
 export default Timer;
 
-const Clock = styled.div`
+const Clock = styled.div<{ showCheckboxComponent: boolean }>`
   display: flex;
+  flex-direction: ${({ showCheckboxComponent }) =>
+    showCheckboxComponent ? "row" : "column"};
   align-items: center;
+  justify-content: center;
   gap: 1rem;
   margin-block: 1rem;
   flex-grow: 1;
@@ -123,7 +126,7 @@ const CheckboxTitleBar = styled.div`
 `;
 const CheckboxesScroller = styled.div`
   width: 100%;
-  height: 35vh;
+  max-height: 35vh;
   overflow-y: scroll;
   padding-block: 0.7rem;
   box-sizing: border-box;

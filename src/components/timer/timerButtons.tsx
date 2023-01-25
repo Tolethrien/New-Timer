@@ -4,50 +4,73 @@ import { appContext } from "../providers/appProvider";
 import { clockContext } from "../providers/clockProvider";
 import { Done, Pause, Play, Stop } from "../utils/icons";
 import { vibrate } from "../utils/navigatorUtils";
-interface TimerButtonsProps {}
-const TimerButtons: React.FC<TimerButtonsProps> = (props) => {
+interface TimerButtonsProps {
+  showCheckboxComponent?: boolean;
+}
+const TimerButtons: React.FC<TimerButtonsProps> = ({
+  showCheckboxComponent,
+}) => {
   const { playPauseClock, stopClock, onComplete, taskInProgress } =
     useContext(clockContext);
   const {
     displayMode: { displayMode },
   } = useContext(appContext);
   return (
-    <ComponentBody>
-      <Button
-        displayMode={displayMode}
-        img={Play}
-        onClick={() => (playPauseClock(), vibrate("short"))}
-      ></Button>
-      Play/Pause
-      <Button
-        img={Stop}
-        displayMode={displayMode}
-        onClick={() => (stopClock(), vibrate("short"))}
-      ></Button>
-      Stop
-      <Button
-        disabled={taskInProgress === undefined ? true : false}
-        img={Done}
-        displayMode={displayMode}
-        onClick={() => (onComplete(), vibrate("short"))}
-      ></Button>
-      Complete
+    <ComponentBody showCheckboxComponent={showCheckboxComponent}>
+      <ButtonWithDescription>
+        <Button
+          displayMode={displayMode}
+          img={Play}
+          onClick={() => (playPauseClock(), vibrate("short"))}
+        ></Button>
+        Play/Pause
+      </ButtonWithDescription>
+      <ButtonWithDescription>
+        <Button
+          img={Stop}
+          displayMode={displayMode}
+          onClick={() => (stopClock(), vibrate("short"))}
+        ></Button>
+        Stop
+      </ButtonWithDescription>
+      <ButtonWithDescription>
+        <Button
+          disabled={taskInProgress === undefined ? true : false}
+          img={Done}
+          displayMode={displayMode}
+          onClick={() => (onComplete(), vibrate("short"))}
+        ></Button>
+        Complete
+      </ButtonWithDescription>
     </ComponentBody>
   );
 };
 export default TimerButtons;
-const ComponentBody = styled.div<{}>`
+const ComponentBody = styled.div<{ showCheckboxComponent?: boolean }>`
+  display: flex;
+  align-items: center;
+  background-color: hsla(0, 0%, 57%, 0.5);
+  backdrop-filter: blur(15px);
+  color: inherit;
+  border-radius: 10px;
+  padding: 1rem;
+  ${({ showCheckboxComponent }) =>
+    showCheckboxComponent
+      ? `
+      flex-direction: column;
+      gap: 0.5rem;`
+      : `
+      flex-direction: row;
+      padding-inline: 2rem;
+      gap: 1rem;`};
+`;
+
+const ButtonWithDescription = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: hsla(0, 0%, 87%, 0.22);
-  backdrop-filter: blur(15px);
   gap: 0.5rem;
-  color: inherit;
-  border-radius: 10px;
-  padding: 0.5rem;
 `;
-
 const Button = styled.button<{ img: string; displayMode: string }>`
   position: relative;
   background: ${({ disabled }) =>
