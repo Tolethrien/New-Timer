@@ -16,6 +16,7 @@ const DangerZone: React.FC<DangerZoneProps> = (props) => {
           src={Trash}
           alt=""
           text="delete"
+          noShadow
           onClick={temp}
         ></ButtonWithIcon>
       </OptionBar>
@@ -25,6 +26,7 @@ const DangerZone: React.FC<DangerZoneProps> = (props) => {
           src={Trash}
           alt=""
           text="delete"
+          noShadow
           onClick={temp}
         ></ButtonWithIcon>
       </OptionBar>

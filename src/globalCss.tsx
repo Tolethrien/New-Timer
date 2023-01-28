@@ -34,6 +34,15 @@ const GlobalStyle = createGlobalStyle`
   h1,h2,h3,h4{
     margin: 0;
   }
+  dialog{
+    box-sizing: border-box;
+    width: clamp(235px,350px,420px);
+    ::backdrop {
+    backdrop-filter: blur(3px);
+    max-width: 420px;
+    margin-inline: auto;
+  }
+  }
 
 `;
 export default GlobalStyle;

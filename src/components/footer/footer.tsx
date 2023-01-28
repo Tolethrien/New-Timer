@@ -22,6 +22,7 @@ const Footer: React.FC<FooterProps> = () => {
     primary: { primaryColor },
     secondary: { secondaryColor },
     currentWindow,
+    currentUser,
     displayMode: { displayMode },
   } = useContext(appContext);
   const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
@@ -31,7 +32,7 @@ const Footer: React.FC<FooterProps> = () => {
     timer: {
       id: 1,
       name: "Timer",
-      link: `./timer/${taskInProgress?.task ?? undefined}`,
+      link: "./timer",
       icon: Timer,
     },
     // Calendar: { id: 2, name: "Calendar", link: "./calendar", icon: Calendar },
@@ -47,7 +48,7 @@ const Footer: React.FC<FooterProps> = () => {
     // findUrl?.id !== currentWindow.id && currentWindow.set(findUrl!.id);
   }, []);
   return (
-    <Wrap>
+    <Wrap userLogedIn={Boolean(currentUser)}>
       {Object.values(linkData).map((key) => (
         <ButtonLink
           as={NavLink}
@@ -64,10 +65,8 @@ const Footer: React.FC<FooterProps> = () => {
   );
 };
 export default Footer;
-export const Wrap = styled.footer`
-  position: absolute;
-  bottom: 0;
-  display: flex;
+export const Wrap = styled.footer<{ userLogedIn: boolean }>`
+  display: ${({ userLogedIn }) => (userLogedIn ? "flex" : "none")};
   justify-content: space-evenly;
   align-items: center;
   padding: 10px 0;

@@ -17,11 +17,15 @@ const Timer: React.FC = () => {
   } = useContext(appContext);
   const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
   const [showCheckboxComponent, setShowCheckboxComponent] = useState(false);
+  const { projectData, taskData } = findDataInfo();
 
-  const getTaskData = userData
-    .find((e) => e.id === taskInProgress?.project)
-    ?.tasks.find((e) => e.id === taskInProgress?.task)?.data;
-
+  function findDataInfo() {
+    let project = userData.find((e) => e.id === taskInProgress?.project);
+    let taskData = project?.tasks.find(
+      (e) => e.id === taskInProgress?.task
+    )?.data;
+    return { projectData: project?.data, taskData };
+  }
   return (
     <PageWrap>
       <Head>
@@ -30,9 +34,12 @@ const Timer: React.FC = () => {
         </DisplayText>
         <DisplayText weight={500}>
           {taskInProgress
-            ? `currently working on ${getTaskData!.name} task`
+            ? `currently working on ${taskData?.name}`
             : "You Are now in Free Mode"}
         </DisplayText>
+        {taskInProgress && (
+          <DisplayText weight={500}>In Project {projectData?.name}</DisplayText>
+        )}
       </Head>
       <Clock showCheckboxComponent={showCheckboxComponent} />
       <ButtomHead displayMode={displayMode}>
@@ -47,7 +54,11 @@ const Timer: React.FC = () => {
         {showCheckboxComponent &&
           (taskInProgress?.task ? (
             <CheckboxesScroller>
-              <Checkboxes checkboxes={getTaskData!.checkboxes} displayOnly />
+              {Object.keys(taskData!.checkboxes).length > 0 ? (
+                <Checkboxes checkboxes={taskData!.checkboxes} displayOnly />
+              ) : (
+                <DisplayText>No Checkboxes in this task</DisplayText>
+              )}
             </CheckboxesScroller>
           ) : (
             <DisplayText margin="1rem 0.5rem">

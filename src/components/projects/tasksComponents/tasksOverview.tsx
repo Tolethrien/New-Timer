@@ -27,7 +27,7 @@ const TaskOverview: React.FC = () => {
       project: task.data.projectID,
       task: id!,
     });
-    navigate(`/timer/${id}`);
+    navigate("/timer");
   };
   if (!task) return <LoadingData />;
 

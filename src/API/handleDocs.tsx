@@ -70,6 +70,7 @@ export const addTask = (id: string, name: string) => {
     projectID: id,
     showCheckboxes: true,
     showDescription: true,
+    checkboxes: {},
   });
 };
 export const updateTime = (id: string, value: number) => {

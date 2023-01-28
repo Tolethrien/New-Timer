@@ -30,6 +30,7 @@ const PersonalisationOptions: React.FC<PersonalisationOptionsProps> = (
           src={RoundSwap}
           alt=""
           text="Switch Mode"
+          noShadow
           onClick={switchMode}
         ></ButtonWithIcon>
       </OptionBar>

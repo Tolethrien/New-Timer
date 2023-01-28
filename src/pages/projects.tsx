@@ -7,9 +7,6 @@ import { useContext } from "react";
 import { appContext } from "../components/providers/appProvider";
 
 const Projects: React.FC = (props) => {
-  const { currentUser } = useContext(appContext);
-  if (!currentUser) return <Navigate to="/login" replace />;
-
   return (
     <PageWrap>
       <Routes>

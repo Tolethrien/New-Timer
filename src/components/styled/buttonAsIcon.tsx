@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import styled from "styled-components";
+import styled, { StyledComponent } from "styled-components";
 import { appContext } from "../providers/appProvider";
 interface ButtonAsIconProps {
   src: string;
@@ -7,8 +7,8 @@ interface ButtonAsIconProps {
   size?: number[];
   position?: string;
   onClick: () => void;
-  children?: React.ReactNode;
   reference?: React.RefObject<HTMLButtonElement>;
+  extendedStyle?: StyledComponent<"button", any, {}, never>;
 }
 const ButtonAsIcon: React.FC<ButtonAsIconProps> = ({
   src,
@@ -16,8 +16,8 @@ const ButtonAsIcon: React.FC<ButtonAsIconProps> = ({
   position,
   size,
   onClick,
-  children,
   reference,
+  extendedStyle,
 }) => {
   const {
     displayMode: { displayMode },
@@ -30,6 +30,7 @@ const ButtonAsIcon: React.FC<ButtonAsIconProps> = ({
       size={size}
       position={position}
       ref={reference}
+      as={extendedStyle}
       displayMode={displayMode}
     ></ComponentBody>
   );

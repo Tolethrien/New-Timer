@@ -4,8 +4,11 @@ import { appContext } from "../providers/appProvider";
 interface ButtonWithIconProps {
   src: string;
   alt: string;
-  onClick: () => void | React.Dispatch<React.SetStateAction<any>>;
+  onClick: (
+    event?: React.MouseEvent<any>
+  ) => void | React.Dispatch<React.SetStateAction<any>>;
   text: string;
+  noShadow?: boolean;
   reference?: React.MutableRefObject<any>;
   extendedStyle?: StyledComponent<"button", any, {}, never>;
 }
@@ -16,16 +19,18 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   text,
   reference,
   extendedStyle,
+  noShadow = false,
 }) => {
   const {
     displayMode: { displayMode },
   } = useContext(appContext);
   return (
     <ComponentBody
-      onClick={() => onClick()}
+      onClick={onClick}
       ref={reference}
       as={extendedStyle}
       displayMode={displayMode}
+      noShadow={noShadow}
     >
       <ButtonIcon src={src} alt={alt} displayMode={displayMode}></ButtonIcon>
       {text}
@@ -33,7 +38,7 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   );
 };
 export default ButtonWithIcon;
-const ComponentBody = styled.button<{ displayMode: string }>`
+const ComponentBody = styled.button<{ displayMode: string; noShadow: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +47,8 @@ const ComponentBody = styled.button<{ displayMode: string }>`
   border: ${({ displayMode }) =>
     `1px solid hsla(0, 0%, ${displayMode === "light" ? 66 : 55}%, 1)`};
   background-color: hsla(0, 0%, 87%, 0.22);
-  box-shadow: ${({ displayMode }) =>
+  box-shadow: ${({ displayMode, noShadow }) =>
+    !noShadow &&
     `0px 4px 4px hsla(0, 0%, ${displayMode === "light" ? 0 : 100}%, 0.25)`};
   color: inherit;
   font-size: 1rem;
