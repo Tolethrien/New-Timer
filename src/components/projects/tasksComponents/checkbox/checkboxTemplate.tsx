@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addNewCheckbox } from "../../../../API/handleDocs";
-import { appContext } from "../../../providers/appProvider";
+import useDisplayMode from "../../../hooks/useDisplayMode";
 import ButtonAsIcon from "../../../styled/buttonAsIcon";
 import { CheckBoxEmpty, Trash } from "../../../utils/icons";
 interface CheckboxTemplateProps {
@@ -16,8 +16,8 @@ const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
   const [checkboxName, setcheckboxName] = useState("");
   const componentRef = useRef<HTMLDivElement>(null);
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor, iconColor },
+  } = useDisplayMode();
   const taskId = useParams().id;
 
   const handleClickOutside = (e: any) => {
@@ -40,13 +40,13 @@ const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
   }, []);
 
   return (
-    <ComponentBody ref={componentRef} displayMode={displayMode}>
+    <ComponentBody ref={componentRef} bodyColor={itemCardColor}>
       <BoxWrap>
         <Box
           checked={false}
           type="checkbox"
           icon={CheckBoxEmpty}
-          displayMode={displayMode}
+          iconColor={iconColor}
           readOnly
         ></Box>
       </BoxWrap>
@@ -67,12 +67,12 @@ const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
   );
 };
 export default CheckboxTemplate;
-const ComponentBody = styled.div<{ displayMode: string }>`
+const ComponentBody = styled.div<{ bodyColor: string }>`
   display: flex;
   padding-block: 0.2rem;
   margin-bottom: 0.1rem;
-  background-color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+  background-color: ${({ bodyColor }) => bodyColor};
+
   backdrop-filter: blur(20px);
   border-radius: 5px;
   box-shadow: 2px 2px 4px 1px hsla(0, 0%, 0%, 0.25);
@@ -107,19 +107,12 @@ const BoxWrap = styled.div`
 const Box = styled.input<{
   checked: boolean;
   icon: string;
-  displayMode: string;
+  iconColor: string;
 }>`
   appearance: none;
   width: 1rem;
   height: 1rem;
   background: ${({ icon }) => `url(${icon})`};
   background-size: cover;
-  ${({ displayMode }) =>
-    displayMode === "light"
-      ? `
-  filter: brightness(0) invert(0.3);
-  `
-      : `
-  filter: brightness(0) invert(0.7);
-      `};
+  filter: ${({ iconColor }) => iconColor};
 `;

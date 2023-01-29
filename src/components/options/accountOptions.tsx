@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { logout } from "../../API/firebase";
 import ButtonWithIcon from "../custom/buttonWithIcon";
-import { appContext } from "../providers/appProvider";
-import ButtonAsIcon from "../styled/buttonAsIcon";
 import DisplayText from "../styled/displayText";
 import { Add, Logout } from "../utils/icons";
 import AccountModal from "./accountModal";

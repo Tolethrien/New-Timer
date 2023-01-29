@@ -1,42 +1,29 @@
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
-import {
-  Dashboard,
-  Timer,
-  Calendar,
-  Data,
-  Projects,
-  Options,
-} from "../utils/icons";
+import { Timer, Projects, Options } from "../utils/icons";
 import { useContext, useState, useEffect } from "react";
-import { appContext } from "../providers/appProvider";
 import { vibrate } from "../utils/navigatorUtils";
 import { clockContext } from "../providers/clockProvider";
+import { authContext } from "../providers/authProvider";
+import useDisplayMode from "../hooks/useDisplayMode";
 interface FooterProps {}
-interface styleProps {
-  color: string;
-}
-const Footer: React.FC<FooterProps> = () => {
-  const {
-    primary: { primaryColor },
-    secondary: { secondaryColor },
-    currentWindow,
-    currentUser,
-    displayMode: { displayMode },
-  } = useContext(appContext);
-  const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
 
+const Footer: React.FC<FooterProps> = () => {
+  const { currentUser } = useContext(authContext);
+
+  const {
+    getColor: { appColorPrimary },
+  } = useDisplayMode();
+  const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
+  const navigate = useNavigate();
   const linkData = {
-    // dashboard: { id: 0, name: "Dashboard", link: "./", icon: Dashboard },
     timer: {
       id: 1,
       name: "Timer",
       link: "./timer",
       icon: Timer,
     },
-    // Calendar: { id: 2, name: "Calendar", link: "./calendar", icon: Calendar },
-    // Data: { id: 3, name: "Data", link: "./data", icon: Data },
     Projects: { id: 4, name: "Projects", link: "./projects", icon: Projects },
     Options: { id: 5, name: "Options", link: "./options", icon: Options },
   };
@@ -49,24 +36,40 @@ const Footer: React.FC<FooterProps> = () => {
   }, []);
   return (
     <Wrap userLogedIn={Boolean(currentUser)}>
-      {Object.values(linkData).map((key) => (
-        <ButtonLink
-          as={NavLink}
-          to={key.link}
-          key={key.id}
-          displaymode={displayMode}
-          onClick={() => (currentWindow.set(key.id), vibrate("short"))}
-          color={"#6e6e6ea5"}
-        >
-          <ButtonImg src={key.icon} alt={`${key.name} button`}></ButtonImg>
-        </ButtonLink>
-      ))}
+      <ButtonLink
+        as={NavLink}
+        to={"./timer"}
+        bodycolor={appColorPrimary}
+        onClick={() => vibrate("short")}
+        color={"#6e6e6ea5"}
+      >
+        <ButtonImg src={Timer} alt={`Timer button`}></ButtonImg>
+      </ButtonLink>
+      <ButtonLink
+        as={NavLink}
+        to={"./projects"}
+        bodycolor={appColorPrimary}
+        onClick={() => vibrate("short")}
+        color={"#6e6e6ea5"}
+      >
+        <ButtonImg src={Projects} alt={`Projects button`}></ButtonImg>
+      </ButtonLink>
+      <ButtonLink
+        as={NavLink}
+        to={"./options"}
+        bodycolor={appColorPrimary}
+        onClick={() => vibrate("short")}
+        color={"#6e6e6ea5"}
+      >
+        <ButtonImg src={Options} alt={`options button`}></ButtonImg>
+      </ButtonLink>
     </Wrap>
   );
 };
 export default Footer;
 export const Wrap = styled.footer<{ userLogedIn: boolean }>`
-  display: ${({ userLogedIn }) => (userLogedIn ? "flex" : "none")};
+  /* display: ${({ userLogedIn }) => (userLogedIn ? "flex" : "none")}; */
+  display: flex;
   justify-content: space-evenly;
   align-items: center;
   padding: 10px 0;
@@ -75,7 +78,7 @@ export const Wrap = styled.footer<{ userLogedIn: boolean }>`
   background-color: hsla(360, 90%, 14%, 0.19);
   backdrop-filter: blur(10px);
 `;
-const ButtonLink = styled.div<{ displaymode: string }>`
+const ButtonLink = styled.div<{ bodycolor: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,10 +87,7 @@ const ButtonLink = styled.div<{ displaymode: string }>`
   border-radius: 10px;
   transition: 0.5s;
 
-  background-color: ${({ displaymode }) =>
-    displaymode === "light"
-      ? `hsla(40, 76%, 69%, 0.8)`
-      : `hsla(261, 16%, 40%, 0.8)`};
+  background-color: ${({ bodycolor }) => bodycolor};
 `;
 const ButtonImg = styled.img`
   width: 70%;

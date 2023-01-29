@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import PageWrap from "../components/styled/pageWrap";
 import { useContext, useMemo, useState } from "react";
-import { appContext } from "../components/providers/appProvider";
+import { userDBContext } from "../components/providers/userDBProvider";
 import Head from "../components/styled/head";
 import DisplayText from "../components/styled/displayText";
 import { clockContext } from "../components/providers/clockProvider";
@@ -10,13 +10,14 @@ import CircularProgressBar from "../components/styled/circularProgresBar";
 import { ConvertToStringTime } from "../components/hooks/convertToTime";
 import TimerButtons from "../components/timer/timerButtons";
 import Clock from "../components/timer/clockComponent";
+import useDisplayMode from "../components/hooks/useDisplayMode";
 const Timer: React.FC = () => {
-  const {
-    userData,
-    displayMode: { displayMode },
-  } = useContext(appContext);
+  const { userData } = useContext(userDBContext);
   const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
   const [showCheckboxComponent, setShowCheckboxComponent] = useState(false);
+  const {
+    getColor: { appColorPrimary, borderColor },
+  } = useDisplayMode();
   const { projectData, taskData } = findDataInfo();
 
   function findDataInfo() {
@@ -42,7 +43,7 @@ const Timer: React.FC = () => {
         )}
       </Head>
       <Clock showCheckboxComponent={showCheckboxComponent} />
-      <ButtomHead displayMode={displayMode}>
+      <ButtomHead bodyColor={appColorPrimary} borderColor={borderColor}>
         <CheckboxTitleBar
           onClick={() => setShowCheckboxComponent((prev) => !prev)}
         >
@@ -81,19 +82,14 @@ export default Timer;
 //   margin-block: 1rem;
 //   flex-grow: 1;
 // `;
-const ButtomHead = styled.div<{ displayMode: string }>`
+const ButtomHead = styled.div<{ bodyColor: string; borderColor: string }>`
   display: grid;
   width: 100%;
   box-sizing: border-box;
-  background-color: ${({ displayMode }) =>
-    displayMode === "light"
-      ? `hsla(40, 76%, 69%, 0.8)`
-      : `hsla(261, 16%, 40%, 0.8)`};
+  background-color: ${({ bodyColor }) => bodyColor};
   border-radius: 10px 10px 0 0;
   backdrop-filter: blur(15px);
-  border: 1px solid
-    ${({ displayMode }) =>
-      displayMode === "light" ? `hsla(0, 2%, 88%, 1)` : `hsla(0, 0%, 37%, 1)`};
+  border: 1px solid ${({ borderColor }) => borderColor};
   border-bottom: none;
 `;
 const ShowMore = styled.div`

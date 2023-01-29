@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { TasksData } from "../../../API/getUserData";
 import { updateTask } from "../../../API/handleDocs";
 import TimeField from "../../hooks/timefield";
-import { appContext } from "../../providers/appProvider";
+import useDisplayMode from "../../hooks/useDisplayMode";
 import ButtonAsIcon from "../../styled/buttonAsIcon";
 import DisplayText from "../../styled/displayText";
 import { RoundSwap } from "../../utils/icons";
@@ -12,16 +12,18 @@ import updateStatus from "../utils/updateStatus";
 interface TaskOptionsProps {
   task: TasksData;
 }
+
 const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor, optionToggleColor },
+  } = useDisplayMode();
+
   const { id } = useParams();
 
   return (
     <ComponentBody>
       {/* {Estimated Time} */}
-      <Option displayMode={displayMode}>
+      <Option bodyColor={itemCardColor}>
         <DisplayText size={1.2} weight={500}>
           Estimated Time
         </DisplayText>
@@ -31,7 +33,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
         />
       </Option>
       {/* {Task Status} */}
-      <Option displayMode={displayMode}>
+      <Option bodyColor={itemCardColor}>
         <DisplayText size={1.2} weight={500}>
           Task Status
         </DisplayText>
@@ -48,7 +50,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
         </CycleStatus>
       </Option>
       {/* {show Checkboxes} */}
-      <Option displayMode={displayMode}>
+      <Option bodyColor={itemCardColor}>
         <DisplayText size={1.2} weight={500}>
           Show Checkboxes
         </DisplayText>
@@ -59,11 +61,11 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
             })
           }
           active={task.data.showCheckboxes}
-          displayMode={displayMode}
+          toggleColor={optionToggleColor}
         ></Toggle>
       </Option>
       {/* {show Desc} */}
-      <Option displayMode={displayMode}>
+      <Option bodyColor={itemCardColor}>
         <DisplayText size={1.2} weight={500}>
           Show Description
         </DisplayText>
@@ -74,7 +76,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
             })
           }
           active={task.data.showDescription}
-          displayMode={displayMode}
+          toggleColor={optionToggleColor}
         ></Toggle>
       </Option>
     </ComponentBody>
@@ -82,14 +84,13 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
 };
 export default TaskOptions;
 const ComponentBody = styled.div``;
-const Option = styled.div<{ displayMode: string }>`
+const Option = styled.div<{ bodyColor: string }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.4rem 1rem;
   margin-bottom: 0.1rem;
-  background-color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+  background-color: ${({ bodyColor }) => bodyColor};
   backdrop-filter: blur(20px);
   border-radius: 5px;
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
@@ -110,7 +111,7 @@ const TextData = styled.div`
   box-shadow: inset 1px 1px 1px hsla(0, 0%, 0%, 0.25);
   cursor: pointer;
 `;
-const Toggle = styled.div<{ active: boolean; displayMode: string }>`
+const Toggle = styled.div<{ active: boolean; toggleColor: string }>`
   position: relative;
   width: 20%;
   height: 1rem;
@@ -124,8 +125,7 @@ const Toggle = styled.div<{ active: boolean; displayMode: string }>`
     top: -0.25rem;
     width: 50%;
     height: 1.4rem;
-    background-color: ${({ displayMode }) =>
-      `hsla(0, 5%, ${displayMode === "light" ? 40 : 88}%, 1)`};
+    background-color: ${({ toggleColor }) => toggleColor};
     box-shadow: 0px 2px 4px hsla(0, 0%, 0%, 0.25);
     border-radius: 5px;
     transition: 0.5s;

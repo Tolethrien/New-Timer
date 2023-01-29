@@ -2,8 +2,8 @@ import styled, { keyframes } from "styled-components";
 import { updateTask } from "../../../API/handleDocs";
 import { useState, useRef, useEffect, useContext } from "react";
 import { TextEdit } from "../../utils/icons";
-import { appContext } from "../../providers/appProvider";
 import { useParams } from "react-router-dom";
+import useDisplayMode from "../../hooks/useDisplayMode";
 interface TaskDescriptionBoxProps {
   value: string;
   minHeight?: number;
@@ -16,10 +16,9 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const [textValue, settextValue] = useState(value);
   const { id } = useParams();
-
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor, borderColor, textColorNormal },
+  } = useDisplayMode();
   const updateDocText = () => {
     updateTask(id!, { desc: textValue });
   };
@@ -44,8 +43,10 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
       rows={1}
       minHeight={minHeight}
       value={textValue}
+      borderColor={borderColor}
+      textColor={textColorNormal}
       onBlur={() => updateDocText()}
-      displayMode={displayMode}
+      bodyColor={itemCardColor}
     ></ComponentBody>
   );
 };
@@ -53,15 +54,15 @@ export default TaskDescriptionBox;
 
 const ComponentBody = styled.textarea<{
   minHeight: number;
-  displayMode: string;
+  bodyColor: string;
+  borderColor: string;
+  textColor: string;
 }>`
   width: 95%;
   height: ${({ minHeight }) => minHeight}px;
-  background-color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+  background-color: ${({ bodyColor }) => bodyColor};
   backdrop-filter: blur(20px);
-  border: ${({ displayMode }) =>
-    `1px solid hsla(162, 50%, 86%, ${displayMode === "light" ? 1 : 0.2})`};
+  border: ${({ borderColor }) => borderColor};
   /* border: none; */
   outline: none;
   /* box-shadow: 0px 0px 10px -4px hsla(0, 0%, 0%, 1); */
@@ -69,8 +70,7 @@ const ComponentBody = styled.textarea<{
   border-radius: 5px;
   padding: 0.3rem 0.3rem;
   font-size: 1.1rem;
-  color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 20 : 90}%, 1)`};
+  color: ${({ textColor }) => textColor};
 
   :focus {
     outline: none;

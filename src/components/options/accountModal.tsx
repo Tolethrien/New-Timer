@@ -1,10 +1,12 @@
 import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
+import { logout } from "../../API/firebase";
 import ButtonWithIcon from "../custom/buttonWithIcon";
-import { appContext } from "../providers/appProvider";
 import ButtonAsIcon from "../styled/buttonAsIcon";
 import DisplayText from "../styled/displayText";
 import { Add } from "../utils/icons";
+import useDisplayMode from "../hooks/useDisplayMode";
+import useGetUser from "../hooks/getUser";
 interface AccountModalProps {
   reference: React.MutableRefObject<HTMLDialogElement | null>;
   typeOfData: string;
@@ -16,10 +18,12 @@ const AccountModal: React.FC<AccountModalProps> = ({
   reference,
   typeOfData,
 }) => {
+  const currentUser = useGetUser();
+
   const {
-    currentUser,
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor },
+  } = useDisplayMode();
+
   const formRef = useRef<HTMLFormElement>(null);
   const modalschema: userI = {
     email: { displayName: "email", value: currentUser?.email ?? "" },
@@ -35,7 +39,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
   if (typeOfData === "logout")
     return (
       <>
-        <UserDataModal ref={reference} displayMode={displayMode}>
+        <UserDataModal ref={reference} bodyColor={itemCardColor}>
           <ButtonAsIcon
             onClick={closeModal}
             src={Add}
@@ -48,7 +52,9 @@ const AccountModal: React.FC<AccountModalProps> = ({
             <ButtonWithIcon
               alt=""
               src={Add}
-              onClick={() => console.log("s")}
+              onClick={() => {
+                logout();
+              }}
               text="Yes"
               noShadow
             ></ButtonWithIcon>
@@ -65,7 +71,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
     );
 
   return (
-    <UserDataModal ref={reference} displayMode={displayMode}>
+    <UserDataModal ref={reference} bodyColor={itemCardColor}>
       <ButtonAsIcon
         onClick={closeModal}
         src={Add}
@@ -110,15 +116,13 @@ const AccountModal: React.FC<AccountModalProps> = ({
   );
 };
 export default AccountModal;
-const ComponentBody = styled.div<{}>``;
-const UserDataModal = styled.dialog<{ displayMode: string }>`
+const UserDataModal = styled.dialog<{ bodyColor: string }>`
   color: inherit;
   /* flex-direction: column; */
   /* width: 8rem; */
   /* height: 200px; */
   /* position: absolute; */
-  background-color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+  background-color: ${({ bodyColor }) => bodyColor};
   backdrop-filter: blur(20px);
   border: 1px solid red;
   border-radius: 10px;

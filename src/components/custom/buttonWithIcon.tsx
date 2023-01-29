@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled, { StyledComponent } from "styled-components";
-import { appContext } from "../providers/appProvider";
+import useDisplayMode from "../hooks/useDisplayMode";
 interface ButtonWithIconProps {
   src: string;
   alt: string;
@@ -22,34 +22,37 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   noShadow = false,
 }) => {
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { borderColor, shadowColor, iconColor },
+  } = useDisplayMode();
   return (
     <ComponentBody
       onClick={onClick}
       ref={reference}
       as={extendedStyle}
-      displayMode={displayMode}
+      borderColor={borderColor}
+      shadowColor={shadowColor}
       noShadow={noShadow}
     >
-      <ButtonIcon src={src} alt={alt} displayMode={displayMode}></ButtonIcon>
+      <ButtonIcon src={src} alt={alt} iconColor={iconColor}></ButtonIcon>
       {text}
     </ComponentBody>
   );
 };
 export default ButtonWithIcon;
-const ComponentBody = styled.button<{ displayMode: string; noShadow: boolean }>`
+const ComponentBody = styled.button<{
+  borderColor: string;
+  shadowColor: string;
+  noShadow: boolean;
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 5px;
   padding: 1% 2%;
-  border: ${({ displayMode }) =>
-    `1px solid hsla(0, 0%, ${displayMode === "light" ? 66 : 55}%, 1)`};
+  border: ${({ borderColor }) => `1px solid ${borderColor}`};
   background-color: hsla(0, 0%, 87%, 0.22);
-  box-shadow: ${({ displayMode, noShadow }) =>
-    !noShadow &&
-    `0px 4px 4px hsla(0, 0%, ${displayMode === "light" ? 0 : 100}%, 0.25)`};
+  box-shadow: ${({ shadowColor, noShadow }) =>
+    !noShadow && `0px 4px 4px ${shadowColor}`};
   color: inherit;
   font-size: 1rem;
   font-weight: 400;
@@ -59,18 +62,10 @@ const ComponentBody = styled.button<{ displayMode: string; noShadow: boolean }>`
 
   cursor: pointer;
 `;
-const ButtonIcon = styled.img<{ displayMode: string }>`
+const ButtonIcon = styled.img<{ iconColor: string }>`
   width: 1rem;
   height: 1rem;
   padding-right: 0.4rem;
   transition: 0.5s;
-
-  ${({ displayMode }) =>
-    displayMode === "light"
-      ? `
-  filter: brightness(0) invert(0.3);
-  `
-      : `
-  filter: brightness(0) invert(0.7);
-      `}
+  filter: ${({ iconColor }) => iconColor};
 `;

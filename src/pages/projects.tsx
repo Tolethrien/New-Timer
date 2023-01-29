@@ -3,8 +3,6 @@ import AllProjects from "../components/projects/allProjects";
 import ProjectOverview from "../components/projects/projectsComponents/projectOverview";
 import TaskOverview from "../components/projects/tasksComponents/tasksOverview";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { useContext } from "react";
-import { appContext } from "../components/providers/appProvider";
 
 const Projects: React.FC = (props) => {
   return (

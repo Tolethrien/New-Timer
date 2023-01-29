@@ -1,6 +1,6 @@
 import styled, { StyledComponent } from "styled-components";
-import { useContext } from "react";
-import { appContext } from "../providers/appProvider";
+import useGetUser from "../hooks/getUser";
+import useDisplayMode from "../hooks/useDisplayMode";
 
 interface HeadProps {
   children?: React.ReactNode;
@@ -8,32 +8,17 @@ interface HeadProps {
 }
 const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
   const {
-    displayMode: { displayMode },
-    currentUser,
-  } = useContext(appContext);
-  const ComponentBodyColors = {
-    login: {
-      light: "hsla(359, 70%, 79%, 0.8)",
-      dark: "hsla(341, 26%, 22%, 0.8)",
-    },
-    app: { light: "hsla(40, 76%, 69%, 0.8)", dark: "hsla(261, 16%, 40%, 0.8)" },
-  };
-  const pickHeadColor = () => {
-    if (!currentUser) {
-      if (displayMode === "light") return ComponentBodyColors.login.light;
-      else if (displayMode === "dark") return ComponentBodyColors.login.dark;
-    } else if (currentUser) {
-      if (displayMode === "light") return ComponentBodyColors.app.light;
-      else if (displayMode === "dark") return ComponentBodyColors.app.dark;
-    }
-  };
+    getColor: { appColorPrimary, appColorSecondary, borderColor, shadowColor },
+  } = useDisplayMode();
+  const currentUser = useGetUser();
   document
     .querySelector('meta[name="theme-color"]')!
-    .setAttribute("content", `${pickHeadColor()}`);
+    .setAttribute("content", currentUser ? appColorPrimary : appColorSecondary);
   return (
     <ComponentBody
-      displayMode={displayMode}
-      bodyColor={pickHeadColor()}
+      bodyColor={currentUser ? appColorPrimary : appColorSecondary}
+      borderColor={borderColor}
+      shadowColor={shadowColor}
       as={extendedStyle}
     >
       {children}
@@ -41,7 +26,11 @@ const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
   );
 };
 export default Head;
-const ComponentBody = styled.div<{ displayMode: string; bodyColor: string }>`
+const ComponentBody = styled.div<{
+  bodyColor: string;
+  borderColor: string;
+  shadowColor: string;
+}>`
   position: relative;
   box-sizing: border-box;
   z-index: 10;
@@ -56,9 +45,6 @@ const ComponentBody = styled.div<{ displayMode: string; bodyColor: string }>`
   border-radius: 0 0 15px 15px;
   transition: 0.5s;
 
-  border-bottom: 1px solid
-    ${({ displayMode }) =>
-      displayMode === "light" ? `hsla(0, 2%, 88%, 1)` : `hsla(0, 0%, 37%, 1)`};
-  box-shadow: ${({ displayMode }) =>
-    `0px 4px 4px hsla(0, 0%, ${displayMode === "light" ? 0 : 100}%, 0.25)`};
+  border-bottom: 1px solid ${({ borderColor }) => borderColor};
+  box-shadow: ${({ shadowColor }) => `0px 4px 4px ${shadowColor}`};
 `;

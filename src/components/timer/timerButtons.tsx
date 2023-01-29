@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { appContext } from "../providers/appProvider";
+import useDisplayMode from "../hooks/useDisplayMode";
 import { clockContext } from "../providers/clockProvider";
 import { Done, Play, Stop } from "../utils/icons";
 import { vibrate } from "../utils/navigatorUtils";
@@ -13,16 +13,18 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
   const { playPauseClock, stopClock, onComplete, taskInProgress } =
     useContext(clockContext);
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor, buttonColor, iconColor, shadowColor },
+  } = useDisplayMode();
   return (
     <ComponentBody
       showCheckboxComponent={showCheckboxComponent}
-      displayMode={displayMode}
+      bodyColor={itemCardColor}
     >
       <ButtonWithDescription>
         <Button
-          displayMode={displayMode}
+          bodyColor={buttonColor}
+          iconColor={iconColor}
+          shadowColor={shadowColor}
           img={Play}
           onClick={() => (playPauseClock(), vibrate("short"))}
         ></Button>
@@ -30,17 +32,21 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
       </ButtonWithDescription>
       <ButtonWithDescription>
         <Button
+          bodyColor={buttonColor}
+          iconColor={iconColor}
+          shadowColor={shadowColor}
           img={Stop}
-          displayMode={displayMode}
           onClick={() => (stopClock(), vibrate("short"))}
         ></Button>
         Stop
       </ButtonWithDescription>
       <ButtonWithDescription>
         <Button
+          bodyColor={buttonColor}
+          iconColor={iconColor}
+          shadowColor={shadowColor}
           disabled={taskInProgress === undefined ? true : false}
           img={Done}
-          displayMode={displayMode}
           onClick={() => (onComplete(), vibrate("short"))}
         ></Button>
         Complete
@@ -51,12 +57,11 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
 export default TimerButtons;
 const ComponentBody = styled.div<{
   showCheckboxComponent?: boolean;
-  displayMode: string;
+  bodyColor: string;
 }>`
   display: flex;
   align-items: center;
-  background-color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+  background-color: ${({ bodyColor }) => bodyColor};
   backdrop-filter: blur(15px);
   color: inherit;
   border-radius: 10px;
@@ -78,7 +83,12 @@ const ButtonWithDescription = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
-const Button = styled.button<{ img: string; displayMode: string }>`
+const Button = styled.button<{
+  img: string;
+  bodyColor: string;
+  iconColor: string;
+  shadowColor: string;
+}>`
   position: relative;
   background: ${({ disabled }) =>
     disabled ? `hsla(0, 4%, 85%, 0.2)` : `hsla(0, 4%, 85%, 0.1)`};
@@ -86,7 +96,10 @@ const Button = styled.button<{ img: string; displayMode: string }>`
   height: 2.5rem;
   border-radius: 10px;
   border: 1px solid hsla(0, 4%, 85%, 0.1);
-  box-shadow: 1px 3px 5px 3px hsla(0, 0%, 0%, 0.25);
+  box-shadow: ${({ disabled, shadowColor }) =>
+    !disabled
+      ? `1px 1px 3px 1px ${shadowColor}`
+      : ` inset 1px 1px 3px 1px ${shadowColor}`};
   ::before {
     content: "";
     background: ${({ img }) => `url(${img})`};
@@ -98,13 +111,7 @@ const Button = styled.button<{ img: string; displayMode: string }>`
     top: 0;
     width: 100%;
     height: 100%;
-    ${({ disabled, displayMode }) =>
-      displayMode === "light"
-        ? disabled
-          ? `filter: brightness(0) invert(0) opacity(0.1);`
-          : `filter: brightness(0) invert(0.3);`
-        : disabled
-        ? `filter: brightness(0) invert(0) opacity(0.1);`
-        : `filter: brightness(0) invert(0.7);`}
+    filter: ${({ disabled, iconColor }) =>
+      iconColor + ` opacity(${disabled ? 0.1 : 1})`};
   }
 `;

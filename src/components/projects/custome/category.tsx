@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import styled, { StyledComponent } from "styled-components";
-import { appContext } from "../../providers/appProvider";
+import useDisplayMode from "../../hooks/useDisplayMode";
 import { Collapse } from "../../utils/icons";
 const Category: React.FC<{
   name: string;
@@ -9,17 +9,18 @@ const Category: React.FC<{
 }> = ({ name, children, extendedStyle }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const divChildrenRef = useRef<HTMLDivElement>(null);
+
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor, categoryColor, iconColor },
+  } = useDisplayMode();
 
   return (
-    <ComponentBody displayMode={displayMode} as={extendedStyle}>
-      <TopBar displayMode={displayMode}>
+    <ComponentBody bodyColor={categoryColor} as={extendedStyle}>
+      <TopBar bodyColor={categoryColor}>
         <TopBarName>{name}</TopBarName>
         <CollapseIcon
           isCollapsed={isCollapsed}
-          displayMode={displayMode}
+          iconColor={iconColor}
           src={Collapse}
           alt="collaps Category"
           onClick={() => setIsCollapsed((prev) => !prev)}
@@ -33,7 +34,7 @@ const Category: React.FC<{
 };
 export default Category;
 
-const ComponentBody = styled.div<{ displayMode: string }>`
+const ComponentBody = styled.div<{ bodyColor: string }>`
   display: flex;
   position: relative;
   justify-content: center;
@@ -50,8 +51,7 @@ const ComponentBody = styled.div<{ displayMode: string }>`
     width: 5%;
     transition: 0.5s;
 
-    background-color: ${({ displayMode }) =>
-      `hsla(245, 84%, ${displayMode === "light" ? 85 : 15}%, 1)`};
+    background-color: ${({ bodyColor }) => bodyColor};
     border-radius: 0 0 5px 0;
   }
 `;
@@ -61,23 +61,16 @@ const TaskWrapper = styled.div`
   z-index: 2;
   margin-top: 1.9rem;
 `;
-const CollapseIcon = styled.img<{ isCollapsed: boolean; displayMode: string }>`
+const CollapseIcon = styled.img<{ isCollapsed: boolean; iconColor: string }>`
   width: 0.8rem;
   height: 0.8rem;
   transition: 0.5s;
   cursor: pointer;
   transform: ${({ isCollapsed }) =>
     `rotate(${isCollapsed ? "0deg" : "180deg"})`};
-  ${({ displayMode }) =>
-    displayMode === "light"
-      ? `
-  filter: brightness(0) invert(0.3);
-  `
-      : `
-  filter: brightness(0) invert(0.7);
-      `};
+  filter: ${({ iconColor }) => iconColor};
 `;
-const TopBar = styled.div<{ displayMode: string }>`
+const TopBar = styled.div<{ bodyColor: string }>`
   position: absolute;
   display: flex;
   align-items: center;
@@ -89,8 +82,7 @@ const TopBar = styled.div<{ displayMode: string }>`
   padding-inline: 2%;
   gap: 0.5rem;
   transition: 0.5s;
-  background-color: ${({ displayMode }) =>
-    `hsla(245, 84%, ${displayMode === "light" ? 85 : 15}%, 1)`};
+  background-color: ${({ bodyColor }) => bodyColor};
   border-radius: 0 5px 5px 0;
 `;
 const TopBarName = styled.p`

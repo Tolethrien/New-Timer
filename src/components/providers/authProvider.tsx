@@ -1,13 +1,23 @@
+import { User } from "firebase/auth";
 import { createContext } from "react";
 import styled from "styled-components";
+import { useAuth } from "../../API/firebase";
 interface AuthProviderProps {
   children: React.ReactNode;
 }
-interface provider {}
-export const appContext = createContext({} as provider);
+interface provider {
+  currentUser: User | null | undefined;
+}
+export const authContext = createContext({} as provider);
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  return <appContext.Provider value={{}}>{children}</appContext.Provider>;
+  const currentUser = useAuth();
+
+  return (
+    <authContext.Provider value={{ currentUser }}>
+      {children}
+    </authContext.Provider>
+  );
 };
 export default AuthProvider;
 const ComponentBody = styled.div<{}>``;

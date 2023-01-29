@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import Glass from "../components/styled/glass";
 import { login, auth } from "../API/firebase";
 import { useContext, useRef } from "react";
 import PageWrap from "../components/styled/pageWrap";
 import Head from "../components/styled/head";
 import DisplayText from "../components/styled/displayText";
-import { appContext } from "../components/providers/appProvider";
 import ButtonWithIcon from "../components/custom/buttonWithIcon";
 import { Logout } from "../components/utils/icons";
 import { Navigate, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import useDisplayMode from "../components/hooks/useDisplayMode";
 //=======TYPES========
 interface LoginProps {}
 
@@ -16,18 +16,16 @@ interface LoginProps {}
 const Login: React.FC<LoginProps> = (props) => {
   const mailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
-  const {
-    displayMode: { displayMode },
-    currentUser,
-  } = useContext(appContext);
+
+  const { displayMode } = useDisplayMode();
   const navigate = useNavigate();
   const handleLogin = () => {
     login(mailRef.current!.value, passRef.current!.value);
   };
-  if (currentUser) return <Navigate to="/projects" replace={true} />;
   const redirectToRegister = () => {
     navigate("/register", { replace: true });
   };
+
   return (
     <PageWrap>
       <Head>

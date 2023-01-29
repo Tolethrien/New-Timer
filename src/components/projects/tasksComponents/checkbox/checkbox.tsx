@@ -5,7 +5,7 @@ import { updateCheckbox, deleteCheckbox } from "../../../../API/handleDocs";
 import { useParams } from "react-router-dom";
 import ButtonAsIcon from "../../../styled/buttonAsIcon";
 import focusOnEndOfLine from "../../utils/focusOnEndOfLine";
-import { appContext } from "../../../providers/appProvider";
+import useDisplayMode from "../../../hooks/useDisplayMode";
 interface CheckBoxProps {
   checkboxData: [string, { createdAt: number; name: string; value: boolean }];
 }
@@ -16,8 +16,8 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
   const paragraphRef = useRef<HTMLParagraphElement>(null);
   const componentRef = useRef<HTMLDivElement>(null);
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor, iconColor },
+  } = useDisplayMode();
   const taskId = useParams().id;
   const handleClickOutside = (e: any) => {
     if (!componentRef.current?.contains(e.target)) {
@@ -49,12 +49,12 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
     return () => document.removeEventListener("click", handleClickOutside);
   }, [isEditing]);
   return (
-    <ComponentBody ref={componentRef} displayMode={displayMode}>
+    <ComponentBody ref={componentRef} bodyColor={itemCardColor}>
       <BoxWrap>
         <Box
           checked={data.value}
           type="checkbox"
-          displayMode={displayMode}
+          iconColor={iconColor}
           icon={data.value ? CheckBoxFill : CheckBoxEmpty}
           onChange={() =>
             updateCheckbox(taskId!, checkboxId!, "value", !data!.value!)
@@ -79,12 +79,11 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
   );
 };
 export default CheckBox;
-const ComponentBody = styled.div<{ displayMode: string }>`
+const ComponentBody = styled.div<{ bodyColor: string }>`
   display: flex;
   padding-block: 0.2rem;
   margin-bottom: 0.1rem;
-  background-color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+  background-color: ${({ bodyColor }) => bodyColor};
   border-radius: 5px;
   backdrop-filter: blur(20px);
   box-shadow: 2px 2px 4px 1px hsla(0, 0%, 0%, 0.25);
@@ -98,7 +97,7 @@ const BoxWrap = styled.div`
 const Box = styled.input<{
   checked: boolean;
   icon: string;
-  displayMode: string;
+  iconColor: string;
 }>`
   appearance: none;
   width: 1rem;
@@ -106,14 +105,7 @@ const Box = styled.input<{
   background: ${({ icon }) => `url(${icon})`};
   background-size: cover;
   cursor: pointer;
-  ${({ displayMode }) =>
-    displayMode === "light"
-      ? `
-  filter: brightness(0) invert(0.3);
-  `
-      : `
-  filter: brightness(0) invert(0.7);
-      `};
+  filter: ${({ iconColor }) => iconColor};
 `;
 const BoxDescDisplay = styled.p`
   flex-grow: 1;

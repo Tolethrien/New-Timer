@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { Clock, GoTo } from "../../../utils/icons";
 import { ConvertToStringTime } from "../../../hooks/convertToTime";
 import { useContext } from "react";
-import { appContext } from "../../../providers/appProvider";
 import DisplayIcon from "../../../styled/displayIcon";
+import useDisplayMode from "../../../hooks/useDisplayMode";
 const TaskCard: React.FC<{
   task: TasksData;
 }> = ({ task }) => {
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor, taskTemplateColor },
+  } = useDisplayMode();
   const navigate = useNavigate();
 
   const tascDesc = () => {
@@ -23,10 +23,10 @@ const TaskCard: React.FC<{
   return (
     <ComponentBody
       onClick={() => navigate(`../task/${task.id}`)}
-      displayMode={displayMode}
+      bodyColor={itemCardColor}
     >
       <TopBar>
-        <InfoBox displayMode={displayMode}>
+        <InfoBox bodyColor={taskTemplateColor}>
           <DisplayIcon src={Clock} alt=""></DisplayIcon>
           <InfoBoxValue>
             {ConvertToStringTime(task!.data.timeSpend)}
@@ -45,9 +45,9 @@ const TaskCard: React.FC<{
 };
 export default TaskCard;
 
-const ComponentBody = styled.div<{ displayMode: string }>`
-  background-color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+const ComponentBody = styled.div<{ bodyColor: string }>`
+  background-color: ${({ bodyColor }) => bodyColor};
+
   backdrop-filter: blur(20px);
 
   width: 100%;
@@ -64,13 +64,11 @@ const TopBar = styled.div`
   align-items: center;
   padding-inline: 2%;
 `;
-const InfoBox = styled.div<{ displayMode: string }>`
+const InfoBox = styled.div<{ bodyColor: string }>`
   display: flex;
   align-items: center;
-  background-color: ${({ displayMode }) =>
-    displayMode === "light"
-      ? `hsla(40, 76%,70%,0.5)`
-      : `hsla(260,26%,65%,0.5)`};
+  background-color: ${({ bodyColor }) => bodyColor};
+
   border-radius: 5px;
   width: fit-content;
   padding: 0.2rem 0.2rem;

@@ -4,7 +4,6 @@ import { Edit } from "../utils/icons";
 import { updateProject, updateTask } from "../../API/handleDocs";
 import { useParams } from "react-router-dom";
 import ButtonAsIcon from "../styled/buttonAsIcon";
-import { appContext } from "../providers/appProvider";
 import focusOnEndOfLine from "../projects/utils/focusOnEndOfLine";
 interface EditableTitleProps {
   text: string;

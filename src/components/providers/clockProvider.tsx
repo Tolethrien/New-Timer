@@ -21,7 +21,7 @@ interface props {
 
 export const clockContext = createContext<provider>({} as provider);
 
-const Clock: React.FC<props> = (props) => {
+const ClockProvider: React.FC<props> = (props) => {
   const [barProgress, setBarProgress] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [taskInProgress, setTaskInProgress] = useState<
@@ -97,4 +97,4 @@ const Clock: React.FC<props> = (props) => {
     </clockContext.Provider>
   );
 };
-export default Clock;
+export default ClockProvider;

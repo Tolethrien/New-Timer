@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useContext } from "react";
-import { appContext } from "../components/providers/appProvider";
 import Head from "../components/styled/head";
 import PageWrap from "../components/styled/pageWrap";
 import DisplayText from "../components/styled/displayText";

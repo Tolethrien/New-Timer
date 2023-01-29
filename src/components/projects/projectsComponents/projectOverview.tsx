@@ -23,7 +23,7 @@ import SearchBox from "../custome/searchBox";
 import { filterTPByName } from "../utils/filtersAndSorters";
 import TaskCardTemplate from "../tasksComponents/taskCard/taskCardTemplate";
 import updateStatus from "../utils/updateStatus";
-import { appContext } from "../../providers/appProvider";
+import useDisplayMode from "../../hooks/useDisplayMode";
 interface ProjectProps {}
 interface StyleProps {}
 const Project: React.FC<ProjectProps> = () => {
@@ -31,9 +31,8 @@ const Project: React.FC<ProjectProps> = () => {
   const [templateTask, setTemplateTask] = useState(false);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const [searchText, setSearchText] = useState("");
-  const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+
+  const { displayMode } = useDisplayMode();
   const { id } = useParams();
   const project = FindData(id) as ProjectsData;
   const TasksInfo = tasksCompletion();

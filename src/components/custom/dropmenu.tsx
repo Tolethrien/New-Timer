@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef, useContext } from "react";
 import ButtonAsIcon from "../styled/buttonAsIcon";
-import { appContext } from "../providers/appProvider";
+import useDisplayMode from "../hooks/useDisplayMode";
 interface DropMenuButtonProps {
   children?: React.ReactNode;
   config?: {};
@@ -14,9 +14,10 @@ export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
 }) => {
   const [visible, setVisible] = useState(false);
   const myRef = useRef<HTMLDivElement>(null);
+
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { iconColor },
+  } = useDisplayMode();
   const handleClickOutside = (e: any) => {
     if (!myRef.current?.contains(e.target)) {
       setVisible(false);
@@ -30,7 +31,7 @@ export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
 
   return (
     <ComponentBody
-      displayMode={displayMode}
+      iconColor={iconColor}
       src={src}
       onClick={() => setVisible((prev) => !prev)}
       ref={myRef}
@@ -45,7 +46,7 @@ const ComponentBody = styled.div<{
   margin?: string;
   size?: number[];
   position?: string;
-  displayMode: string;
+  iconColor: string;
 }>`
   position: relative;
   display: flex;
@@ -64,14 +65,7 @@ const ComponentBody = styled.div<{
     background-repeat: no-repeat;
     background-position: ${({ position }) => position ?? "center"};
     background-size: contain;
-    ${({ displayMode }) =>
-      displayMode === "light"
-        ? `
-  filter: brightness(0) invert(0.3);
-  `
-        : `
-  filter: brightness(0) invert(0.7);
-      `}
+    filter: ${({ iconColor }) => iconColor};
   }
 `;
 const OptionsBox = styled.div<{ visible: boolean }>`
@@ -91,9 +85,6 @@ export const DropMenuOption: React.FC<DropMenuOptionProps> = ({
   callback,
   children,
 }) => {
-  const {
-    text: { textColor },
-  } = useContext(appContext);
   return <Option onClick={() => callback?.()}>{children}</Option>;
 };
 const Option = styled.div`

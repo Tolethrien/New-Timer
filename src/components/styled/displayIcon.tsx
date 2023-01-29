@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled, { StyledComponent } from "styled-components";
-import { appContext } from "../providers/appProvider";
+import useDisplayMode from "../hooks/useDisplayMode";
 interface DisplayIconProps {
   size?: [number, number];
   src: string;
@@ -14,13 +14,13 @@ const DisplayIcon: React.FC<DisplayIconProps> = ({
   absolute,
 }) => {
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { iconColor },
+  } = useDisplayMode();
   return (
     <ComponentBody
       src={src}
       alt={alt}
-      displayMode={displayMode}
+      iconColor={iconColor}
       size={size}
       absolute={absolute}
     ></ComponentBody>
@@ -28,20 +28,13 @@ const DisplayIcon: React.FC<DisplayIconProps> = ({
 };
 export default DisplayIcon;
 const ComponentBody = styled.img<{
-  displayMode: string;
+  iconColor: string;
   size: [number, number];
   absolute?: { x: string; y: string };
 }>`
   height: ${({ size }) => size[0]}rem;
   width: ${({ size }) => size[1]}rem;
-  ${({ displayMode }) =>
-    displayMode === "light"
-      ? `
-  filter: brightness(0) invert(0.3);
-  `
-      : `
-  filter: brightness(0) invert(0.7);
-      `};
+  filter: ${({ iconColor }) => iconColor};
   ${({ absolute }) =>
     absolute &&
     `

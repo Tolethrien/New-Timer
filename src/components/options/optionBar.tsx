@@ -1,24 +1,23 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { appContext } from "../providers/appProvider";
+import useDisplayMode from "../hooks/useDisplayMode";
 interface OptionBarProps {
   children: React.ReactNode;
 }
 const OptionBar: React.FC<OptionBarProps> = ({ children }) => {
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor },
+  } = useDisplayMode();
 
-  return <ComponentBody displayMode={displayMode}>{children}</ComponentBody>;
+  return <ComponentBody bodyColor={itemCardColor}>{children}</ComponentBody>;
 };
 export default OptionBar;
-const ComponentBody = styled.div<{ displayMode: string }>`
+const ComponentBody = styled.div<{ bodyColor: string }>`
   display: flex;
   align-items: center;
   padding: 0.5rem 0.7rem;
   margin-bottom: 0.1rem;
-  background-color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+  background-color: ${({ bodyColor }) => bodyColor};
   border-radius: 5px;
   backdrop-filter: blur(20px);
   box-shadow: 2px 2px 4px 1px hsla(0, 0%, 0%, 0.25);

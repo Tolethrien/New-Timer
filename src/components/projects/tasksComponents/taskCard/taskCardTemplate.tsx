@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addTask } from "../../../../API/handleDocs";
-import { appContext } from "../../../providers/appProvider";
+import useDisplayMode from "../../../hooks/useDisplayMode";
 import ButtonAsIcon from "../../../styled/buttonAsIcon";
 import { Trash } from "../../../utils/icons";
 interface TaskCardTemplateProps {
@@ -15,9 +15,10 @@ const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
 }) => {
   const [newTaskName, setNewTaskName] = useState("");
   const componentRef = useRef<HTMLDivElement>(null);
+
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { itemCardColor, taskTemplateColor },
+  } = useDisplayMode();
   const projectId = useParams().id;
 
   const createTask = (event: React.FormEvent<HTMLFormElement>) => {
@@ -41,9 +42,9 @@ const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
   }, []);
 
   return (
-    <ComponentBody ref={componentRef} displayMode={displayMode}>
+    <ComponentBody ref={componentRef} bodyColor={itemCardColor}>
       <TopBar>
-        <TimerTemplate displayMode={displayMode}></TimerTemplate>
+        <TimerTemplate bodyColor={taskTemplateColor}></TimerTemplate>
         <NameForm onSubmit={(e) => createTask(e)}>
           <NameInput
             autoFocus={true}
@@ -57,15 +58,14 @@ const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
           onClick={() => setTemplateTask(false)}
         ></ButtonAsIcon>
       </TopBar>
-      <Description displayMode={displayMode}></Description>
+      <Description bodyColor={taskTemplateColor}></Description>
     </ComponentBody>
   );
 };
 export default TaskCardTemplate;
 
-const ComponentBody = styled.div<{ displayMode: string }>`
-  background-color: ${({ displayMode }) =>
-    `hsla(0, 0%, ${displayMode === "light" ? 100 : 35}%, 0.6)`};
+const ComponentBody = styled.div<{ bodyColor: string }>`
+  background-color: ${({ bodyColor }) => bodyColor};
   backdrop-filter: blur(20px);
 
   width: 100%;
@@ -81,11 +81,8 @@ const TopBar = styled.div`
   align-items: center;
   padding-inline: 2%;
 `;
-const TimerTemplate = styled.div<{ displayMode: string }>`
-  background-color: ${({ displayMode }) =>
-    displayMode === "light"
-      ? `hsla(40, 76%,70%,0.5)`
-      : `hsla(260,26%,65%,0.5)`};
+const TimerTemplate = styled.div<{ bodyColor: string }>`
+  background-color: ${({ bodyColor }) => bodyColor};
   border-radius: 5px;
   padding: 0.2rem 0.2rem;
   width: 18%;
@@ -110,13 +107,10 @@ const NameInput = styled.input`
     color: inherit;
   }
 `;
-const Description = styled.div<{ displayMode: string }>`
+const Description = styled.div<{ bodyColor: string }>`
   width: 80%;
   height: 1rem;
   border-radius: 5px;
   margin-left: 1%;
-  background-color: ${({ displayMode }) =>
-    displayMode === "light"
-      ? `hsla(40, 76%,70%,0.5)`
-      : `hsla(260,26%,65%,0.5)`};
+  background-color: ${({ bodyColor }) => bodyColor};
 `;

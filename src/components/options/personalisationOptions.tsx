@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import ButtonWithIcon from "../custom/buttonWithIcon";
-import { appContext } from "../providers/appProvider";
+import useDisplayMode from "../hooks/useDisplayMode";
 import DisplayText from "../styled/displayText";
 import { Logout, RoundSwap } from "../utils/icons";
 import OptionBar from "./optionBar";
@@ -9,19 +9,7 @@ interface PersonalisationOptionsProps {}
 const PersonalisationOptions: React.FC<PersonalisationOptionsProps> = (
   props
 ) => {
-  const {
-    displayMode: { setDisplayMode },
-  } = useContext(appContext);
-  const switchMode = () => {
-    if (!localStorage.getItem("mode")) localStorage.setItem("mode", "light");
-    if (localStorage.getItem("mode") === "light") {
-      localStorage.setItem("mode", "dark");
-      setDisplayMode(localStorage.getItem("mode") as string);
-    } else if (localStorage.getItem("mode") === "dark") {
-      localStorage.setItem("mode", "light");
-      setDisplayMode(localStorage.getItem("mode") as string);
-    }
-  };
+  const { switchDisplayMode } = useDisplayMode();
   return (
     <>
       <OptionBar>
@@ -31,7 +19,7 @@ const PersonalisationOptions: React.FC<PersonalisationOptionsProps> = (
           alt=""
           text="Switch Mode"
           noShadow
-          onClick={switchMode}
+          onClick={switchDisplayMode}
         ></ButtonWithIcon>
       </OptionBar>
     </>

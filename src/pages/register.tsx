@@ -1,23 +1,21 @@
 import { useContext, useRef } from "react";
 import styled from "styled-components";
 import ButtonWithIcon from "../components/custom/buttonWithIcon";
-import { appContext } from "../components/providers/appProvider";
 import DisplayText from "../components/styled/displayText";
 import Head from "../components/styled/head";
 import PageWrap from "../components/styled/pageWrap";
 import { CreateAcc } from "../components/utils/icons";
 import { RegisterNewUser } from "../API/firebase";
 import { Navigate } from "react-router-dom";
+import { authContext } from "../components/providers/authProvider";
+import useDisplayMode from "../components/hooks/useDisplayMode";
 interface RegisterProps {}
 const Register: React.FC<RegisterProps> = (props) => {
   const nameRef = useRef<HTMLInputElement>(null);
   const mailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
   const repeatRef = useRef<HTMLInputElement>(null);
-  const {
-    displayMode: { displayMode },
-    currentUser,
-  } = useContext(appContext);
+
   const handleRegister = () => {
     if (nameRef.current?.value === "") return alert("podaj kurwo imie");
     if (passRef.current?.value !== repeatRef.current?.value)
@@ -28,7 +26,6 @@ const Register: React.FC<RegisterProps> = (props) => {
       nameRef.current?.value!
     );
   };
-  if (currentUser) return <Navigate to="/projects" replace={true} />;
   return (
     <PageWrap>
       <Head>

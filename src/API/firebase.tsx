@@ -25,6 +25,9 @@ import {
   sendEmailVerification,
   updateProfile,
   User,
+  setPersistence,
+  inMemoryPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
 import { Navigate } from "react-router-dom";
 
@@ -38,8 +41,9 @@ const firebaseConfig = {
 };
 export const FirebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth();
+// setPersistence(auth, browserLocalPersistence);
 // signOut(auth);
-
+// signInWithEmailAndPassword(auth, "tolethrien@gmail.com", "Radenes11");
 // export const sendEmail = () => {
 //   return sendEmailVerification(auth.currentUser);
 // };

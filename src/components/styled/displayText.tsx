@@ -1,6 +1,4 @@
 import styled, { StyledComponent } from "styled-components";
-import { useContext } from "react";
-import { appContext } from "../providers/appProvider";
 interface ChildrenProps {
   children: React.ReactNode;
 }

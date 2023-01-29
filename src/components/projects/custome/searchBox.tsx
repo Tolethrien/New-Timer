@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { appContext } from "../../providers/appProvider";
 import DisplayIcon from "../../styled/displayIcon";
 import { Loop } from "../../utils/icons";
 

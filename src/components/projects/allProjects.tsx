@@ -1,6 +1,6 @@
 import { useContext, useState, useRef } from "react";
 import styled from "styled-components";
-import { appContext } from "../providers/appProvider";
+import { userDBContext } from "../providers/userDBProvider";
 import { Add } from "../utils/icons";
 import ProjectCard from "./projectsComponents/projectCard/projectCard";
 import ProjectCardTemplate from "./projectsComponents/projectCard/projectCardTemplate";
@@ -9,13 +9,11 @@ import SearchBox from "./custome/searchBox";
 import DisplayText from "../styled/displayText";
 import ButtonWithIcon from "../custom/buttonWithIcon";
 import { filterTPByName, sortTPByStatus } from "./utils/filtersAndSorters";
+import { authContext } from "../providers/authProvider";
 
 const AllProjects: React.FC = () => {
-  const {
-    userData,
-    displayMode: { setDisplayMode, displayMode },
-    currentUser,
-  } = useContext(appContext);
+  const { userData } = useContext(userDBContext);
+  const { currentUser } = useContext(authContext);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const [searchText, setSearchText] = useState("");
   const [templateProject, setTemplateProject] = useState(false);
@@ -23,10 +21,7 @@ const AllProjects: React.FC = () => {
   const openTempateProject = () => {
     setTemplateProject(true);
   };
-  const setMode = () => {
-    if (displayMode === "light") setDisplayMode("dark");
-    else if (displayMode === "dark") setDisplayMode("light");
-  };
+
   return (
     <>
       <Head>

@@ -1,8 +1,8 @@
-import { appContext } from "../providers/appProvider";
+import { userDBContext } from "../providers/userDBProvider";
 import { useContext } from "react";
 
 const FindData = (id: string | undefined) => {
-  const { userData } = useContext(appContext);
+  const { userData } = useContext(userDBContext);
   let findProject = userData.find((e) => e.id === id);
   if (findProject) return findProject;
   let filteredProject = userData.find((el) =>

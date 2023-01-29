@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled, { StyledComponent } from "styled-components";
-import { appContext } from "../providers/appProvider";
+import useDisplayMode from "../hooks/useDisplayMode";
 interface ButtonAsIconProps {
   src: string;
   margin?: string;
@@ -20,8 +20,8 @@ const ButtonAsIcon: React.FC<ButtonAsIconProps> = ({
   extendedStyle,
 }) => {
   const {
-    displayMode: { displayMode },
-  } = useContext(appContext);
+    getColor: { iconColor },
+  } = useDisplayMode();
   return (
     <ComponentBody
       onClick={onClick}
@@ -31,7 +31,7 @@ const ButtonAsIcon: React.FC<ButtonAsIconProps> = ({
       position={position}
       ref={reference}
       as={extendedStyle}
-      displayMode={displayMode}
+      iconColor={iconColor}
     ></ComponentBody>
   );
 };
@@ -41,7 +41,7 @@ export const ComponentBody = styled.button<{
   margin?: string;
   size?: number[];
   position?: string;
-  displayMode: string;
+  iconColor: string;
 }>`
   position: relative;
   display: flex;
@@ -57,12 +57,5 @@ export const ComponentBody = styled.button<{
   background-size: contain;
   border: none;
   cursor: pointer;
-  ${({ displayMode }) =>
-    displayMode === "light"
-      ? `
-  filter: brightness(0) invert(0.3);
-  `
-      : `
-  filter: brightness(0) invert(0.7);
-      `}
+  filter: ${({ iconColor }) => iconColor};
 `;
