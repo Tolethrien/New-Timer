@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { DisplayModeContext } from "../providers/displayModeProvider";
-import mainLight from "backgrounds/LofiMain.jpg";
-import mainDark from "backgrounds/mainNight.jpg";
-import loginLight from "backgrounds/loginLight.jpg";
-import loginDark from "backgrounds/loginDark.jpg";
+import mainLight from "../../backgrounds/LofiMain.jpg";
+import mainDark from "../../backgrounds/mainNight.jpg";
+import loginLight from "../../backgrounds/loginLight.jpg";
+import loginDark from "../../backgrounds/loginDark.jpg";
 
 // type Colors = Record<Test, {}>;
 interface ColorTypes {
