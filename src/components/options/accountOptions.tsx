@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { logout } from "../../API/userAuth";
 import ButtonWithIcon from "../custom/buttonWithIcon";
-import DisplayText from "../styled/displayText";
+import DisplayText from "../custom/displayText";
 import { Add, Logout } from "../utils/icons";
 import AccountModal from "./accountModal";
 import OptionBar from "./optionBar";

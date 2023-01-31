@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addTask } from "../../../../API/handleDocs";
 import useTheme from "../../../hooks/useTheme";
-import ButtonAsIcon from "../../../styled/buttonAsIcon";
+import ButtonAsIcon from "../../../custom/buttonAsIcon";
 import { Trash } from "../../../utils/icons";
 interface TaskCardTemplateProps {
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;

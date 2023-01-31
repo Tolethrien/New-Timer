@@ -1,7 +1,7 @@
 import { userDBContext } from "../providers/userDBProvider";
 import { useContext } from "react";
 
-const FindData = (id: string | undefined) => {
+const useDataFinder = (id: string | undefined) => {
   const { userData } = useContext(userDBContext);
   let findProject = userData.find((e) => e.id === id);
   if (findProject) return findProject;
@@ -12,4 +12,4 @@ const FindData = (id: string | undefined) => {
   console.error("cant find project or task with this ID");
   return undefined;
 };
-export default FindData;
+export default useDataFinder;

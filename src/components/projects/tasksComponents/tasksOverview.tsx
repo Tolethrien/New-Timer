@@ -1,18 +1,18 @@
 import styled from "styled-components";
-import FindData from "../../hooks/findData";
+import FindData from "../../hooks/useDataFinder";
 import { TasksData } from "../../../API/getUserData";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { clockContext } from "../../providers/clockProvider";
 import { Clock } from "../../utils/icons";
-import Category from "../custome/category";
+import Category from "../../custom/category";
 import TaskDescriptionBox from "./taskDescriptionBox";
-import { ConvertToStringTime } from "../../hooks/convertToTime";
+import { conevrtTimeToString } from "../../utils/timeConverters";
 import LoadingData from "../../custom/loadingData";
-import TitleHeading from "../custome/titleHeading";
-import DisplayText from "../../styled/displayText";
+import TitleHeading from "../custom/titleHeading";
+import DisplayText from "../../custom/displayText";
 import ButtonWithIcon from "../../custom/buttonWithIcon";
-import Head from "../../styled/head";
+import Head from "../../custom/head";
 import Checkboxes from "./checkboxes";
 import TaskOptions from "./taskOptions";
 const TaskOverview: React.FC = () => {
@@ -36,10 +36,10 @@ const TaskOverview: React.FC = () => {
       <Head>
         <TitleHeading type={"task"} document={task}></TitleHeading>
         <DisplayText size={1}>
-          {ConvertToStringTime(task.data.timeSpend)} spend on task so far
+          {conevrtTimeToString(task.data.timeSpend)} spend on task so far
         </DisplayText>
         <DisplayText size={1}>
-          expected {ConvertToStringTime(task.data.timeExpected)}
+          expected {conevrtTimeToString(task.data.timeExpected)}
         </DisplayText>
         <ButtonWithIcon
           src={Clock}

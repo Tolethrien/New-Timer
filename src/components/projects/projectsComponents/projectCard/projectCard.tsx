@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { GoTo, Favorites, TaskList, Clock } from "../../../utils/icons";
 import { ProjectsData } from "../../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
-import { ConvertToStringTime } from "../../../hooks/convertToTime";
+import { conevrtTimeToString } from "../../../utils/timeConverters";
 import { useContext } from "react";
-import DisplayIcon from "../../../styled/displayIcon";
+import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
 interface ProjectCardProps {
   data: ProjectsData;
@@ -64,7 +64,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           textColor={textColorLight}
         >
           <DisplayIcon src={Clock} alt=""></DisplayIcon>
-          <InfoBoxValue>{ConvertToStringTime(totalTimeOnTask)}</InfoBoxValue>
+          <InfoBoxValue>{conevrtTimeToString(totalTimeOnTask)}</InfoBoxValue>
         </InfoBox>
       </InfoConteiner>
       <Name wrapWord={data.name.length > 21}>

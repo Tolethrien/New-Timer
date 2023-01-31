@@ -3,7 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 import { Timer, Projects, Options } from "../utils/icons";
 import { useContext, useState, useEffect } from "react";
-import { vibrate } from "../utils/navigatorUtils";
+import { vibrate } from "../utils/vibrate";
 import { clockContext } from "../providers/clockProvider";
 import { authContext } from "../providers/authProvider";
 import useTheme from "../hooks/useTheme";

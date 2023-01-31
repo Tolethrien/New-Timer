@@ -1,7 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import styled, { StyledComponent } from "styled-components";
-import useTheme from "../../hooks/useTheme";
-import { Collapse } from "../../utils/icons";
+import useTheme from "../hooks/useTheme";
+import { Collapse } from "../utils/icons";
 const Category: React.FC<{
   name: string;
   children?: React.ReactNode;

@@ -2,13 +2,10 @@ import styled from "styled-components";
 import PageWrap from "../components/styled/pageWrap";
 import { useContext, useMemo, useState } from "react";
 import { userDBContext } from "../components/providers/userDBProvider";
-import Head from "../components/styled/head";
-import DisplayText from "../components/styled/displayText";
+import Head from "../components/custom/head";
+import DisplayText from "../components/custom/displayText";
 import { clockContext } from "../components/providers/clockProvider";
 import Checkboxes from "../components/projects/tasksComponents/checkboxes";
-import CircularProgressBar from "../components/styled/circularProgresBar";
-import { ConvertToStringTime } from "../components/hooks/convertToTime";
-import TimerButtons from "../components/timer/timerButtons";
 import Clock from "../components/timer/clockComponent";
 import useTheme from "../components/hooks/useTheme";
 const Timer: React.FC = () => {

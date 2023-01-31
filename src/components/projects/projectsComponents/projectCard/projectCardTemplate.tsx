@@ -3,7 +3,7 @@ import { useRef, useEffect, useContext, useState } from "react";
 import { TaskList, Clock } from "../../../utils/icons";
 import { addProject } from "../../../../API/handleDocs";
 import { randomKey } from "../../../utils/randomKey";
-import DisplayIcon from "../../../styled/displayIcon";
+import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
 interface ProjectCardProps {
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;

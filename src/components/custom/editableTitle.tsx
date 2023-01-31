@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import { Edit } from "../utils/icons";
 import { updateProject, updateTask } from "../../API/handleDocs";
 import { useParams } from "react-router-dom";
-import ButtonAsIcon from "../styled/buttonAsIcon";
+import ButtonAsIcon from "./buttonAsIcon";
 import focusOnEndOfLine from "../projects/utils/focusOnEndOfLine";
 interface EditableTitleProps {
   text: string;

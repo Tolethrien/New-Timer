@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addNewCheckbox } from "../../../../API/handleDocs";
 import useTheme from "../../../hooks/useTheme";
-import ButtonAsIcon from "../../../styled/buttonAsIcon";
+import ButtonAsIcon from "../../../custom/buttonAsIcon";
 import { CheckBoxEmpty, Trash } from "../../../utils/icons";
 interface CheckboxTemplateProps {
   setTemplateTask: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,38 +1,33 @@
 import styled from "styled-components";
-import FindData from "../../hooks/findData";
+import FindData from "../../hooks/useDataFinder";
 import { useState, useRef, useContext } from "react";
 import { Add, RoundSwap } from "../../utils/icons";
-import {
-  updateProject,
-  ProjectStatuses,
-  colors,
-} from "../../../API/handleDocs";
+import { updateProject, colors } from "../../../API/handleDocs";
 import { useParams } from "react-router-dom";
-import Category from "../custome/category";
+import Category from "../../custom/category";
 import TaskCard from "../tasksComponents/taskCard/taskCard";
 import { ProjectsData } from "../../../API/getUserData";
-import { ConvertToStringTime } from "../../hooks/convertToTime";
+import { conevrtTimeToString } from "../../utils/timeConverters";
 import LoadingData from "../../custom/loadingData";
-import Head from "../../styled/head";
-import DisplayText from "../../styled/displayText";
-import TitleHeading from "../custome/titleHeading";
-import ButtonAsIcon from "../../styled/buttonAsIcon";
+import Head from "../../custom/head";
+import DisplayText from "../../custom/displayText";
+import TitleHeading from "../custom/titleHeading";
+import ButtonAsIcon from "../../custom/buttonAsIcon";
 import { randomKey } from "../../utils/randomKey";
 import ButtonWithIcon from "../../custom/buttonWithIcon";
-import SearchBox from "../custome/searchBox";
+import SearchBox from "../custom/searchBox";
 import { filterTPByName } from "../utils/filtersAndSorters";
 import TaskCardTemplate from "../tasksComponents/taskCard/taskCardTemplate";
-import updateStatus from "../utils/updateStatus";
+import { updateStatus } from "../../../API/handleDocs";
 import useTheme from "../../hooks/useTheme";
 interface ProjectProps {}
-interface StyleProps {}
 const Project: React.FC<ProjectProps> = () => {
   const [showAll, setShowAll] = useState(true);
   const [templateTask, setTemplateTask] = useState(false);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const [searchText, setSearchText] = useState("");
 
-  const { displayMode } = useTheme();
+  const { theme } = useTheme();
   const { id } = useParams();
   const project = FindData(id) as ProjectsData;
   const TasksInfo = tasksCompletion();
@@ -70,11 +65,11 @@ const Project: React.FC<ProjectProps> = () => {
         {showAll && (
           <>
             <DisplayText>
-              you spend a {ConvertToStringTime(TasksInfo.currentTimeOnTasks)}{" "}
+              you spend a {conevrtTimeToString(TasksInfo.currentTimeOnTasks)}{" "}
               total on this project
             </DisplayText>
             <DisplayText>
-              Expected time is {ConvertToStringTime(TasksInfo.totalTimeOnTasks)}
+              Expected time is {conevrtTimeToString(TasksInfo.totalTimeOnTasks)}
               !
             </DisplayText>
             <ProjectCategory>
@@ -105,7 +100,7 @@ const Project: React.FC<ProjectProps> = () => {
                   <ColorToPick
                     current={e === project.data.color}
                     hue={e}
-                    displayMode={displayMode}
+                    displayMode={theme}
                     key={randomKey()}
                     onClick={() => updateColor(e)}
                   ></ColorToPick>

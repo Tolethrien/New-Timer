@@ -50,6 +50,7 @@ const ClockProvider: React.FC<props> = (props) => {
       setIsRunning(true);
     }
   }, [isRunning, taskInProgress]);
+
   const stopClock = useCallback(() => {
     setTimeLeft(0);
     setBarProgress(0);
@@ -62,6 +63,7 @@ const ClockProvider: React.FC<props> = (props) => {
       console.log("w tasku");
     }
   }, [taskInProgress]);
+
   const setClock = ({ time, project, task }: SetClock) => {
     setTimeLeft(time);
     setTaskInProgress({ project, task });
@@ -78,6 +80,7 @@ const ClockProvider: React.FC<props> = (props) => {
     setTaskInProgress(undefined);
     navigate(`/projects/project/${taskInProgress?.project}`);
   }, [taskInProgress, timeLeft]);
+
   return (
     <clockContext.Provider
       value={{

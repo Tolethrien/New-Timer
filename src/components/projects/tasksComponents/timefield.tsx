@@ -1,9 +1,12 @@
 import styled, { StyledComponent } from "styled-components";
 import TimeF from "react-simple-timefield-for-react18-temp";
 import { useState, useRef, useContext } from "react";
-import { updateTask } from "../../API/handleDocs";
+import { updateTask } from "../../../API/handleDocs";
 import { useParams } from "react-router-dom";
-import { ConvertToNumber, ConvertToStringTime } from "./convertToTime";
+import {
+  conevrTimeToNumber,
+  conevrtTimeToString,
+} from "../../utils/timeConverters";
 interface TimeFieldProps {
   extendedStyle?: StyledComponent<"div", any, {}, never>;
   expectedTime: number;
@@ -12,13 +15,13 @@ const TimeField: React.FC<TimeFieldProps> = ({
   extendedStyle,
   expectedTime,
 }) => {
-  const [time, setTime] = useState(ConvertToStringTime(expectedTime));
+  const [time, setTime] = useState(conevrtTimeToString(expectedTime));
   const fieldRef = useRef<HTMLDivElement>(null);
   const { id } = useParams();
 
   const TimeUpdate = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
-      updateTask(id!, { timeExpected: ConvertToNumber(time) });
+      updateTask(id!, { timeExpected: conevrTimeToNumber(time) });
       let temp = fieldRef!.current!.firstChild! as HTMLInputElement;
       temp.blur();
     }

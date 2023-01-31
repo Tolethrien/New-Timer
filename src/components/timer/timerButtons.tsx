@@ -3,7 +3,7 @@ import styled from "styled-components";
 import useTheme from "../hooks/useTheme";
 import { clockContext } from "../providers/clockProvider";
 import { Done, Play, Stop } from "../utils/icons";
-import { vibrate } from "../utils/navigatorUtils";
+import { vibrate } from "../utils/vibrate";
 interface TimerButtonsProps {
   showCheckboxComponent?: boolean;
 }

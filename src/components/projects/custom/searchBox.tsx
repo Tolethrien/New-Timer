@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import DisplayIcon from "../../styled/displayIcon";
+import DisplayIcon from "../../custom/displayIcon";
 import { Loop } from "../../utils/icons";
 
 interface SearchBoxProps {

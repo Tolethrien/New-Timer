@@ -1,8 +1,8 @@
 import { useContext, useRef } from "react";
 import styled from "styled-components";
 import ButtonWithIcon from "../components/custom/buttonWithIcon";
-import DisplayText from "../components/styled/displayText";
-import Head from "../components/styled/head";
+import DisplayText from "../components/custom/displayText";
+import Head from "../components/custom/head";
 import PageWrap from "../components/styled/pageWrap";
 import { CreateAcc } from "../components/utils/icons";
 import { RegisterNewUser } from "../API/userAuth";

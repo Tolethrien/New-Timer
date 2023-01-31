@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useContext } from "react";
-import Head from "../components/styled/head";
+import Head from "../components/custom/head";
 import PageWrap from "../components/styled/pageWrap";
-import DisplayText from "../components/styled/displayText";
-import Category from "../components/projects/custome/category";
+import DisplayText from "../components/custom/displayText";
+import Category from "../components/custom/category";
 import AccountOptions from "../components/options/accountOptions";
 import PersonalisationOptions from "../components/options/personalisationOptions";
 import DangerZone from "../components/options/dangerZone";

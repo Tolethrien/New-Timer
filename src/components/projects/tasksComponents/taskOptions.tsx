@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { TasksData } from "../../../API/getUserData";
 import { updateTask } from "../../../API/handleDocs";
-import TimeField from "../../hooks/timefield";
+import TimeField from "./timefield";
 import useTheme from "../../hooks/useTheme";
-import ButtonAsIcon from "../../styled/buttonAsIcon";
-import DisplayText from "../../styled/displayText";
+import ButtonAsIcon from "../../custom/buttonAsIcon";
+import DisplayText from "../../custom/displayText";
 import { RoundSwap } from "../../utils/icons";
-import updateStatus from "../utils/updateStatus";
+import { updateStatus } from "../../../API/handleDocs";
 interface TaskOptionsProps {
   task: TasksData;
 }

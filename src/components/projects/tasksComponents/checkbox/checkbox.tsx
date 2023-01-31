@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { Edit, CheckBoxEmpty, CheckBoxFill, Trash } from "../../../utils/icons";
 import { updateCheckbox, deleteCheckbox } from "../../../../API/handleDocs";
 import { useParams } from "react-router-dom";
-import ButtonAsIcon from "../../../styled/buttonAsIcon";
+import ButtonAsIcon from "../../../custom/buttonAsIcon";
 import focusOnEndOfLine from "../../utils/focusOnEndOfLine";
 import useTheme from "../../../hooks/useTheme";
 interface CheckBoxProps {

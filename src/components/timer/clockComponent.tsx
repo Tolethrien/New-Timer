@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { ConvertToStringTime } from "../hooks/convertToTime";
+import { conevrtTimeToString } from "../utils/timeConverters";
 import { clockContext } from "../providers/clockProvider";
-import CircularProgressBar from "../styled/circularProgresBar";
+import CircularProgressBar from "../custom/circularProgresBar";
 import TimerButtons from "./timerButtons";
 import useTheme from "../hooks/useTheme";
 interface ClockProps {
@@ -17,7 +17,7 @@ interface ColorsType {
   };
 }
 const Clock: React.FC<ClockProps> = ({ showCheckboxComponent }) => {
-  const { displayMode } = useTheme();
+  const { theme } = useTheme();
   const { barProgress, timeLeft } = useContext(clockContext);
   const clockColors: ColorsType = {
     light: {
@@ -40,25 +40,25 @@ const Clock: React.FC<ClockProps> = ({ showCheckboxComponent }) => {
         config={{
           size: "13rem",
           trackWidth: "1rem",
-          trackColor: clockColors[displayMode].primary,
+          trackColor: clockColors[theme].primary,
           indicatorWidth: "0.8rem",
-          indicatorColor: clockColors[displayMode].secondary,
+          indicatorColor: clockColors[theme].secondary,
           indicatorCap: "round",
           glow: {
             strength: 10,
-            color: clockColors[displayMode].glow,
+            color: clockColors[theme].glow,
           },
           text: {
             family: "roboto",
             size: 2.6,
             background: true,
-            backgroundColor: clockColors[displayMode].backgroundColor,
+            backgroundColor: clockColors[theme].backgroundColor,
             paddingBlock: 1,
           },
         }}
         progress={barProgress}
       >
-        {ConvertToStringTime(timeLeft)}
+        {conevrtTimeToString(timeLeft)}
       </CircularProgressBar>
       <TimerButtons showCheckboxComponent={showCheckboxComponent} />
     </ComponentBody>

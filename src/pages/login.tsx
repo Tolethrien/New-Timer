@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import { login } from "../API/userAuth";
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import PageWrap from "../components/styled/pageWrap";
-import Head from "../components/styled/head";
-import DisplayText from "../components/styled/displayText";
+import Head from "../components/custom/head";
+import DisplayText from "../components/custom/displayText";
 import ButtonWithIcon from "../components/custom/buttonWithIcon";
 import { Logout } from "../components/utils/icons";
-import { Navigate, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 import useTheme from "../components/hooks/useTheme";
 //=======TYPES========
 interface LoginProps {}
@@ -17,7 +16,7 @@ const Login: React.FC<LoginProps> = (props) => {
   const mailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
 
-  const { displayMode } = useTheme();
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const handleLogin = () => {
     login(mailRef.current!.value, passRef.current!.value);
@@ -53,7 +52,7 @@ const Login: React.FC<LoginProps> = (props) => {
           ></ButtonWithIcon>
         </UserForm>
         <CreateAcc>
-          <DarkModeBackground displayMode={displayMode}>
+          <DarkModeBackground bodyColor={theme}>
             <DisplayText>Don’t have account yet?</DisplayText>
           </DarkModeBackground>
           <ButtonWithIcon
@@ -106,10 +105,10 @@ const CreateAcc = styled.div`
   margin-block: 25%;
   gap: 0.5rem;
 `;
-const DarkModeBackground = styled.div<{ displayMode: string }>`
+const DarkModeBackground = styled.div<{ bodyColor: string }>`
   white-space: nowrap;
-  background-color: ${({ displayMode }) =>
-    displayMode === "light" ? `transparent` : `hsla(0, 0%, 0%, 0.4)`};
+  background-color: ${({ bodyColor }) =>
+    bodyColor === "light" ? `transparent` : `hsla(0, 0%, 0%, 0.4)`};
   padding: 5% 3%;
   border-radius: 5px;
   backdrop-filter: blur(1px);

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef, useContext } from "react";
-import ButtonAsIcon from "../styled/buttonAsIcon";
+import ButtonAsIcon from "./buttonAsIcon";
 import useTheme from "../hooks/useTheme";
 interface DropMenuButtonProps {
   children?: React.ReactNode;

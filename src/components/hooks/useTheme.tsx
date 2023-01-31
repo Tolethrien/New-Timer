@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { DisplayModeContext } from "../providers/displayModeProvider";
+import { themeContext } from "../providers/themeProvider";
 import mainLight from "../../backgrounds/LofiMain.jpg";
 import mainDark from "../../backgrounds/mainNight.jpg";
 import loginLight from "../../backgrounds/loginLight.jpg";
@@ -77,9 +77,9 @@ const APP_BACKGROUNDS: Backgrounds = {
   dark: { appBackground: mainDark, loginBackground: loginDark },
 };
 const useTheme = () => {
-  const { displayMode, switchDisplayMode } = useContext(DisplayModeContext);
-  const getColor = APP_COLORS[displayMode];
-  const getBackground = APP_BACKGROUNDS[displayMode];
-  return { displayMode, switchDisplayMode, getColor, getBackground };
+  const { theme, switchTheme } = useContext(themeContext);
+  const getColor = APP_COLORS[theme];
+  const getBackground = APP_BACKGROUNDS[theme];
+  return { theme, switchTheme, getColor, getBackground };
 };
 export default useTheme;

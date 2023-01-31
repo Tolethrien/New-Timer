@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import db from "./firebase";
 import { auth } from "./firebase";
+import { ProjectsData, TasksData } from "./getUserData";
 
 export const colors = {
   Orange: 41,
@@ -108,6 +109,22 @@ export const addNewCheckbox = (taskId: string, name: string) => {
     },
   });
 };
+
+interface updateStatusProps {
+  document: ProjectsData | TasksData;
+  type: "project" | "task";
+  id: string;
+}
+export const updateStatus = ({ document, type, id }: updateStatusProps) => {
+  let statusIndex = ProjectStatuses.indexOf(document.data.status);
+  let newStatus =
+    statusIndex === ProjectStatuses.length - 1 ? 0 : (statusIndex += 1);
+  if (type === "project")
+    updateProject(id!, { status: ProjectStatuses[newStatus] });
+  else if (type === "task")
+    updateTask(id!, { status: ProjectStatuses[newStatus] });
+};
+
 export const KILLALLTASKS = () => {
   // DO NOT EVOKE!!!
   let x: any[] = [];

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import ButtonWithIcon from "../custom/buttonWithIcon";
-import DisplayText from "../styled/displayText";
+import DisplayText from "../custom/displayText";
 import { Trash } from "../utils/icons";
 import OptionBar from "./optionBar";
 interface DangerZoneProps {}

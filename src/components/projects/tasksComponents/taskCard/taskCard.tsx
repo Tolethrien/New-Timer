@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { TasksData } from "../../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
 import { Clock, GoTo } from "../../../utils/icons";
-import { ConvertToStringTime } from "../../../hooks/convertToTime";
+import { conevrtTimeToString } from "../../../utils/timeConverters";
 import { useContext } from "react";
-import DisplayIcon from "../../../styled/displayIcon";
+import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
 const TaskCard: React.FC<{
   task: TasksData;
@@ -29,7 +29,7 @@ const TaskCard: React.FC<{
         <InfoBox bodyColor={taskTemplateColor}>
           <DisplayIcon src={Clock} alt=""></DisplayIcon>
           <InfoBoxValue>
-            {ConvertToStringTime(task!.data.timeSpend)}
+            {conevrtTimeToString(task!.data.timeSpend)}
           </InfoBoxValue>
         </InfoBox>
         <Name>
