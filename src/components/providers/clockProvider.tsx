@@ -1,6 +1,6 @@
-import { useState, useEffect, createContext, useRef } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
-import { updateTask, updateTime } from "../../API/handleDocs";
+import { useState, useEffect, createContext, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { updateTask } from "../../API/handleDocs";
 interface provider {
   timeLeft: number;
   barProgress: number;
@@ -20,41 +20,37 @@ interface props {
 }
 
 export const clockContext = createContext<provider>({} as provider);
+const MINUTES_TO_PERCENT = (1 / 60) * 100;
 
 const ClockProvider: React.FC<props> = (props) => {
+  // const [state, dispatch] = useReducer(reducer, { age: 42 });
   const [barProgress, setBarProgress] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [taskInProgress, setTaskInProgress] = useState<
     { project: string; task: string } | undefined
   >(undefined);
   const [timeLeft, setTimeLeft] = useState(0);
-  const minutesToPercent = (1 / 60) * 100;
   let interval = useRef<NodeJS.Timer>();
   const navigate = useNavigate();
   useEffect(() => {
-    isRunning && createInterval();
-    return () => clearInterval(interval.current);
-  }, [timeLeft]);
-
-  const createInterval = () => {
-    interval.current = setInterval(() => {
-      setTimeLeft(timeLeft + 1);
-      setBarProgress(barProgress + minutesToPercent);
-    }, 1000);
-  };
-
-  const playPauseClock = () => {
     if (isRunning) {
-      clearInterval(interval.current);
+      interval.current = setInterval(() => {
+        setTimeLeft((prev) => prev + 1);
+        setBarProgress((prev) => prev + MINUTES_TO_PERCENT);
+      }, 1000);
+    }
+    return () => clearInterval(interval.current);
+  }, [timeLeft, isRunning]);
+
+  const playPauseClock = useCallback(() => {
+    if (isRunning) {
       setIsRunning(false);
       if (taskInProgress !== undefined) updateDB();
     } else {
-      createInterval();
       setIsRunning(true);
     }
-  };
-  const stopClock = () => {
-    clearInterval(interval.current);
+  }, [isRunning, taskInProgress]);
+  const stopClock = useCallback(() => {
     setTimeLeft(0);
     setBarProgress(0);
     setIsRunning(false);
@@ -65,7 +61,7 @@ const ClockProvider: React.FC<props> = (props) => {
       navigate("/timer/undefined");
       console.log("w tasku");
     }
-  };
+  }, [taskInProgress]);
   const setClock = ({ time, project, task }: SetClock) => {
     setTimeLeft(time);
     setTaskInProgress({ project, task });
@@ -74,13 +70,14 @@ const ClockProvider: React.FC<props> = (props) => {
     updateTask(taskInProgress?.task!, { timeSpend: timeLeft });
   };
 
-  const onComplete = () => {
+  const onComplete = useCallback(() => {
     updateTask(taskInProgress?.task!, { timeSpend: timeLeft, status: "Done" });
     setTimeLeft(0);
     setBarProgress(0);
     setIsRunning(false);
+    setTaskInProgress(undefined);
     navigate(`/projects/project/${taskInProgress?.project}`);
-  };
+  }, [taskInProgress, timeLeft]);
   return (
     <clockContext.Provider
       value={{

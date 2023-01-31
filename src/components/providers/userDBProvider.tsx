@@ -1,6 +1,5 @@
 import { User } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
-import { useAuth } from "../../API/firebase";
 import { GetUserData } from "../../API/getUserData";
 import { ProjectsData } from "../../API/getUserData";
 interface props {

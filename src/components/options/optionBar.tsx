@@ -1,13 +1,13 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import useDisplayMode from "../hooks/useDisplayMode";
+import useTheme from "../hooks/useTheme";
 interface OptionBarProps {
   children: React.ReactNode;
 }
 const OptionBar: React.FC<OptionBarProps> = ({ children }) => {
   const {
     getColor: { itemCardColor },
-  } = useDisplayMode();
+  } = useTheme();
 
   return <ComponentBody bodyColor={itemCardColor}>{children}</ComponentBody>;
 };

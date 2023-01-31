@@ -5,7 +5,7 @@ import { updateCheckbox, deleteCheckbox } from "../../../../API/handleDocs";
 import { useParams } from "react-router-dom";
 import ButtonAsIcon from "../../../styled/buttonAsIcon";
 import focusOnEndOfLine from "../../utils/focusOnEndOfLine";
-import useDisplayMode from "../../../hooks/useDisplayMode";
+import useTheme from "../../../hooks/useTheme";
 interface CheckBoxProps {
   checkboxData: [string, { createdAt: number; name: string; value: boolean }];
 }
@@ -17,7 +17,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
   const componentRef = useRef<HTMLDivElement>(null);
   const {
     getColor: { itemCardColor, iconColor },
-  } = useDisplayMode();
+  } = useTheme();
   const taskId = useParams().id;
   const handleClickOutside = (e: any) => {
     if (!componentRef.current?.contains(e.target)) {

@@ -10,14 +10,14 @@ import CircularProgressBar from "../components/styled/circularProgresBar";
 import { ConvertToStringTime } from "../components/hooks/convertToTime";
 import TimerButtons from "../components/timer/timerButtons";
 import Clock from "../components/timer/clockComponent";
-import useDisplayMode from "../components/hooks/useDisplayMode";
+import useTheme from "../components/hooks/useTheme";
 const Timer: React.FC = () => {
   const { userData } = useContext(userDBContext);
   const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
   const [showCheckboxComponent, setShowCheckboxComponent] = useState(false);
   const {
     getColor: { appColorPrimary, borderColor },
-  } = useDisplayMode();
+  } = useTheme();
   const { projectData, taskData } = findDataInfo();
 
   function findDataInfo() {

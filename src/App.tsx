@@ -5,24 +5,24 @@ import Options from "./pages/options";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ClockProvider from "./components/providers/clockProvider";
 import UserDBProvider from "./components/providers/userDBProvider";
-import useDisplayMode from "./components/hooks/useDisplayMode";
+import useTheme from "./components/hooks/useTheme";
 import UserAuth from "./pages/userAuth";
 import { MainBody } from "./components/styled/mainBody";
-import useGetUser from "./components/hooks/getUser";
+import useUserAuth from "./components/hooks/useUserAuth";
 
 function App() {
   const {
     getColor: { textColorNormal },
     getBackground: { appBackground },
-  } = useDisplayMode();
+  } = useTheme();
 
-  const currentUser = useGetUser();
+  const currentUser = useUserAuth();
 
   if (!currentUser) return <UserAuth />;
 
   return (
-    <UserDBProvider>
-      <MainBody background={appBackground} textColor={textColorNormal}>
+    <MainBody background={appBackground} textColor={textColorNormal}>
+      <UserDBProvider>
         <ClockProvider>
           <Routes>
             <Route path="*" element={<Navigate to="/projects" />} />
@@ -31,9 +31,9 @@ function App() {
             <Route path={"/options"} element={<Options />}></Route>
           </Routes>
         </ClockProvider>
-        <Footer />
-      </MainBody>
-    </UserDBProvider>
+      </UserDBProvider>
+      <Footer />
+    </MainBody>
   );
 }
 export default App;

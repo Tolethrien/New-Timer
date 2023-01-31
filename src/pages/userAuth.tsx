@@ -2,12 +2,12 @@ import { MainBody } from "../components/styled/mainBody";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./login";
 import Register from "./register";
-import useDisplayMode from "../components/hooks/useDisplayMode";
+import useTheme from "../components/hooks/useTheme";
 const UserAuth: React.FC = () => {
   const {
     getColor: { textColorNormal },
     getBackground: { loginBackground },
-  } = useDisplayMode();
+  } = useTheme();
   return (
     <MainBody background={loginBackground} textColor={textColorNormal}>
       <Routes>

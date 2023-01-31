@@ -5,10 +5,10 @@ import DisplayText from "../components/styled/displayText";
 import Head from "../components/styled/head";
 import PageWrap from "../components/styled/pageWrap";
 import { CreateAcc } from "../components/utils/icons";
-import { RegisterNewUser } from "../API/firebase";
+import { RegisterNewUser } from "../API/userAuth";
 import { Navigate } from "react-router-dom";
 import { authContext } from "../components/providers/authProvider";
-import useDisplayMode from "../components/hooks/useDisplayMode";
+import useTheme from "../components/hooks/useTheme";
 interface RegisterProps {}
 const Register: React.FC<RegisterProps> = (props) => {
   const nameRef = useRef<HTMLInputElement>(null);

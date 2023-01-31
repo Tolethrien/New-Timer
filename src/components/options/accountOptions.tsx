@@ -3,7 +3,7 @@ import { User } from "firebase/auth";
 import { useEffect, useRef, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { logout } from "../../API/firebase";
+import { logout } from "../../API/userAuth";
 import ButtonWithIcon from "../custom/buttonWithIcon";
 import DisplayText from "../styled/displayText";
 import { Add, Logout } from "../utils/icons";

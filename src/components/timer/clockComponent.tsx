@@ -4,7 +4,7 @@ import { ConvertToStringTime } from "../hooks/convertToTime";
 import { clockContext } from "../providers/clockProvider";
 import CircularProgressBar from "../styled/circularProgresBar";
 import TimerButtons from "./timerButtons";
-import useDisplayMode from "../hooks/useDisplayMode";
+import useTheme from "../hooks/useTheme";
 interface ClockProps {
   showCheckboxComponent: boolean;
 }
@@ -17,7 +17,7 @@ interface ColorsType {
   };
 }
 const Clock: React.FC<ClockProps> = ({ showCheckboxComponent }) => {
-  const { displayMode } = useDisplayMode();
+  const { displayMode } = useTheme();
   const { barProgress, timeLeft } = useContext(clockContext);
   const clockColors: ColorsType = {
     light: {

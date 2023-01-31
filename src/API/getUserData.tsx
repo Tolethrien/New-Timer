@@ -100,8 +100,10 @@ export const GetUserData = () => {
       // GetMeta();
       GetProjects();
       GetTasks();
+      console.log("robie asaase");
     }
   }, [auth.currentUser]);
+
   const makeData = () => {
     let data = projects;
     data.forEach(
@@ -112,6 +114,7 @@ export const GetUserData = () => {
     //     meta: metaData,
     //     projects: data,
     //   });
+    console.log("robie dane");
     return data;
   };
   return makeData();

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import useDisplayMode from "../hooks/useDisplayMode";
+import useTheme from "../hooks/useTheme";
 import { clockContext } from "../providers/clockProvider";
 import { Done, Play, Stop } from "../utils/icons";
 import { vibrate } from "../utils/navigatorUtils";
@@ -14,7 +14,7 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
     useContext(clockContext);
   const {
     getColor: { itemCardColor, buttonColor, iconColor, shadowColor },
-  } = useDisplayMode();
+  } = useTheme();
   return (
     <ComponentBody
       showCheckboxComponent={showCheckboxComponent}

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { login, auth } from "../API/firebase";
+import { login } from "../API/userAuth";
 import { useContext, useRef } from "react";
 import PageWrap from "../components/styled/pageWrap";
 import Head from "../components/styled/head";
@@ -8,7 +8,7 @@ import ButtonWithIcon from "../components/custom/buttonWithIcon";
 import { Logout } from "../components/utils/icons";
 import { Navigate, useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import useDisplayMode from "../components/hooks/useDisplayMode";
+import useTheme from "../components/hooks/useTheme";
 //=======TYPES========
 interface LoginProps {}
 
@@ -17,7 +17,7 @@ const Login: React.FC<LoginProps> = (props) => {
   const mailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
 
-  const { displayMode } = useDisplayMode();
+  const { displayMode } = useTheme();
   const navigate = useNavigate();
   const handleLogin = () => {
     login(mailRef.current!.value, passRef.current!.value);

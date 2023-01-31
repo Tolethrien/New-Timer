@@ -1,6 +1,6 @@
 import styled, { StyledComponent } from "styled-components";
-import useGetUser from "../hooks/getUser";
-import useDisplayMode from "../hooks/useDisplayMode";
+import useUserAuth from "../hooks/useUserAuth";
+import useTheme from "../hooks/useTheme";
 
 interface HeadProps {
   children?: React.ReactNode;
@@ -9,8 +9,8 @@ interface HeadProps {
 const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
   const {
     getColor: { appColorPrimary, appColorSecondary, borderColor, shadowColor },
-  } = useDisplayMode();
-  const currentUser = useGetUser();
+  } = useTheme();
+  const currentUser = useUserAuth();
   document
     .querySelector('meta[name="theme-color"]')!
     .setAttribute("content", currentUser ? appColorPrimary : appColorSecondary);

@@ -1,3 +1,11 @@
 sprawdzac naming convention
 przerobic () => cos() na onelinemry ( resolve promise)
 pamietab cy zerknac na hooki, usunac nieistniejace juz pagesy itp
+
+
+plan: 
+czyszczenie kodu;
+budowanie i przeglad komponentow generycznych
+utillsy
+hooki
+optymalizacja rerenderowania 

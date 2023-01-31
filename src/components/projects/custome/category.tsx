@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import styled, { StyledComponent } from "styled-components";
-import useDisplayMode from "../../hooks/useDisplayMode";
+import useTheme from "../../hooks/useTheme";
 import { Collapse } from "../../utils/icons";
 const Category: React.FC<{
   name: string;
@@ -12,7 +12,7 @@ const Category: React.FC<{
 
   const {
     getColor: { itemCardColor, categoryColor, iconColor },
-  } = useDisplayMode();
+  } = useTheme();
 
   return (
     <ComponentBody bodyColor={categoryColor} as={extendedStyle}>

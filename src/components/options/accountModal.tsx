@@ -1,12 +1,12 @@
-import { useContext, useRef, useState } from "react";
+import { useRef } from "react";
 import styled from "styled-components";
-import { logout } from "../../API/firebase";
+import { logout } from "../../API/userAuth";
 import ButtonWithIcon from "../custom/buttonWithIcon";
 import ButtonAsIcon from "../styled/buttonAsIcon";
 import DisplayText from "../styled/displayText";
 import { Add } from "../utils/icons";
-import useDisplayMode from "../hooks/useDisplayMode";
-import useGetUser from "../hooks/getUser";
+import useTheme from "../hooks/useTheme";
+import useUserAuth from "../hooks/useUserAuth";
 interface AccountModalProps {
   reference: React.MutableRefObject<HTMLDialogElement | null>;
   typeOfData: string;
@@ -18,11 +18,11 @@ const AccountModal: React.FC<AccountModalProps> = ({
   reference,
   typeOfData,
 }) => {
-  const currentUser = useGetUser();
+  const currentUser = useUserAuth();
 
   const {
     getColor: { itemCardColor },
-  } = useDisplayMode();
+  } = useTheme();
 
   const formRef = useRef<HTMLFormElement>(null);
   const modalschema: userI = {

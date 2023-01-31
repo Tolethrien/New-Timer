@@ -3,7 +3,7 @@ import { updateTask } from "../../../API/handleDocs";
 import { useState, useRef, useEffect, useContext } from "react";
 import { TextEdit } from "../../utils/icons";
 import { useParams } from "react-router-dom";
-import useDisplayMode from "../../hooks/useDisplayMode";
+import useTheme from "../../hooks/useTheme";
 interface TaskDescriptionBoxProps {
   value: string;
   minHeight?: number;
@@ -18,7 +18,7 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
   const { id } = useParams();
   const {
     getColor: { itemCardColor, borderColor, textColorNormal },
-  } = useDisplayMode();
+  } = useTheme();
   const updateDocText = () => {
     updateTask(id!, { desc: textValue });
   };

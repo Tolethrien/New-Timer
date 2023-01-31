@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled, { StyledComponent } from "styled-components";
-import useDisplayMode from "../hooks/useDisplayMode";
+import useTheme from "../hooks/useTheme";
 interface ButtonWithIconProps {
   src: string;
   alt: string;
@@ -23,7 +23,7 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
 }) => {
   const {
     getColor: { borderColor, shadowColor, iconColor },
-  } = useDisplayMode();
+  } = useTheme();
   return (
     <ComponentBody
       onClick={onClick}

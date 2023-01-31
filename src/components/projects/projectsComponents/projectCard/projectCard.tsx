@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ConvertToStringTime } from "../../../hooks/convertToTime";
 import { useContext } from "react";
 import DisplayIcon from "../../../styled/displayIcon";
-import useDisplayMode from "../../../hooks/useDisplayMode";
+import useTheme from "../../../hooks/useTheme";
 interface ProjectCardProps {
   data: ProjectsData;
 }
@@ -20,7 +20,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       projectCardProgressBarColorTone,
       projectCardProgressBarValueColor,
     },
-  } = useDisplayMode();
+  } = useTheme();
   const navigate = useNavigate();
 
   const taskDone = (tasks: { data: { status: string } }[]) => {

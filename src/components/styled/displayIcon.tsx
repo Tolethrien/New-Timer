@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled, { StyledComponent } from "styled-components";
-import useDisplayMode from "../hooks/useDisplayMode";
+import useTheme from "../hooks/useTheme";
 interface DisplayIconProps {
   size?: [number, number];
   src: string;
@@ -15,7 +15,7 @@ const DisplayIcon: React.FC<DisplayIconProps> = ({
 }) => {
   const {
     getColor: { iconColor },
-  } = useDisplayMode();
+  } = useTheme();
   return (
     <ComponentBody
       src={src}

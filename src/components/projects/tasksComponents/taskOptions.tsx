@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { TasksData } from "../../../API/getUserData";
 import { updateTask } from "../../../API/handleDocs";
 import TimeField from "../../hooks/timefield";
-import useDisplayMode from "../../hooks/useDisplayMode";
+import useTheme from "../../hooks/useTheme";
 import ButtonAsIcon from "../../styled/buttonAsIcon";
 import DisplayText from "../../styled/displayText";
 import { RoundSwap } from "../../utils/icons";
@@ -16,7 +16,7 @@ interface TaskOptionsProps {
 const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
   const {
     getColor: { itemCardColor, optionToggleColor },
-  } = useDisplayMode();
+  } = useTheme();
 
   const { id } = useParams();
 

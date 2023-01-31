@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect, useRef, useContext } from "react";
 import ButtonAsIcon from "../styled/buttonAsIcon";
-import useDisplayMode from "../hooks/useDisplayMode";
+import useTheme from "../hooks/useTheme";
 interface DropMenuButtonProps {
   children?: React.ReactNode;
   config?: {};
@@ -17,7 +17,7 @@ export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
 
   const {
     getColor: { iconColor },
-  } = useDisplayMode();
+  } = useTheme();
   const handleClickOutside = (e: any) => {
     if (!myRef.current?.contains(e.target)) {
       setVisible(false);

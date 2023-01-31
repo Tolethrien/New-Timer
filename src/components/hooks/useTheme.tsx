@@ -76,10 +76,10 @@ const APP_BACKGROUNDS: Backgrounds = {
   light: { appBackground: mainLight, loginBackground: loginLight },
   dark: { appBackground: mainDark, loginBackground: loginDark },
 };
-const useDisplayMode = () => {
+const useTheme = () => {
   const { displayMode, switchDisplayMode } = useContext(DisplayModeContext);
   const getColor = APP_COLORS[displayMode];
   const getBackground = APP_BACKGROUNDS[displayMode];
   return { displayMode, switchDisplayMode, getColor, getBackground };
 };
-export default useDisplayMode;
+export default useTheme;

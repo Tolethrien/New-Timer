@@ -5,13 +5,13 @@ import { Clock, GoTo } from "../../../utils/icons";
 import { ConvertToStringTime } from "../../../hooks/convertToTime";
 import { useContext } from "react";
 import DisplayIcon from "../../../styled/displayIcon";
-import useDisplayMode from "../../../hooks/useDisplayMode";
+import useTheme from "../../../hooks/useTheme";
 const TaskCard: React.FC<{
   task: TasksData;
 }> = ({ task }) => {
   const {
     getColor: { itemCardColor, taskTemplateColor },
-  } = useDisplayMode();
+  } = useTheme();
   const navigate = useNavigate();
 
   const tascDesc = () => {

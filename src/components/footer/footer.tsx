@@ -6,7 +6,7 @@ import { useContext, useState, useEffect } from "react";
 import { vibrate } from "../utils/navigatorUtils";
 import { clockContext } from "../providers/clockProvider";
 import { authContext } from "../providers/authProvider";
-import useDisplayMode from "../hooks/useDisplayMode";
+import useTheme from "../hooks/useTheme";
 interface FooterProps {}
 
 const Footer: React.FC<FooterProps> = () => {
@@ -14,7 +14,7 @@ const Footer: React.FC<FooterProps> = () => {
 
   const {
     getColor: { appColorPrimary },
-  } = useDisplayMode();
+  } = useTheme();
   const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
   const navigate = useNavigate();
   const linkData = {

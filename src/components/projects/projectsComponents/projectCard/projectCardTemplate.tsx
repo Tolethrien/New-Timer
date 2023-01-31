@@ -4,7 +4,7 @@ import { TaskList, Clock } from "../../../utils/icons";
 import { addProject } from "../../../../API/handleDocs";
 import { randomKey } from "../../../utils/randomKey";
 import DisplayIcon from "../../../styled/displayIcon";
-import useDisplayMode from "../../../hooks/useDisplayMode";
+import useTheme from "../../../hooks/useTheme";
 interface ProjectCardProps {
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;
   setTemplateProject: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,7 +21,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       projectCardProgressBarColorTone,
       projectCardProgressBarValueColor,
     },
-  } = useDisplayMode();
+  } = useTheme();
   const componentRef = useRef<HTMLDivElement>(null);
   const [projectName, setProjectName] = useState("");
 

@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addNewCheckbox } from "../../../../API/handleDocs";
-import useDisplayMode from "../../../hooks/useDisplayMode";
+import useTheme from "../../../hooks/useTheme";
 import ButtonAsIcon from "../../../styled/buttonAsIcon";
 import { CheckBoxEmpty, Trash } from "../../../utils/icons";
 interface CheckboxTemplateProps {
@@ -17,7 +17,7 @@ const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
   const componentRef = useRef<HTMLDivElement>(null);
   const {
     getColor: { itemCardColor, iconColor },
-  } = useDisplayMode();
+  } = useTheme();
   const taskId = useParams().id;
 
   const handleClickOutside = (e: any) => {

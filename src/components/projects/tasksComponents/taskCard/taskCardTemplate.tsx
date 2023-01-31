@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addTask } from "../../../../API/handleDocs";
-import useDisplayMode from "../../../hooks/useDisplayMode";
+import useTheme from "../../../hooks/useTheme";
 import ButtonAsIcon from "../../../styled/buttonAsIcon";
 import { Trash } from "../../../utils/icons";
 interface TaskCardTemplateProps {
@@ -18,7 +18,7 @@ const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
 
   const {
     getColor: { itemCardColor, taskTemplateColor },
-  } = useDisplayMode();
+  } = useTheme();
   const projectId = useParams().id;
 
   const createTask = (event: React.FormEvent<HTMLFormElement>) => {
