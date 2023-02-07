@@ -38,7 +38,7 @@ const Footer: React.FC<FooterProps> = () => {
     <Wrap userLogedIn={Boolean(currentUser)}>
       <ButtonLink
         as={NavLink}
-        to={"./timer"}
+        to={`./timer/*`}
         bodycolor={appColorPrimary}
         onClick={() => vibrate("short")}
         color={"#6e6e6ea5"}

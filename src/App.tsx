@@ -7,7 +7,7 @@ import ClockProvider from "./components/providers/clockProvider";
 import UserDBProvider from "./components/providers/userDBProvider";
 import useTheme from "./components/hooks/useTheme";
 import UserAuth from "./pages/userAuth";
-import { MainBody } from "./components/styled/mainBody";
+import MainBody from "./components/styled/components/mainBody";
 import useUserAuth from "./components/hooks/useUserAuth";
 
 function App() {
@@ -26,7 +26,7 @@ function App() {
         <ClockProvider>
           <Routes>
             <Route path="*" element={<Navigate to="/projects" />} />
-            <Route path={"/timer"} element={<Timer />}></Route>
+            <Route path={"/timer/:id"} element={<Timer />}></Route>
             <Route path={"/projects/*"} element={<Projects />}></Route>
             <Route path={"/options"} element={<Options />}></Route>
           </Routes>

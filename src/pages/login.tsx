@@ -1,26 +1,29 @@
 import styled from "styled-components";
-import { login } from "../API/userAuth";
 import { useRef } from "react";
-import PageWrap from "../components/styled/pageWrap";
-import Head from "../components/custom/head";
-import DisplayText from "../components/custom/displayText";
-import ButtonWithIcon from "../components/custom/buttonWithIcon";
+import { login } from "../API/userAuthentication";
 import { Logout } from "../components/utils/icons";
 import { useNavigate } from "react-router-dom";
+import PageWrap from "../components/styled/components/pageWrap";
+import Head from "../components/custom/head";
+import DisplayText from "../components/styled/components/displayText";
+import ButtonWithIcon from "../components/custom/buttonWithIcon";
 import useTheme from "../components/hooks/useTheme";
-//=======TYPES========
-interface LoginProps {}
+import UserInput from "../components/custom/userInput";
 
-//=======COMPONENT========
-const Login: React.FC<LoginProps> = (props) => {
+const Login: React.FC = () => {
   const mailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
 
-  const { theme } = useTheme();
+  const {
+    theme,
+    getColor: { shadowColor },
+  } = useTheme();
   const navigate = useNavigate();
+
   const handleLogin = () => {
     login(mailRef.current!.value, passRef.current!.value);
   };
+
   const redirectToRegister = () => {
     navigate("/register", { replace: true });
   };
@@ -36,13 +39,21 @@ const Login: React.FC<LoginProps> = (props) => {
         </DisplayText>
       </Head>
       <LoginBody>
-        <DisplayText size={1.5} weight={500} extendedStyle={ExtendedText}>
+        <DisplayText size={1.5} weight={500} as={ExtendedText}>
           Login to begin <br />
           your productivity
         </DisplayText>
         <UserForm onSubmit={(e) => e.preventDefault()}>
-          <UserInput ref={mailRef} type="email" placeholder="email..." />
-          <UserInput ref={passRef} type="password" placeholder="password..." />
+          <UserInput
+            inputType="email"
+            reference={mailRef}
+            placeholder={"email..."}
+          />
+          <UserInput
+            inputType="password"
+            reference={passRef}
+            placeholder={"password..."}
+          />
           <ButtonWithIcon
             src={Logout}
             alt={""}
@@ -68,64 +79,51 @@ const Login: React.FC<LoginProps> = (props) => {
   );
 };
 export default Login;
-//=======STYLES========
+
 const LoginBody = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   padding: 2rem 0;
+  flex-grow: 1;
+  gap: 15%;
 `;
 const UserForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-block: 25%;
   gap: 1rem;
 `;
-const UserInput = styled.input`
-  background: hsla(0, 0%, 87%, 0.3);
-  box-shadow: inset 1.56px 1.56px 1.56px hsla(0, 0%, 100%, 0.25);
-  backdrop-filter: blur(5px);
-  border: none;
-  outline: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  padding-block: 0.5rem;
-  color: inherit;
-  text-align: center;
-  ::placeholder {
-    color: inherit;
-  }
-`;
+
 const CreateAcc = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-block: 25%;
   gap: 0.5rem;
 `;
 const DarkModeBackground = styled.div<{ bodyColor: string }>`
-  white-space: nowrap;
   background-color: ${({ bodyColor }) =>
     bodyColor === "light" ? `transparent` : `hsla(0, 0%, 0%, 0.4)`};
-  padding: 5% 3%;
+  white-space: nowrap;
   border-radius: 5px;
-  backdrop-filter: blur(1px);
+  padding: 5% 8%;
+  backdrop-filter: ${({ bodyColor }) => bodyColor === "dark" && "blur(2px)"};
 `;
 const ExtendedText = styled.p`
   text-align: center;
 `;
 const ExtendedLoginButton = styled.button`
-  padding: 0.3rem 0.9em;
+  padding: 0.4rem 1em;
   border: none;
-  box-shadow: 0px 4.16px 4.16px rgba(0, 0, 0, 0.25),
-    inset 0px 1.04px 1.04px rgba(255, 255, 255, 0.25);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+    inset 0px 1px 1px rgba(255, 255, 255, 0.25);
 `;
 const ExtendedRegisterButton = styled.button`
-  padding: 0.3rem 0.4em;
+  padding: 0.4rem 0.6em;
   border: none;
-  box-shadow: 0px 4.16px 4.16px rgba(0, 0, 0, 0.25),
-    inset 0px 1.04px 1.04px rgba(255, 255, 255, 0.25);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+    inset 0px 1px 1px rgba(255, 255, 255, 0.25);
   align-self: flex-start;
 `;

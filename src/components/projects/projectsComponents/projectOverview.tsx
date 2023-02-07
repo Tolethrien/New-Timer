@@ -1,134 +1,46 @@
 import styled from "styled-components";
-import FindData from "../../hooks/useDataFinder";
-import { useState, useRef, useContext } from "react";
-import { Add, RoundSwap } from "../../utils/icons";
-import { updateProject, colors } from "../../../API/handleDocs";
-import { useParams } from "react-router-dom";
+import useDataFinder from "../../hooks/useDataFinder";
+import { useState, useRef } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import Category from "../../custom/category";
 import TaskCard from "../tasksComponents/taskCard/taskCard";
 import { ProjectsData } from "../../../API/getUserData";
-import { conevrtTimeToString } from "../../utils/timeConverters";
-import LoadingData from "../../custom/loadingData";
-import Head from "../../custom/head";
-import DisplayText from "../../custom/displayText";
-import TitleHeading from "../custom/titleHeading";
-import ButtonAsIcon from "../../custom/buttonAsIcon";
-import { randomKey } from "../../utils/randomKey";
-import ButtonWithIcon from "../../custom/buttonWithIcon";
-import SearchBox from "../custom/searchBox";
 import { filterTPByName } from "../utils/filtersAndSorters";
 import TaskCardTemplate from "../tasksComponents/taskCard/taskCardTemplate";
-import { updateStatus } from "../../../API/handleDocs";
-import useTheme from "../../hooks/useTheme";
-interface ProjectProps {}
-const Project: React.FC<ProjectProps> = () => {
-  const [showAll, setShowAll] = useState(true);
+import ProjectHead from "./projectHead";
+import DisplayText from "../../styled/components/displayText";
+const Project: React.FC = () => {
   const [templateTask, setTemplateTask] = useState(false);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const [searchText, setSearchText] = useState("");
 
-  const { theme } = useTheme();
   const { id } = useParams();
-  const project = FindData(id) as ProjectsData;
-  const TasksInfo = tasksCompletion();
+  const project = useDataFinder<ProjectsData>(id);
 
-  const updateColor = (e: number) => {
-    updateProject(id!, { color: e });
-  };
   const openTempateProject = () => {
     setTemplateTask(true);
   };
-  function tasksCompletion() {
-    let data = {
-      done: 0,
-      toDo: 0,
-      totalTasks: 0,
-      totalTimeOnTasks: 0,
-      currentTimeOnTasks: 0,
-    };
-    project?.tasks.forEach((e) => {
-      e.data.status === "Done" ? data.done++ : data.toDo++;
-      data.totalTimeOnTasks += e.data.timeExpected;
-      data.currentTimeOnTasks += e.data.timeSpend;
-    });
-    project && (data.totalTasks = project?.tasks.length);
-    return data;
-  }
 
-  if (TasksInfo.totalTasks > 0 && TasksInfo.done === TasksInfo.totalTasks)
-    updateProject(id!, { status: "Done" });
-  if (!project) return <LoadingData />;
+  if (!project) return <Navigate to="/projects" replace />;
   return (
     <>
-      <Head>
-        <TitleHeading type={"project"} document={project}></TitleHeading>
-        {showAll && (
-          <>
-            <DisplayText>
-              you spend a {conevrtTimeToString(TasksInfo.currentTimeOnTasks)}{" "}
-              total on this project
-            </DisplayText>
-            <DisplayText>
-              Expected time is {conevrtTimeToString(TasksInfo.totalTimeOnTasks)}
-              !
-            </DisplayText>
-            <ProjectCategory>
-              <DisplayText size={1.2}>
-                Currently Project is <b>{project.data.status}</b>
-              </DisplayText>
-              <ButtonAsIcon
-                src={RoundSwap}
-                size={[1.5, 1.5]}
-                onClick={() =>
-                  updateStatus({ document: project, id: id!, type: "project" })
-                }
-              ></ButtonAsIcon>
-            </ProjectCategory>
-            <ProjectCategory>
-              <DisplayText size={1.2}>
-                Project color is{" "}
-                <b>
-                  {
-                    Object.entries(colors).find(
-                      (e) => e[1] === project!.data.color
-                    )![0]
-                  }
-                </b>
-              </DisplayText>
-              <ColorPicker>
-                {Object.values(colors).map((e) => (
-                  <ColorToPick
-                    current={e === project.data.color}
-                    hue={e}
-                    displayMode={theme}
-                    key={randomKey()}
-                    onClick={() => updateColor(e)}
-                  ></ColorToPick>
-                ))}
-              </ColorPicker>
-            </ProjectCategory>
-          </>
-        )}
-        <DisplayText size={1.5} weight={600}>
-          You have {TasksInfo.toDo} task still to do! <br />(
-          {TasksInfo.totalTasks} total)
-        </DisplayText>
-        <ManagingProject>
-          <SearchBox onChange={setSearchText} value={searchText} />
-          <ButtonWithIcon
-            alt=""
-            src={Add}
-            onClick={openTempateProject}
-            text={"Add New"}
-            reference={buttonNewRef}
-          />
-        </ManagingProject>
-        <MoreInfoButton
-          onClick={() => setShowAll((prev) => !prev)}
-        ></MoreInfoButton>
-      </Head>
-
+      <ProjectHead
+        searchText={searchText}
+        setSearchText={setSearchText}
+        openTemplate={openTempateProject}
+        newProjectButtonRef={buttonNewRef}
+      />
       <AllTasks>
+        {Object.keys(project.tasks).length === 0 && (
+          <NoTaskDisplay>
+            <DisplayText size={1.4} weight={600} margin="0.5rem 0">
+              This project is empty
+            </DisplayText>
+            <DisplayText weight={500} margin="0 0 1rem 0">
+              Consider adding some tasks
+            </DisplayText>
+          </NoTaskDisplay>
+        )}
         <Category name="Active">
           {templateTask && (
             <TaskCardTemplate
@@ -166,56 +78,12 @@ const Project: React.FC<ProjectProps> = () => {
 
 export default Project;
 
-const ProjectCategory = styled.div`
-  width: 100%;
-  display: flex;
-  margin: 2% 0;
-  align-items: center;
-`;
-
-const ColorPicker = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 5px;
-`;
-const ColorToPick = styled.div<{
-  current: boolean;
-  hue: number;
-  displayMode: string;
-}>`
-  width: 1.3rem;
-  height: 1.3rem;
-  border-radius: 50%;
-  background-color: ${({ hue, displayMode }) =>
-    `hsla(${hue}, 30%, ${displayMode === "light" ? 80 : 20}%, 1)`};
-  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.25);
-  ${({ current }) =>
-    current &&
-    `
-  width: 1.6rem;
-  height: 1.6rem;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  `}
-`;
-
-const MoreInfoButton = styled.button`
-  width: 30%;
-  height: 10px;
-  background-color: hsla(0, 0%, 87%, 0.68);
-  border: none;
-  align-self: center;
-  border-radius: 10px;
-`;
 const AllTasks = styled.div`
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   padding-top: 5%;
 `;
-const ManagingProject = styled.div`
-  width: 100%;
-  display: flex;
-  margin: 3% 0;
-  justify-content: space-between;
+const NoTaskDisplay = styled.div`
+  text-align: center;
 `;

@@ -1,19 +1,20 @@
-import { useContext, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import styled from "styled-components";
-import { userDBContext } from "../providers/userDBProvider";
 import { Add } from "../utils/icons";
 import ProjectCard from "./projectsComponents/projectCard/projectCard";
 import ProjectCardTemplate from "./projectsComponents/projectCard/projectCardTemplate";
 import Head from "../custom/head";
 import SearchBox from "./custom/searchBox";
-import DisplayText from "../custom/displayText";
+import DisplayText from "../styled/components/displayText";
 import ButtonWithIcon from "../custom/buttonWithIcon";
 import { filterTPByName, sortTPByStatus } from "./utils/filtersAndSorters";
-import { authContext } from "../providers/authProvider";
+import useDataFinder from "../hooks/useDataFinder";
+import useUserAuth from "../hooks/useUserAuth";
+import NoProjectsDisplay from "./NoProjectsDisplay";
 
 const AllProjects: React.FC = () => {
-  const { userData } = useContext(userDBContext);
-  const { currentUser } = useContext(authContext);
+  const userData = useDataFinder("all");
+  const currentUser = useUserAuth();
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const [searchText, setSearchText] = useState("");
   const [templateProject, setTemplateProject] = useState(false);
@@ -29,7 +30,7 @@ const AllProjects: React.FC = () => {
           Hello, {currentUser?.displayName}!
         </DisplayText>
         <DisplayText size={1.8} weight={700} margin="1% 0 0 0">
-          Projects On your List ({userData.length})
+          Projects On your List ({userData?.length})
         </DisplayText>
         <ManagingProject>
           <SearchBox onChange={setSearchText} value={searchText} />
@@ -43,18 +44,20 @@ const AllProjects: React.FC = () => {
         </ManagingProject>
       </Head>
       <ProjectsList>
+        {userData?.length === 0 && (
+          <NoProjectsDisplay isTemplateOpen={templateProject} />
+        )}
         {templateProject && (
           <ProjectCardTemplate
             referenceButton={buttonNewRef}
             setTemplateProject={setTemplateProject}
           />
         )}
-        {userData.length === 0 && <p>no projects</p>}
         {userData
-          .filter((e) => filterTPByName(e, searchText))
+          ?.filter((el) => filterTPByName(el, searchText))
           .sort((valueA, valueB) => sortTPByStatus(valueA, valueB))
-          .map((e) => (
-            <ProjectCard key={e.id} data={e}></ProjectCard>
+          .map((el) => (
+            <ProjectCard key={el.id} data={el}></ProjectCard>
           ))}
       </ProjectsList>
     </>

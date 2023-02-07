@@ -2,30 +2,29 @@ import styled from "styled-components";
 import EditableTitle from "../../custom/editableTitle";
 import { DropMenuButton, DropMenuOption } from "../../custom/dropmenu";
 import { BackArrow, Detail } from "../../utils/icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { deleteTask, deleteProject } from "../../../API/handleDocs";
 import ButtonAsIcon from "../../custom/buttonAsIcon";
 import { ProjectsData, TasksData } from "../../../API/getUserData";
-interface TitleHeadingProps {
-  type: string;
-  document: ProjectsData | TasksData;
-}
-const TitleHeading: React.FC<TitleHeadingProps> = ({ type, document }) => {
+import useDataFinder from "../../hooks/useDataFinder";
+
+const TitleHeading: React.FC = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const document = useDataFinder<ProjectsData | TasksData>(id)!;
 
   const navigateTo = () => {
-    if (type === "project") navigate("..");
-    else if (type === "task")
-      navigate(`../project/${(document as TasksData).data.projectID}`);
+    if ("tasks" in document) navigate("..");
+    else navigate(`../project/${document.data.projectID}`);
   };
 
   const deleteData = () => {
-    if (type === "project") {
-      deleteProject(document as ProjectsData);
+    if ("tasks" in document) {
+      deleteProject(document);
       navigate("..");
-    } else if (type === "task") {
-      deleteTask(document as TasksData);
-      navigate(`../project/${(document as TasksData).data.projectID}`);
+    } else {
+      deleteTask(document);
+      navigate(`../project/${document.data.projectID}`);
     }
   };
   return (
@@ -39,7 +38,7 @@ const TitleHeading: React.FC<TitleHeadingProps> = ({ type, document }) => {
       <EditableTitle text={document.data.name}></EditableTitle>
       <OptionsButton>
         <DropMenuButton src={Detail} alt="more options">
-          <DropMenuOption callback={() => deleteData()}>Remove</DropMenuOption>
+          <DropMenuOption callback={deleteData}>Remove</DropMenuOption>
         </DropMenuButton>
       </OptionsButton>
     </ComponentBody>

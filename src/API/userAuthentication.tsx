@@ -6,11 +6,13 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  getAuth,
   updateProfile,
   User,
+  updateEmail,
+  updatePassword,
 } from "firebase/auth";
-import { auth } from "./firebase";
-
+const auth = getAuth();
 export const RegisterNewUser = async (
   email: string,
   password: string,
@@ -33,18 +35,23 @@ export const logout = async () => {
 };
 
 export const useFirebaseAuth = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => setCurrentUser(user));
-    return unsub;
+    return (
+      onAuthStateChanged(auth, (user) => setCurrentUser(user)),
+      console.log("doa")
+    );
   }, []);
   return currentUser;
 };
-// signOut(auth);
-// signInWithEmailAndPassword(auth, "tolethrien@gmail.com", "Radenes11");
-// export const sendEmail = () => {
-//   return sendEmailVerification(auth.currentUser);
-// };
-// export const updateAcc = (name: string) => {
-//   return updateProfile(auth.currentUser, { displayName: name });
-// };
+
+export interface updateAccType {
+  param: "name" | "email" | "password";
+  value: string;
+}
+export const updateAcc = async ({ param, value }: updateAccType) => {
+  if (param === "name")
+    await updateProfile(auth.currentUser!, { displayName: value });
+  else if (param === "email") updateEmail(auth.currentUser!, value);
+  else if (param === "password") updatePassword(auth.currentUser!, value);
+};

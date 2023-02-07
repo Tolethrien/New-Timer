@@ -1,25 +1,18 @@
-import { User } from "firebase/auth";
-import { createContext, useEffect, useState } from "react";
+import { createContext } from "react";
 import { GetUserData } from "../../API/getUserData";
 import { ProjectsData } from "../../API/getUserData";
-interface props {
+interface UserDBProviderProps {
   children: React.ReactNode;
 }
 
-interface provider {
-  userData: ProjectsData[];
-}
-export const userDBContext = createContext<provider>({} as provider);
+export const userDBContext = createContext({} as { userData: ProjectsData[] });
 
-const UserDBProvider: React.FC<props> = (props) => {
+const UserDBProvider: React.FC<UserDBProviderProps> = ({ children }) => {
   const userData = GetUserData();
+
   return (
-    <userDBContext.Provider
-      value={{
-        userData,
-      }}
-    >
-      {props.children}
+    <userDBContext.Provider value={{ userData }}>
+      {children}
     </userDBContext.Provider>
   );
 };

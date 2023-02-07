@@ -1,16 +1,16 @@
 import styled from "styled-components";
-import PageWrap from "../components/styled/pageWrap";
-import { useContext, useMemo, useState } from "react";
-import { userDBContext } from "../components/providers/userDBProvider";
+import PageWrap from "../components/styled/components/pageWrap";
+import { useState } from "react";
 import Head from "../components/custom/head";
-import DisplayText from "../components/custom/displayText";
-import { clockContext } from "../components/providers/clockProvider";
+import DisplayText from "../components/styled/components/displayText";
 import Checkboxes from "../components/projects/tasksComponents/checkboxes";
 import Clock from "../components/timer/clockComponent";
 import useTheme from "../components/hooks/useTheme";
+import useDataFinder from "../components/hooks/useDataFinder";
+import useClock from "../components/hooks/useClock";
 const Timer: React.FC = () => {
-  const { userData } = useContext(userDBContext);
-  const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
+  const userData = useDataFinder("all");
+  const { taskInProgress } = useClock();
   const [showCheckboxComponent, setShowCheckboxComponent] = useState(false);
   const {
     getColor: { appColorPrimary, borderColor },
@@ -18,7 +18,7 @@ const Timer: React.FC = () => {
   const { projectData, taskData } = findDataInfo();
 
   function findDataInfo() {
-    let project = userData.find((e) => e.id === taskInProgress?.project);
+    let project = userData?.find((e) => e.id === taskInProgress?.project);
     let taskData = project?.tasks.find(
       (e) => e.id === taskInProgress?.task
     )?.data;
@@ -69,16 +69,6 @@ const Timer: React.FC = () => {
 };
 export default Timer;
 
-// const Clock = styled.div<{ showCheckboxComponent: boolean }>`
-//   display: flex;
-//   flex-direction: ${({ showCheckboxComponent }) =>
-//     showCheckboxComponent ? "row" : "column"};
-//   align-items: center;
-//   justify-content: center;
-//   gap: 1rem;
-//   margin-block: 1rem;
-//   flex-grow: 1;
-// `;
 const ButtomHead = styled.div<{ bodyColor: string; borderColor: string }>`
   display: grid;
   width: 100%;
@@ -109,7 +99,7 @@ const CheckboxTitleBar = styled.div`
 `;
 const CheckboxesScroller = styled.div`
   width: 100%;
-  max-height: 35vh;
+  max-height: 30vh;
   overflow-y: scroll;
   padding-block: 0.7rem;
   box-sizing: border-box;

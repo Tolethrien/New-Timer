@@ -1,6 +1,6 @@
-import { useContext } from "react";
 import styled, { StyledComponent } from "styled-components";
 import useTheme from "../hooks/useTheme";
+
 interface ButtonWithIconProps {
   src: string;
   alt: string;
@@ -22,7 +22,7 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   noShadow = false,
 }) => {
   const {
-    getColor: { borderColor, shadowColor, iconColor },
+    getColor: { borderColor, shadowColor, iconColor, buttonWithIconColor },
   } = useTheme();
   return (
     <ComponentBody
@@ -32,6 +32,7 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
       borderColor={borderColor}
       shadowColor={shadowColor}
       noShadow={noShadow}
+      buttonWithIconColor={buttonWithIconColor}
     >
       <ButtonIcon src={src} alt={alt} iconColor={iconColor}></ButtonIcon>
       {text}
@@ -43,29 +44,29 @@ const ComponentBody = styled.button<{
   borderColor: string;
   shadowColor: string;
   noShadow: boolean;
+  buttonWithIconColor: string;
 }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem;
   border-radius: 5px;
-  padding: 1% 2%;
   border: ${({ borderColor }) => `1px solid ${borderColor}`};
-  background-color: hsla(0, 0%, 87%, 0.22);
+  background-color: ${({ buttonWithIconColor }) => buttonWithIconColor};
   box-shadow: ${({ shadowColor, noShadow }) =>
     !noShadow && `0px 4px 4px ${shadowColor}`};
+  backdrop-filter: blur(15px);
   color: inherit;
   font-size: 1rem;
   font-weight: 400;
-  backdrop-filter: blur(15px);
   white-space: nowrap;
   transition: 0.5s;
-
   cursor: pointer;
 `;
 const ButtonIcon = styled.img<{ iconColor: string }>`
   width: 1rem;
   height: 1rem;
-  padding-right: 0.4rem;
   transition: 0.5s;
   filter: ${({ iconColor }) => iconColor};
 `;

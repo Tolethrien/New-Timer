@@ -1,4 +1,4 @@
-import { MainBody } from "../components/styled/mainBody";
+import MainBody from "../components/styled/components/mainBody";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./login";
 import Register from "./register";

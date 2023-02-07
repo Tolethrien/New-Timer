@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const MainBody = styled.main<{
+const MainBody = styled.main<{
   background: string;
   textColor: string;
 }>`
@@ -18,3 +18,4 @@ export const MainBody = styled.main<{
   overflow-y: auto;
   color: ${({ textColor }) => textColor};
 `;
+export default MainBody;

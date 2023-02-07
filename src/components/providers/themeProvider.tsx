@@ -1,5 +1,5 @@
 import { createContext, useState } from "react";
-interface DisplayModeProviderProps {
+interface ThemeProviderProps {
   children: React.ReactNode;
 }
 interface provider {
@@ -8,7 +8,7 @@ interface provider {
 }
 export const themeContext = createContext({} as provider);
 
-const ThemeProvider: React.FC<DisplayModeProviderProps> = ({ children }) => {
+const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   if (!localStorage.getItem("mode")) localStorage.setItem("mode", "light");
 
   const [theme, setTheme] = useState(localStorage.getItem("mode") as string);

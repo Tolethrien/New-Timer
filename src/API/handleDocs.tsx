@@ -116,6 +116,7 @@ interface updateStatusProps {
   id: string;
 }
 export const updateStatus = ({ document, type, id }: updateStatusProps) => {
+  // ustawic by nie potrzeba bylo statusu "task in documnet"
   let statusIndex = ProjectStatuses.indexOf(document.data.status);
   let newStatus =
     statusIndex === ProjectStatuses.length - 1 ? 0 : (statusIndex += 1);

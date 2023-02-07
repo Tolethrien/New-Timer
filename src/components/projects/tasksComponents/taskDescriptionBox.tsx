@@ -1,14 +1,12 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { updateTask } from "../../../API/handleDocs";
-import { useState, useRef, useEffect, useContext } from "react";
-import { TextEdit } from "../../utils/icons";
+import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useTheme from "../../hooks/useTheme";
 interface TaskDescriptionBoxProps {
   value: string;
   minHeight?: number;
 }
-interface StyleProps {}
 const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
   value,
   minHeight = 100,
@@ -19,6 +17,7 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
   const {
     getColor: { itemCardColor, borderColor, textColorNormal },
   } = useTheme();
+
   const updateDocText = () => {
     updateTask(id!, { desc: textValue });
   };
@@ -33,7 +32,7 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
         textAreaRef.current.style.height = minHeight + "px";
       }
     }
-  }, [textAreaRef.current]);
+  });
 
   return (
     <ComponentBody
@@ -41,7 +40,7 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
       placeholder="Description"
       ref={textAreaRef}
       rows={1}
-      minHeight={minHeight}
+      height={minHeight}
       value={textValue}
       borderColor={borderColor}
       textColor={textColorNormal}
@@ -53,25 +52,22 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
 export default TaskDescriptionBox;
 
 const ComponentBody = styled.textarea<{
-  minHeight: number;
+  height: number;
   bodyColor: string;
   borderColor: string;
   textColor: string;
 }>`
-  width: 95%;
-  height: ${({ minHeight }) => minHeight}px;
+  width: 97%;
+  height: ${({ height }) => height}px;
   background-color: ${({ bodyColor }) => bodyColor};
   backdrop-filter: blur(20px);
   border: ${({ borderColor }) => borderColor};
-  /* border: none; */
   outline: none;
-  /* box-shadow: 0px 0px 10px -4px hsla(0, 0%, 0%, 1); */
   resize: none;
   border-radius: 5px;
   padding: 0.3rem 0.3rem;
   font-size: 1.1rem;
   color: ${({ textColor }) => textColor};
-
   :focus {
     outline: none;
   }

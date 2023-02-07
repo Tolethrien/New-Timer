@@ -1,15 +1,13 @@
 import styled from "styled-components";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Head from "../components/custom/head";
-import PageWrap from "../components/styled/pageWrap";
-import DisplayText from "../components/custom/displayText";
+import PageWrap from "../components/styled/components/pageWrap";
+import DisplayText from "../components/styled/components/displayText";
 import Category from "../components/custom/category";
 import AccountOptions from "../components/options/accountOptions";
 import PersonalisationOptions from "../components/options/personalisationOptions";
 import DangerZone from "../components/options/dangerZone";
-interface OptionsProps {}
-interface StyleProps {}
-const Options: React.FC<OptionsProps> = (props) => {
+const Options: React.FC = () => {
   return (
     <PageWrap>
       <Head>

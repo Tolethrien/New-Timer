@@ -1,31 +1,35 @@
-import { type } from "@testing-library/user-event/dist/type";
-import { User } from "firebase/auth";
-import { useEffect, useRef, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { logout } from "../../API/userAuth";
+import { useEffect, useRef, useState } from "react";
 import ButtonWithIcon from "../custom/buttonWithIcon";
-import DisplayText from "../custom/displayText";
-import { Add, Logout } from "../utils/icons";
+import DisplayText from "../styled/components/displayText";
+import { Logout } from "../utils/icons";
+import AccountLogoutModal from "./accountLogoutModal";
 import AccountModal from "./accountModal";
 import OptionBar from "./optionBar";
-interface AccountOptionsProps {}
-interface userI {
-  [key: string]: { displayName: string; value: string };
-}
-const AccountOptions: React.FC<AccountOptionsProps> = (props) => {
-  const signout = () => {
-    logout();
-  };
 
-  const [typeOfData, setTypeOfData] = useState("default");
+export type ModalInputsType =
+  | "password"
+  | "email"
+  | "userName"
+  | "logout"
+  | "default";
 
-  const testRef = useRef<HTMLDialogElement>(null);
+const AccountOptions: React.FC = () => {
+  const [typeOfData, setTypeOfData] = useState<ModalInputsType>("default");
+  const [mounted, setMounted] = useState(false);
+  const modalRef = useRef<HTMLDialogElement>(null);
 
-  const openModal = (name: string) => {
+  const openModal = (name: ModalInputsType) => {
     setTypeOfData(name);
-    testRef.current?.showModal();
+    setMounted((prev) => !prev);
   };
+  const closeModal = () => {
+    modalRef.current?.close();
+  };
+  useEffect(() => {
+    if (typeOfData !== "default") {
+      modalRef.current!.showModal();
+    }
+  }, [mounted]);
   return (
     <>
       <OptionBar>
@@ -68,7 +72,11 @@ const AccountOptions: React.FC<AccountOptionsProps> = (props) => {
           onClick={() => openModal("logout")}
         ></ButtonWithIcon>
       </OptionBar>
-      <AccountModal reference={testRef} typeOfData={typeOfData} />
+      {typeOfData === "logout" ? (
+        <AccountLogoutModal closeModal={closeModal} reference={modalRef} />
+      ) : (
+        <AccountModal reference={modalRef} typeOfData={typeOfData} />
+      )}
     </>
   );
 };

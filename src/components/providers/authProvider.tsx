@@ -1,7 +1,6 @@
 import { User } from "firebase/auth";
 import { createContext } from "react";
-import styled from "styled-components";
-import { useFirebaseAuth } from "../../API/userAuth";
+import { useFirebaseAuth } from "../../API/userAuthentication";
 interface AuthProviderProps {
   children: React.ReactNode;
 }
@@ -20,4 +19,3 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   );
 };
 export default AuthProvider;
-const ComponentBody = styled.div<{}>``;

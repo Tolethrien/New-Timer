@@ -1,16 +1,16 @@
-import styled from "styled-components";
-import { useState, useEffect, useRef, useContext } from "react";
-import ButtonAsIcon from "./buttonAsIcon";
+import styled, { StyledComponent } from "styled-components";
+import { useState, useEffect, useRef } from "react";
 import useTheme from "../hooks/useTheme";
 interface DropMenuButtonProps {
   children?: React.ReactNode;
-  config?: {};
+  extendedStyle?: StyledComponent<"div", any, {}, never>;
   src: string;
   alt: string;
 }
 export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
   children,
   src,
+  extendedStyle,
 }) => {
   const [visible, setVisible] = useState(false);
   const myRef = useRef<HTMLDivElement>(null);
@@ -18,6 +18,7 @@ export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
   const {
     getColor: { iconColor },
   } = useTheme();
+
   const handleClickOutside = (e: any) => {
     if (!myRef.current?.contains(e.target)) {
       setVisible(false);
@@ -35,7 +36,7 @@ export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
       src={src}
       onClick={() => setVisible((prev) => !prev)}
       ref={myRef}
-      size={[1.4, 1.4]}
+      as={extendedStyle}
     >
       <OptionsBox visible={visible}>{children}</OptionsBox>
     </ComponentBody>
@@ -43,17 +44,13 @@ export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
 };
 const ComponentBody = styled.div<{
   src: string;
-  margin?: string;
-  size?: number[];
-  position?: string;
   iconColor: string;
 }>`
   position: relative;
   display: flex;
   align-self: center;
-  height: ${({ size }) => (size && `${size[0]}rem`) ?? "1rem"};
-  width: ${({ size }) => (size && `${size[1]}rem`) ?? "1rem"};
-  margin: ${({ margin }) => margin};
+  height: 1.4rem;
+  width: 1.4rem;
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -63,7 +60,7 @@ const ComponentBody = styled.div<{
     width: 100%;
     background-image: ${({ src }) => `url(${src})`};
     background-repeat: no-repeat;
-    background-position: ${({ position }) => position ?? "center"};
+    background-position: center;
     background-size: contain;
     filter: ${({ iconColor }) => iconColor};
   }
@@ -80,19 +77,38 @@ const OptionsBox = styled.div<{ visible: boolean }>`
 interface DropMenuOptionProps {
   children?: React.ReactNode;
   callback?: () => void;
+  extendedStyle?: StyledComponent<"div", any, {}, never>;
 }
 export const DropMenuOption: React.FC<DropMenuOptionProps> = ({
   callback,
   children,
+  extendedStyle,
 }) => {
-  return <Option onClick={() => callback?.()}>{children}</Option>;
+  const {
+    getColor: { dropMenuOptionColor, dropMenuOptionBorderColor },
+  } = useTheme();
+  return (
+    <Option
+      onClick={() => callback?.()}
+      dropMenuOptionBorderColor={dropMenuOptionBorderColor}
+      dropMenuOptionColor={dropMenuOptionColor}
+      as={extendedStyle}
+    >
+      {children}
+    </Option>
+  );
 };
-const Option = styled.div`
-  border: 1px solid hsla(0, 0%, 66%, 1);
-  background-color: hsla(0, 0%, 87%, 0.22);
+const Option = styled.div<{
+  dropMenuOptionBorderColor: string;
+  dropMenuOptionColor: string;
+}>`
+  border: ${({ dropMenuOptionBorderColor }) =>
+    `1px solid ${dropMenuOptionBorderColor}`};
+  background-color: ${({ dropMenuOptionColor }) => dropMenuOptionColor};
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25),
     inset 0px 1px 1px hsla(0, 0%, 100%, 0.25);
   backdrop-filter: blur(15px);
   border-radius: 5px;
-  padding: 5px;
+  padding: 0.3rem 0.7rem;
+  font-size: 1.3rem;
 `;

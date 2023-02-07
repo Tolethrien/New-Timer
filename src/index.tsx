@@ -4,7 +4,7 @@ import App from "./App";
 import GlobalStyle from "./globalCss";
 import { BrowserRouter } from "react-router-dom";
 import AuthProvider from "./components/providers/authProvider";
-import DisplayModeProvider from "./components/providers/themeProvider";
+import ThemeProvider from "./components/providers/themeProvider";
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -13,9 +13,9 @@ root.render(
     <BrowserRouter>
       <GlobalStyle />
       <AuthProvider>
-        <DisplayModeProvider>
+        <ThemeProvider>
           <App />
-        </DisplayModeProvider>
+        </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

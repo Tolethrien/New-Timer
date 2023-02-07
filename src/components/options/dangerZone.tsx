@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import ButtonWithIcon from "../custom/buttonWithIcon";
-import DisplayText from "../custom/displayText";
+import DisplayText from "../styled/components/displayText";
 import { Trash } from "../utils/icons";
 import OptionBar from "./optionBar";
-interface DangerZoneProps {}
-const DangerZone: React.FC<DangerZoneProps> = (props) => {
+const DangerZone: React.FC = () => {
   const temp = () => {
-    alert("danger zone temporary alert");
+    alert("danger zone temporary restricted");
   };
   return (
     <ComponentBody>

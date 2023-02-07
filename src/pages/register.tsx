@@ -1,25 +1,31 @@
-import { useContext, useRef } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import ButtonWithIcon from "../components/custom/buttonWithIcon";
-import DisplayText from "../components/custom/displayText";
+import DisplayText from "../components/styled/components/displayText";
 import Head from "../components/custom/head";
-import PageWrap from "../components/styled/pageWrap";
-import { CreateAcc } from "../components/utils/icons";
-import { RegisterNewUser } from "../API/userAuth";
-import { Navigate } from "react-router-dom";
-import { authContext } from "../components/providers/authProvider";
-import useTheme from "../components/hooks/useTheme";
+import PageWrap from "../components/styled/components/pageWrap";
+import { BackArrow, CreateAcc } from "../components/utils/icons";
+import { RegisterNewUser } from "../API/userAuthentication";
+import { useNavigate } from "react-router-dom";
+import UserInput from "../components/custom/userInput";
+import ButtonAsIcon from "../components/custom/buttonAsIcon";
 interface RegisterProps {}
 const Register: React.FC<RegisterProps> = (props) => {
-  const nameRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement | null>(null);
   const mailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
   const repeatRef = useRef<HTMLInputElement>(null);
-
+  const navigate = useNavigate();
+  const [warning, setWarning] = useState("");
   const handleRegister = () => {
-    if (nameRef.current?.value === "") return alert("podaj kurwo imie");
-    if (passRef.current?.value !== repeatRef.current?.value)
-      return alert("pojebales hasla... kurwo!");
+    if (nameRef.current?.value === "") return setWarning("name");
+    if (!mailRef.current?.value.includes("@")) return setWarning("email");
+    if (
+      passRef.current?.value === "" ||
+      repeatRef.current?.value === "" ||
+      passRef.current?.value !== repeatRef.current?.value
+    )
+      return setWarning("repeat");
     RegisterNewUser(
       mailRef.current?.value!,
       passRef.current?.value!,
@@ -29,21 +35,53 @@ const Register: React.FC<RegisterProps> = (props) => {
   return (
     <PageWrap>
       <Head>
-        <DisplayText size={1.5} weight={600} margin="0 0 3% 0">
-          Registration
-        </DisplayText>
+        <Title>
+          <ButtonAsIcon
+            src={BackArrow}
+            size={[1.5, 2.5]}
+            position={"50% 70%"}
+            onClick={() => navigate("/login")}
+          ></ButtonAsIcon>
+          <DisplayText size={1.5} weight={600} margin="0 0 3% 0">
+            Registration
+          </DisplayText>
+        </Title>
         <DisplayText margin="0 0 3% 0">your journey start here...</DisplayText>
       </Head>
       <LoginBody>
-        <DisplayText size={1.5} weight={500} extendedStyle={ExtendedText}>
+        <DisplayText size={1.5} weight={500} as={ExtendedText}>
           We almost there.
           <br /> Just tell me your...
         </DisplayText>
         <UserForm onSubmit={(e) => e.preventDefault()}>
-          <UserInput ref={nameRef} type="text" placeholder="Name..." />
-          <UserInput ref={mailRef} type="email" placeholder="email..." />
-          <UserInput ref={passRef} type="password" placeholder="password..." />
-          <UserInput ref={repeatRef} type="password" placeholder="repeat..." />
+          <UserInput
+            errorMsg="Name is Required"
+            inputType="text"
+            isError={warning === "name"}
+            reference={nameRef}
+            placeholder={"Name..."}
+          />
+          <UserInput
+            errorMsg="invalid email adress"
+            inputType="email"
+            isError={warning === "email"}
+            reference={mailRef}
+            placeholder={"email..."}
+          />
+          <UserInput
+            errorMsg="not the same"
+            inputType="password"
+            isError={warning === "repeat"}
+            reference={passRef}
+            placeholder={"password..."}
+          />
+          <UserInput
+            inputType="password"
+            isError={warning === "repeat"}
+            reference={repeatRef}
+            placeholder={"again..."}
+          />
+
           <ButtonWithIcon
             src={CreateAcc}
             alt={""}
@@ -57,6 +95,12 @@ const Register: React.FC<RegisterProps> = (props) => {
   );
 };
 export default Register;
+
+const Title = styled.div`
+  display: flex;
+  align-self: flex-start;
+  gap: 1rem;
+`;
 const LoginBody = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -64,6 +108,7 @@ const LoginBody = styled.div`
   align-items: center;
   padding: 2rem 0;
 `;
+
 const UserForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -71,26 +116,12 @@ const UserForm = styled.form`
   margin-block: 25%;
   gap: 1rem;
 `;
-const UserInput = styled.input`
-  background: hsla(0, 0%, 87%, 0.3);
-  box-shadow: inset 1.56px 1.56px 1.56px hsla(0, 0%, 100%, 0.25);
-  backdrop-filter: blur(5px);
-  border: none;
-  outline: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  padding-block: 0.5rem;
-  color: inherit;
-  text-align: center;
-  ::placeholder {
-    color: inherit;
-  }
-`;
+
 const ExtendedText = styled.p`
   text-align: center;
 `;
 const ExtendedRegisterButton = styled.button`
-  padding: 0.3rem 0.4em;
+  padding: 0.4rem 0.7em;
   border: none;
   box-shadow: 0px 4.16px 4.16px rgba(0, 0, 0, 0.25),
     inset 0px 1.04px 1.04px rgba(255, 255, 255, 0.25);

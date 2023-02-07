@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import styled from "styled-components";
+import useClock from "../hooks/useClock";
 import useTheme from "../hooks/useTheme";
-import { clockContext } from "../providers/clockProvider";
 import { Done, Play, Stop } from "../utils/icons";
 import { vibrate } from "../utils/vibrate";
 interface TimerButtonsProps {
@@ -10,8 +10,8 @@ interface TimerButtonsProps {
 const TimerButtons: React.FC<TimerButtonsProps> = ({
   showCheckboxComponent,
 }) => {
-  const { playPauseClock, stopClock, onComplete, taskInProgress } =
-    useContext(clockContext);
+  const { playPauseClock, stopClock, onComplete, taskInProgress } = useClock();
+
   const {
     getColor: { itemCardColor, buttonColor, iconColor, shadowColor },
   } = useTheme();
@@ -96,10 +96,11 @@ const Button = styled.button<{
   height: 2.5rem;
   border-radius: 10px;
   border: 1px solid hsla(0, 4%, 85%, 0.1);
+  cursor: ${({ disabled }) => !disabled && "pointer"};
   box-shadow: ${({ disabled, shadowColor }) =>
     !disabled
       ? `1px 1px 3px 1px ${shadowColor}`
-      : ` inset 1px 1px 3px 1px ${shadowColor}`};
+      : ` inset 1px 1px 3px 1px hsla(0, 0%, 0%, 0.25)`};
   ::before {
     content: "";
     background: ${({ img }) => `url(${img})`};

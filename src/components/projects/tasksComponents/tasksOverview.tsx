@@ -1,44 +1,44 @@
 import styled from "styled-components";
-import FindData from "../../hooks/useDataFinder";
+import useDataFinder from "../../hooks/useDataFinder";
 import { TasksData } from "../../../API/getUserData";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useContext } from "react";
 import { clockContext } from "../../providers/clockProvider";
 import { Clock } from "../../utils/icons";
 import Category from "../../custom/category";
 import TaskDescriptionBox from "./taskDescriptionBox";
 import { conevrtTimeToString } from "../../utils/timeConverters";
-import LoadingData from "../../custom/loadingData";
 import TitleHeading from "../custom/titleHeading";
-import DisplayText from "../../custom/displayText";
+import DisplayText from "../../styled/components/displayText";
 import ButtonWithIcon from "../../custom/buttonWithIcon";
 import Head from "../../custom/head";
 import Checkboxes from "./checkboxes";
 import TaskOptions from "./taskOptions";
 const TaskOverview: React.FC = () => {
   const { id } = useParams();
-  const task = FindData(id) as TasksData;
+  const task = useDataFinder<TasksData>(id);
+
   const { setClock } = useContext(clockContext);
   const navigate = useNavigate();
 
   const playTask = () => {
     setClock({
-      time: task.data.timeSpend,
-      project: task.data.projectID,
+      time: task!.data.timeSpend,
+      project: task!.data.projectID,
       task: id!,
     });
-    navigate("/timer");
+    navigate(`/timer/${id}`);
   };
-  if (!task) return <LoadingData />;
+  if (!task) return <Navigate to="/projects" replace />;
 
   return (
     <>
       <Head>
-        <TitleHeading type={"task"} document={task}></TitleHeading>
+        <TitleHeading />
         <DisplayText size={1}>
           {conevrtTimeToString(task.data.timeSpend)} spend on task so far
         </DisplayText>
-        <DisplayText size={1}>
+        <DisplayText size={1} margin="0 0 0.5rem 0">
           expected {conevrtTimeToString(task.data.timeExpected)}
         </DisplayText>
         <ButtonWithIcon
@@ -49,7 +49,6 @@ const TaskOverview: React.FC = () => {
           extendedStyle={ButtonAbsolute}
         ></ButtonWithIcon>
       </Head>
-
       <AllCategories>
         {task.data.showDescription && (
           <Category name="Description">

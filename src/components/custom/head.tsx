@@ -11,12 +11,13 @@ const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
     getColor: { appColorPrimary, appColorSecondary, borderColor, shadowColor },
   } = useTheme();
   const currentUser = useUserAuth();
+  const componentColor = currentUser ? appColorPrimary : appColorSecondary;
   document
     .querySelector('meta[name="theme-color"]')!
-    .setAttribute("content", currentUser ? appColorPrimary : appColorSecondary);
+    .setAttribute("content", componentColor);
   return (
     <ComponentBody
-      bodyColor={currentUser ? appColorPrimary : appColorSecondary}
+      bodyColor={componentColor}
       borderColor={borderColor}
       shadowColor={shadowColor}
       as={extendedStyle}
@@ -34,17 +35,16 @@ const ComponentBody = styled.div<{
   position: relative;
   box-sizing: border-box;
   z-index: 10;
+  width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   padding: 0.8rem 5%;
+  border-radius: 0 0 15px 15px;
+  border-bottom: 1px solid ${({ borderColor }) => borderColor};
   background-color: ${({ bodyColor }) => bodyColor};
   backdrop-filter: blur(10px);
-  width: 100%;
-  border-radius: 0 0 15px 15px;
-  transition: 0.5s;
-
-  border-bottom: 1px solid ${({ borderColor }) => borderColor};
   box-shadow: ${({ shadowColor }) => `0px 4px 4px ${shadowColor}`};
+  transition: 0.5s;
 `;

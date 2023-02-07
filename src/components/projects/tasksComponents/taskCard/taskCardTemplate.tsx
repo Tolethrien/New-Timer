@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addTask } from "../../../../API/handleDocs";
@@ -48,7 +48,7 @@ const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
         <NameForm onSubmit={(e) => createTask(e)}>
           <NameInput
             autoFocus={true}
-            placeholder="Name of Project..."
+            placeholder="Name of Task..."
             onChange={(e) => setNewTaskName(e.target.value)}
           ></NameInput>
         </NameForm>
