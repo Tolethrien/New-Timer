@@ -9,6 +9,7 @@ import { filterTPByName } from "../utils/filtersAndSorters";
 import TaskCardTemplate from "../tasksComponents/taskCard/taskCardTemplate";
 import ProjectHead from "./projectHead";
 import DisplayText from "../../styled/components/displayText";
+import useTheme from "../../hooks/useTheme";
 const Project: React.FC = () => {
   const [templateTask, setTemplateTask] = useState(false);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
@@ -16,7 +17,9 @@ const Project: React.FC = () => {
 
   const { id } = useParams();
   const project = useDataFinder<ProjectsData>(id);
-
+  const {
+    getColor: { categoryActive, categoryOnHold, categoryDone },
+  } = useTheme();
   const openTempateProject = () => {
     setTemplateTask(true);
   };
@@ -41,7 +44,7 @@ const Project: React.FC = () => {
             </DisplayText>
           </NoTaskDisplay>
         )}
-        <Category name="Active">
+        <Category name="Active" overrideColor={categoryActive}>
           {templateTask && (
             <TaskCardTemplate
               referenceButton={buttonNewRef}
@@ -55,7 +58,7 @@ const Project: React.FC = () => {
               <TaskCard key={i} task={e}></TaskCard>
             ))}
         </Category>
-        <Category name="On Hold">
+        <Category name="On Hold" overrideColor={categoryOnHold}>
           {project.tasks
             .filter((e) => e.data.status === "On Hold")
             .filter((task) => filterTPByName(task, searchText))
@@ -63,7 +66,7 @@ const Project: React.FC = () => {
               <TaskCard key={i} task={e}></TaskCard>
             ))}
         </Category>
-        <Category name="Done">
+        <Category name="Done" overrideColor={categoryDone}>
           {project.tasks
             .filter((e) => e.data.status === "Done")
             .filter((task) => filterTPByName(task, searchText))

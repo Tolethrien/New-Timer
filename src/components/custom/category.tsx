@@ -1,22 +1,25 @@
-import { useContext, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styled, { StyledComponent } from "styled-components";
 import useTheme from "../hooks/useTheme";
 import { Collapse } from "../utils/icons";
 const Category: React.FC<{
   name: string;
+  overrideColor?: string;
   children?: React.ReactNode;
   extendedStyle?: StyledComponent<"div", any, {}, never>;
-}> = ({ name, children, extendedStyle }) => {
+}> = ({ name, children, extendedStyle, overrideColor }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const divChildrenRef = useRef<HTMLDivElement>(null);
 
   const {
-    getColor: { itemCardColor, categoryColor, iconColor },
+    coloredCategory,
+    getColor: { categoryColor, iconColor },
   } = useTheme();
-
+  const isColored =
+    overrideColor && coloredCategory !== "Mono" ? overrideColor : categoryColor;
   return (
-    <ComponentBody bodyColor={categoryColor} as={extendedStyle}>
-      <TopBar bodyColor={categoryColor}>
+    <ComponentBody bodyColor={isColored} as={extendedStyle}>
+      <TopBar bodyColor={isColored}>
         <TopBarName>{name}</TopBarName>
         <CollapseIcon
           isCollapsed={isCollapsed}
@@ -46,11 +49,9 @@ const ComponentBody = styled.div<{ bodyColor: string }>`
     position: absolute;
     left: 0;
     top: 0;
-    top: 0;
     height: calc(100% + 1rem);
     width: 5%;
     transition: 0.5s;
-
     background-color: ${({ bodyColor }) => bodyColor};
     border-radius: 0 0 5px 0;
   }
@@ -75,12 +76,12 @@ const TopBar = styled.div<{ bodyColor: string }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
   left: 0;
   top: 0;
   height: 1.75rem;
   min-width: 6rem;
   padding-inline: 2%;
-  gap: 0.5rem;
   transition: 0.5s;
   background-color: ${({ bodyColor }) => bodyColor};
   border-radius: 0 5px 5px 0;

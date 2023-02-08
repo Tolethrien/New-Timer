@@ -12,7 +12,9 @@ import {
   updateEmail,
   updatePassword,
 } from "firebase/auth";
+
 const auth = getAuth();
+
 export const RegisterNewUser = async (
   email: string,
   password: string,
@@ -37,10 +39,7 @@ export const logout = async () => {
 export const useFirebaseAuth = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   useEffect(() => {
-    return (
-      onAuthStateChanged(auth, (user) => setCurrentUser(user)),
-      console.log("doa")
-    );
+    return onAuthStateChanged(auth, (user) => setCurrentUser(user));
   }, []);
   return currentUser;
 };

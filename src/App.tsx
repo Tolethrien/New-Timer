@@ -19,14 +19,13 @@ function App() {
   const currentUser = useUserAuth();
 
   if (!currentUser) return <UserAuth />;
-
   return (
     <MainBody background={appBackground} textColor={textColorNormal}>
       <UserDBProvider>
         <ClockProvider>
           <Routes>
             <Route path="*" element={<Navigate to="/projects" />} />
-            <Route path={"/timer/:id"} element={<Timer />}></Route>
+            <Route path={"/timer/"} element={<Timer />}></Route>
             <Route path={"/projects/*"} element={<Projects />}></Route>
             <Route path={"/options"} element={<Options />}></Route>
           </Routes>

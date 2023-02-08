@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { ProjectsData } from "../../../API/getUserData";
-import { colors, updateProject, updateStatus } from "../../../API/handleDocs";
+import { updateProject, updateStatus } from "../../../API/handleDocs";
+import { colors } from "../../../API/utils";
 import ButtonAsIcon from "../../custom/buttonAsIcon";
 import ButtonWithIcon from "../../custom/buttonWithIcon";
 import Head from "../../custom/head";
@@ -81,9 +82,7 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
             <ButtonAsIcon
               src={RoundSwap}
               size={[1.5, 1.5]}
-              onClick={() =>
-                updateStatus({ document: project, id: id!, type: "project" })
-              }
+              onClick={() => updateStatus({ document: project, id: id! })}
             ></ButtonAsIcon>
           </ProjectCategory>
           <ProjectCategory>

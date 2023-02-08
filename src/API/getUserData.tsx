@@ -49,7 +49,7 @@ export const GetUserData = () => {
           })) as TasksData[]
         );
       },
-      (err) => console.log("cos sie nie udalo", err)
+      (err) => console.log(err)
     );
   };
 
@@ -69,7 +69,7 @@ export const GetUserData = () => {
           })) as ProjectsData[]
         );
       },
-      (err) => console.log("cos sie nie udalo", err)
+      (err) => console.log(err)
     );
   };
 

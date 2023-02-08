@@ -49,20 +49,17 @@ const ClockProvider: React.FC<props> = (props) => {
     } else {
       setIsRunning(true);
     }
-  }, [isRunning, taskInProgress]);
+  }, [isRunning, taskInProgress, timeLeft]);
 
   const stopClock = useCallback(() => {
     setTimeLeft(0);
     setBarProgress(0);
     setIsRunning(false);
-    console.log("w undefined");
     if (taskInProgress !== undefined) {
       updateDB();
       setTaskInProgress(undefined);
-      navigate("/timer/undefined");
-      console.log("w tasku");
     }
-  }, [taskInProgress]);
+  }, [taskInProgress, timeLeft]);
 
   const setClock = ({ time, project, task }: SetClock) => {
     setTimeLeft(time);

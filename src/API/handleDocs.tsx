@@ -1,34 +1,27 @@
 import {
   doc,
-  collection,
   setDoc,
   serverTimestamp,
   deleteDoc,
   updateDoc,
-  query,
-  onSnapshot,
-  arrayUnion,
-  arrayRemove,
   deleteField,
 } from "firebase/firestore";
-import db from "./firebase";
-import { auth } from "./firebase";
+import { randomKey } from "../components/utils/randomKey";
+import db, { auth } from "./firebase";
 import { ProjectsData, TasksData } from "./getUserData";
+import {
+  allProjectsRef,
+  allTasksRef,
+  colors,
+  projectRef,
+  ProjectStatuses,
+  taskRef,
+} from "./utils";
 
-export const colors = {
-  Orange: 41,
-  Green: 116,
-  Blue: 180,
-  Purple: 256,
-  Pink: 330,
-};
-export const ProjectStatuses = ["Active", "On Hold", "Done"];
 //===========PROJECTS===========================
 export const addProject = (name: string) => {
-  const projectRef = doc(
-    collection(db, "Users", auth.currentUser?.uid!, "Projects")
-  );
-  setDoc(projectRef, {
+  const reference = allProjectsRef();
+  setDoc(reference, {
     name: name,
     createdAt: serverTimestamp(),
     color:
@@ -40,29 +33,27 @@ export const addProject = (name: string) => {
 };
 
 export const deleteProject = ({ id, tasks }: { id: string; tasks: any[] }) => {
-  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Projects", id);
+  const reference = projectRef(id);
   tasks.forEach((e) => {
     let taskRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", e.id);
     deleteDoc(taskRef);
   });
-  deleteDoc(projectRef);
+  deleteDoc(reference);
 };
 
 export const updateProject = (id: string, value: {}) => {
-  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Projects", id);
-  updateDoc(projectRef, value);
+  const reference = projectRef(id);
+  updateDoc(reference, value);
 };
 //===========TASKS===========================
 export const deleteTask = ({ id }: { id: string }) => {
-  const taskRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", id);
-
-  deleteDoc(taskRef);
+  const reference = taskRef(id);
+  deleteDoc(reference);
 };
+
 export const addTask = (id: string, name: string) => {
-  const projectRef = doc(
-    collection(db, "Users", auth.currentUser?.uid!, "Tasks")
-  );
-  setDoc(projectRef, {
+  const reference = allTasksRef();
+  setDoc(reference, {
     name: name,
     createdAt: serverTimestamp(),
     status: "Active",
@@ -74,34 +65,38 @@ export const addTask = (id: string, name: string) => {
     checkboxes: {},
   });
 };
+
 export const updateTime = (id: string, value: number) => {
-  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", id);
-  updateDoc(projectRef, { totalTime: value });
+  const reference = taskRef(id);
+  updateDoc(reference, { totalTime: value });
 };
+
 export const updateTask = (id: string, value: {}) => {
-  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", id);
-  updateDoc(projectRef, value);
+  const reference = taskRef(id);
+  updateDoc(reference, value);
 };
+
 export const updateCheckbox = (
   taskId: string,
   checkboxId: string,
   key: string,
   value: any
 ) => {
-  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", taskId);
-
-  updateDoc(projectRef, { [`checkboxes.${checkboxId}.${key}`]: value });
+  const reference = taskRef(taskId);
+  updateDoc(reference, { [`checkboxes.${checkboxId}.${key}`]: value });
 };
+
 export const deleteCheckbox = (id: string, checkboxId: string) => {
   const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", id);
   updateDoc(projectRef, {
     [`checkboxes.${checkboxId}`]: deleteField(),
   });
 };
+
 export const addNewCheckbox = (taskId: string, name: string) => {
-  const newId = Math.random().toString().slice(2, -2);
-  const projectRef = doc(db, "Users", auth.currentUser?.uid!, "Tasks", taskId);
-  updateDoc(projectRef, {
+  const newId = randomKey();
+  const reference = taskRef(taskId);
+  updateDoc(reference, {
     [`checkboxes.${newId}`]: {
       name: name,
       createdAt: serverTimestamp(),
@@ -112,31 +107,28 @@ export const addNewCheckbox = (taskId: string, name: string) => {
 
 interface updateStatusProps {
   document: ProjectsData | TasksData;
-  type: "project" | "task";
   id: string;
 }
-export const updateStatus = ({ document, type, id }: updateStatusProps) => {
-  // ustawic by nie potrzeba bylo statusu "task in documnet"
+export const updateStatus = ({ document, id }: updateStatusProps) => {
   let statusIndex = ProjectStatuses.indexOf(document.data.status);
   let newStatus =
     statusIndex === ProjectStatuses.length - 1 ? 0 : (statusIndex += 1);
-  if (type === "project")
-    updateProject(id!, { status: ProjectStatuses[newStatus] });
-  else if (type === "task")
-    updateTask(id!, { status: ProjectStatuses[newStatus] });
+  if ("tasks" in document)
+    updateProject(id, { status: ProjectStatuses[newStatus] });
+  else updateTask(id, { status: ProjectStatuses[newStatus] });
 };
 
-export const KILLALLTASKS = () => {
-  // DO NOT EVOKE!!!
-  let x: any[] = [];
-  const querySorted = query(
-    collection(db, "Users", auth.currentUser?.uid!, "Projects")
-  );
-  onSnapshot(querySorted, (snap) => {
-    x = snap.docs.map((doc) => ({ id: doc.id }));
-    x.forEach((e) =>
-      deleteDoc(doc(db, "Users", auth.currentUser?.uid!, "Projects", e.id))
-    );
-    alert("All tasks Deleted");
-  });
-};
+// export const KILLALLTASKS = () => {
+//   // DO NOT EVOKE!!!
+//   let x: any[] = [];
+//   const querySorted = query(
+//     collection(db, "Users", auth.currentUser?.uid!, "Projects")
+//   );
+//   onSnapshot(querySorted, (snap) => {
+//     x = snap.docs.map((doc) => ({ id: doc.id }));
+//     x.forEach((e) =>
+//       deleteDoc(doc(db, "Users", auth.currentUser?.uid!, "Projects", e.id))
+//     );
+//     alert("All tasks Deleted");
+//   });
+// };

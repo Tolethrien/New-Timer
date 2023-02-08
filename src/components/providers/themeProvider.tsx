@@ -4,14 +4,21 @@ interface ThemeProviderProps {
 }
 interface provider {
   theme: string;
+  coloredCategory: string;
   switchTheme: () => void;
+  switchCategoryColor: () => void;
 }
 export const themeContext = createContext({} as provider);
 
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   if (!localStorage.getItem("mode")) localStorage.setItem("mode", "light");
+  if (!localStorage.getItem("categoryColor"))
+    localStorage.setItem("categoryColor", "Mono");
 
   const [theme, setTheme] = useState(localStorage.getItem("mode") as string);
+  const [coloredCategory, setcoloredCategory] = useState(
+    localStorage.getItem("categoryColor") as string
+  );
 
   const switchTheme = () => {
     if (theme === "light") {
@@ -22,8 +29,19 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       setTheme("light");
     }
   };
+  const switchCategoryColor = () => {
+    if (coloredCategory === "Mono") {
+      localStorage.setItem("categoryColor", "Colored");
+      setcoloredCategory("Colored");
+    } else if (coloredCategory === "Colored") {
+      localStorage.setItem("categoryColor", "Mono");
+      setcoloredCategory("Mono");
+    }
+  };
   return (
-    <themeContext.Provider value={{ theme, switchTheme }}>
+    <themeContext.Provider
+      value={{ theme, switchTheme, switchCategoryColor, coloredCategory }}
+    >
       {children}
     </themeContext.Provider>
   );

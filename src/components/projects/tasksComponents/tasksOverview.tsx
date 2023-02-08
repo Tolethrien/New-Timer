@@ -14,23 +14,25 @@ import ButtonWithIcon from "../../custom/buttonWithIcon";
 import Head from "../../custom/head";
 import Checkboxes from "./checkboxes";
 import TaskOptions from "./taskOptions";
+import useTheme from "../../hooks/useTheme";
 const TaskOverview: React.FC = () => {
   const { id } = useParams();
   const task = useDataFinder<TasksData>(id);
-
   const { setClock } = useContext(clockContext);
   const navigate = useNavigate();
-
+  const {
+    getColor: { categoryActive, categoryDone, categoryOnHold },
+  } = useTheme();
   const playTask = () => {
     setClock({
       time: task!.data.timeSpend,
       project: task!.data.projectID,
       task: id!,
     });
-    navigate(`/timer/${id}`);
+    navigate(`/timer`);
   };
-  if (!task) return <Navigate to="/projects" replace />;
 
+  if (!task) return <Navigate to="/projects" replace />;
   return (
     <>
       <Head>
@@ -51,16 +53,16 @@ const TaskOverview: React.FC = () => {
       </Head>
       <AllCategories>
         {task.data.showDescription && (
-          <Category name="Description">
+          <Category name="Description" overrideColor={categoryActive}>
             <TaskDescriptionBox value={task.data.desc}></TaskDescriptionBox>
           </Category>
         )}
         {task.data.showCheckboxes && (
-          <Category name="Checkbox">
+          <Category name="Checkbox" overrideColor={categoryDone}>
             <Checkboxes checkboxes={task.data.checkboxes} />
           </Category>
         )}
-        <Category name="Settings">
+        <Category name="Settings" overrideColor={categoryOnHold}>
           <TaskOptions task={task} />
         </Category>
       </AllCategories>

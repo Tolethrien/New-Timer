@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import styled, { StyledComponent } from "styled-components";
+import styled from "styled-components";
 import useTheme from "../hooks/useTheme";
 interface DisplayIconProps {
   size?: [number, number];

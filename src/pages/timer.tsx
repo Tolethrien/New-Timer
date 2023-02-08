@@ -53,7 +53,11 @@ const Timer: React.FC = () => {
           (taskInProgress?.task ? (
             <CheckboxesScroller>
               {Object.keys(taskData!.checkboxes).length > 0 ? (
-                <Checkboxes checkboxes={taskData!.checkboxes} displayOnly />
+                <Checkboxes
+                  checkboxes={taskData!.checkboxes}
+                  displayOnly
+                  useID={taskInProgress.task}
+                />
               ) : (
                 <DisplayText>No Checkboxes in this task</DisplayText>
               )}
@@ -79,11 +83,12 @@ const ButtomHead = styled.div<{ bodyColor: string; borderColor: string }>`
   border: 1px solid ${({ borderColor }) => borderColor};
   border-bottom: none;
 `;
-const ShowMore = styled.div`
+const ShowMore = styled.button`
   width: 20%;
   height: 0.4rem;
   background-color: hsla(0, 0%, 87%, 0.68);
   border-radius: 10px 10px 0 0;
+  border: none;
 `;
 const CheckboxTitleBar = styled.div`
   position: relative;

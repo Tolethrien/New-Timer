@@ -1,95 +1,96 @@
 import styled from "styled-components";
-import { NavLink, useNavigate } from "react-router-dom";
-
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { Timer, Projects, Options } from "../utils/icons";
-import { useContext, useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { vibrate } from "../utils/vibrate";
-import { clockContext } from "../providers/clockProvider";
-import { authContext } from "../providers/authProvider";
 import useTheme from "../hooks/useTheme";
-interface FooterProps {}
 
-const Footer: React.FC<FooterProps> = () => {
-  const { currentUser } = useContext(authContext);
-
+const Footer: React.FC = () => {
+  type WindowsTypes = "timer" | "projects" | "options";
+  const [currentWindow, setCurrentWindow] = useState<WindowsTypes>("projects");
   const {
-    getColor: { appColorPrimary },
-  } = useTheme();
-  const { barProgress, taskInProgress, timeLeft } = useContext(clockContext);
-  const navigate = useNavigate();
-  const linkData = {
-    timer: {
-      id: 1,
-      name: "Timer",
-      link: "./timer",
-      icon: Timer,
+    getColor: {
+      footerActiveIconColor,
+      footerInActiveIconColor,
+      footerBackgroundColor,
     },
-    Projects: { id: 4, name: "Projects", link: "./projects", icon: Projects },
-    Options: { id: 5, name: "Options", link: "./options", icon: Options },
+  } = useTheme();
+  const navigate = useNavigate();
+  const route = window.location.pathname.slice(1);
+  const changeRoute = (value: WindowsTypes) => {
+    if (value !== currentWindow) {
+      navigate(`/${value}`);
+      vibrate("short");
+    }
   };
-  const findUrl = Object.values(linkData).find((e) =>
-    e.link.includes(window.location.pathname)
-  );
-
   useEffect(() => {
-    // findUrl?.id !== currentWindow.id && currentWindow.set(findUrl!.id);
-  }, []);
+    if (
+      (route === "projects" || route === "timer" || route === "options") &&
+      route !== currentWindow
+    ) {
+      setCurrentWindow(route);
+    }
+  }, [route]);
   return (
-    <Wrap userLogedIn={Boolean(currentUser)}>
+    <ComponentBody footerBackgroundColor={footerBackgroundColor}>
       <ButtonLink
-        as={NavLink}
-        to={`./timer/*`}
-        bodycolor={appColorPrimary}
-        onClick={() => vibrate("short")}
-        color={"#6e6e6ea5"}
+        bodycolor={
+          currentWindow === "timer"
+            ? footerActiveIconColor
+            : footerInActiveIconColor
+        }
+        onClick={() => changeRoute("timer")}
       >
         <ButtonImg src={Timer} alt={`Timer button`}></ButtonImg>
       </ButtonLink>
       <ButtonLink
-        as={NavLink}
-        to={"./projects"}
-        bodycolor={appColorPrimary}
-        onClick={() => vibrate("short")}
-        color={"#6e6e6ea5"}
+        bodycolor={
+          currentWindow === "projects"
+            ? footerActiveIconColor
+            : footerInActiveIconColor
+        }
+        onClick={() => changeRoute("projects")}
       >
         <ButtonImg src={Projects} alt={`Projects button`}></ButtonImg>
       </ButtonLink>
       <ButtonLink
-        as={NavLink}
-        to={"./options"}
-        bodycolor={appColorPrimary}
-        onClick={() => vibrate("short")}
-        color={"#6e6e6ea5"}
+        bodycolor={
+          currentWindow === "options"
+            ? footerActiveIconColor
+            : footerInActiveIconColor
+        }
+        onClick={() => changeRoute("options")}
       >
         <ButtonImg src={Options} alt={`options button`}></ButtonImg>
       </ButtonLink>
-    </Wrap>
+    </ComponentBody>
   );
 };
 export default Footer;
-export const Wrap = styled.footer<{ userLogedIn: boolean }>`
-  /* display: ${({ userLogedIn }) => (userLogedIn ? "flex" : "none")}; */
+
+export const ComponentBody = styled.footer<{ footerBackgroundColor: string }>`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  padding: 10px 0;
+  padding: 0.6rem 0;
   width: 100%;
   border-radius: 7px 7px 0 0;
-  background-color: hsla(360, 90%, 14%, 0.19);
+  background-color: ${({ footerBackgroundColor }) => footerBackgroundColor};
   backdrop-filter: blur(10px);
 `;
-const ButtonLink = styled.div<{ bodycolor: string }>`
+const ButtonLink = styled.button<{ bodycolor: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35px;
-  height: 35px;
-  border-radius: 10px;
-  transition: 0.5s;
-
+  width: 2.1rem;
+  height: 2.1rem;
   background-color: ${({ bodycolor }) => bodycolor};
+  border-radius: 10px;
+  transition: 0.3s;
+  border: none;
+  cursor: pointer;
 `;
 const ButtonImg = styled.img`
-  width: 70%;
-  height: 70%;
+  width: 100%;
+  height: 100%;
 `;

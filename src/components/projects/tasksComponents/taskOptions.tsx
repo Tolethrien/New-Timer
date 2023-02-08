@@ -53,9 +53,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
           {task.data.status}
           <ButtonAsIcon
             src={RoundSwap}
-            onClick={() =>
-              updateStatus({ document: task, type: "task", id: id! })
-            }
+            onClick={() => updateStatus({ document: task, id: id! })}
             size={[1.2, 1.2]}
             margin="0 0 0 0.5rem"
           ></ButtonAsIcon>

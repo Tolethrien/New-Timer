@@ -6,16 +6,20 @@ import { Add } from "../../utils/icons";
 import { randomKey } from "../../utils/randomKey";
 import CheckBox from "./checkbox/checkbox";
 import CheckboxTemplate from "./checkbox/checkboxTemplate";
+import { useParams } from "react-router-dom";
 interface ChecboxesProps {
   checkboxes: checkboxes;
   displayOnly?: boolean;
+  useID?: string;
 }
 const Checkboxes: React.FC<ChecboxesProps> = ({
   checkboxes,
   displayOnly = false,
+  useID,
 }) => {
   const [templateTask, setTemplateTask] = useState(false);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
+  const taskId = useParams().id!;
 
   const sortCheckboxesByTimeOfCreate = (
     elementA: [string, { createdAt: number }],
@@ -36,7 +40,11 @@ const Checkboxes: React.FC<ChecboxesProps> = ({
           .sort(sortCheckboxesByTimeOfCreate)
           .sort(sortCheckboxesByComplete)
           .map((checkbox) => (
-            <CheckBox checkboxData={checkbox} key={randomKey()}></CheckBox>
+            <CheckBox
+              checkboxData={checkbox}
+              key={randomKey()}
+              taskId={useID ?? taskId}
+            ></CheckBox>
           ))}
       {templateTask && !displayOnly && (
         <CheckboxTemplate

@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import styled, { StyledComponent } from "styled-components";
 import useTheme from "../hooks/useTheme";
 interface ButtonAsIconProps {
@@ -22,6 +21,7 @@ const ButtonAsIcon: React.FC<ButtonAsIconProps> = ({
   const {
     getColor: { iconColor },
   } = useTheme();
+
   return (
     <ComponentBody
       onClick={onClick}
@@ -36,6 +36,7 @@ const ButtonAsIcon: React.FC<ButtonAsIconProps> = ({
   );
 };
 export default ButtonAsIcon;
+
 export const ComponentBody = styled.button<{
   src: string;
   margin?: string;

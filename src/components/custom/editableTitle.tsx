@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Edit } from "../utils/icons";
 import { updateProject, updateTask } from "../../API/handleDocs";
 import { useParams } from "react-router-dom";
@@ -8,11 +8,13 @@ import focusOnEndOfLine from "../projects/utils/focusOnEndOfLine";
 interface EditableTitleProps {
   text: string;
 }
+const TEXT_SPLIT_CHAR = 20;
+
 const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
   const componentRef = useRef<HTMLDivElement>(null);
   const paragraphfocusRef = useRef<HTMLParagraphElement>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [route, id] = useParams()["*"]!.split("/");
+  const [route, id] = useParams()["*"]!.split("/")!;
 
   const handleClickOutside = (event: any) => {
     if (!componentRef.current?.contains(event.target)) {
@@ -27,9 +29,9 @@ const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
       return;
     }
     if (route === "task")
-      updateTask(id!, { name: paragraphfocusRef!.current!.innerText });
+      updateTask(id, { name: paragraphfocusRef!.current!.innerText });
     else if (route === "project") {
-      updateProject(id!, { name: paragraphfocusRef!.current!.innerText });
+      updateProject(id, { name: paragraphfocusRef!.current!.innerText });
     }
     setIsEditing(false);
   };
@@ -41,6 +43,7 @@ const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
     }
     return () => document.removeEventListener("click", handleClickOutside);
   }, [isEditing]);
+
   return (
     <ComponentBody ref={componentRef}>
       <NameEditable
@@ -49,7 +52,9 @@ const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
         onKeyDown={(e) => e.key === "Enter" && updateName()}
         ref={paragraphfocusRef}
       >
-        {text.length > 20 && !isEditing ? text.slice(0, 20) + "..." : text}
+        {text.length > TEXT_SPLIT_CHAR && !isEditing
+          ? text.slice(0, TEXT_SPLIT_CHAR) + "..."
+          : text}
       </NameEditable>
       <ButtonAsIcon
         src={Edit}

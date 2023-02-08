@@ -8,9 +8,10 @@ import focusOnEndOfLine from "../../utils/focusOnEndOfLine";
 import useTheme from "../../../hooks/useTheme";
 interface CheckBoxProps {
   checkboxData: [string, { createdAt: number; name: string; value: boolean }];
+  taskId: string;
 }
 
-const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
+const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, taskId }) => {
   const [checkboxId, data] = checkboxData ?? [];
   const [isEditing, setIsEditing] = useState(false);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
@@ -18,7 +19,6 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData }) => {
   const {
     getColor: { itemCardColor, iconColor },
   } = useTheme();
-  const taskId = useParams().id;
   const handleClickOutside = (e: any) => {
     if (!componentRef.current?.contains(e.target)) {
       paragraphRef.current!.innerText = data.name;

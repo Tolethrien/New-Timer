@@ -3,7 +3,6 @@ import { GoTo, Favorites, TaskList, Clock } from "../../../utils/icons";
 import { ProjectsData } from "../../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
 import { conevrtTimeToString } from "../../../utils/timeConverters";
-import { useContext } from "react";
 import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
 interface ProjectCardProps {
@@ -67,8 +66,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <InfoBoxValue>{conevrtTimeToString(totalTimeOnTask)}</InfoBoxValue>
         </InfoBox>
       </InfoConteiner>
-      <Name wrapWord={data.name.length > 21}>
-        {data.name.length > 35 ? data.name.slice(0, 35) + "..." : data.name}
+      <Name wrapWord={data.name.length > 20} scaleFont={data.name.length > 30}>
+        {data.name}
       </Name>
       <ProgressBar
         value={percentOfComplete}
@@ -107,6 +106,7 @@ const ComponentBody = styled.div<{ hue: number; bodyTone: string }>`
 const InfoConteiner = styled.div`
   width: 25%;
   margin-left: 2%;
+  margin-block: auto;
 `;
 const InfoBox = styled.div<{ hue: number; tone: string; textColor: string }>`
   display: flex;
@@ -144,12 +144,12 @@ const ProgressBar = styled.progress<{
     border-radius: 5px;
   }
 `;
-const Name = styled.div<{ wrapWord: boolean }>`
+const Name = styled.div<{ wrapWord: boolean; scaleFont: boolean }>`
   display: flex;
   align-items: ${({ wrapWord }) => (wrapWord ? "flex-start" : "center")};
-  margin-top: 1%;
-  margin-bottom: 3%;
+  padding-top: 0.1rem;
+  padding-bottom: 0.8rem;
   width: 60%;
-  font-size: 1.6rem;
+  font-size: ${({ scaleFont }) => (scaleFont ? "1.2rem" : "1.6rem")};
   font-weight: 700;
 `;
