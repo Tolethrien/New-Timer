@@ -14,7 +14,7 @@ const TaskCard: React.FC<{
   const navigate = useNavigate();
 
   const tascDesc = () => {
-    if (task && !task.data.desc) return " No description yet";
+    if (task && !task.data.desc) return "";
     return task.data.desc.length > 55
       ? task.data.desc.slice(0, 55) + "..."
       : task.data.desc;
@@ -34,7 +34,7 @@ const TaskCard: React.FC<{
         <Name>{task.data.name}</Name>
         <DisplayIcon src={GoTo} alt=""></DisplayIcon>
       </TopBar>
-      {task.data.desc && <Description>{tascDesc()}</Description>}
+      {task.data.showDescription && <Description>{tascDesc()}</Description>}
     </ComponentBody>
   );
 };
@@ -84,6 +84,7 @@ const Name = styled.p`
 
 const Description = styled.p`
   width: 80%;
+  min-height: 1.5rem;
   font-size: 1rem;
   font-weight: 500;
   margin-left: 1%;
