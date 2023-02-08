@@ -15,8 +15,8 @@ const TaskCard: React.FC<{
 
   const tascDesc = () => {
     if (task && !task.data.desc) return " No description yet";
-    return task.data.desc.length > 45
-      ? task.data.desc.slice(0, 45) + "..."
+    return task.data.desc.length > 55
+      ? task.data.desc.slice(0, 55) + "..."
       : task.data.desc;
   };
   return (
@@ -31,14 +31,10 @@ const TaskCard: React.FC<{
             {conevrtTimeToString(task!.data.timeSpend)}
           </InfoBoxValue>
         </InfoBox>
-        <Name>
-          {task.data.name.length > 25
-            ? task.data.name.slice(0, 25) + "..."
-            : task.data.name}
-        </Name>
+        <Name>{task.data.name}</Name>
         <DisplayIcon src={GoTo} alt=""></DisplayIcon>
       </TopBar>
-      <Description>{tascDesc()}</Description>
+      {task.data.desc && <Description>{tascDesc()}</Description>}
     </ComponentBody>
   );
 };

@@ -66,9 +66,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <InfoBoxValue>{conevrtTimeToString(totalTimeOnTask)}</InfoBoxValue>
         </InfoBox>
       </InfoConteiner>
-      <Name wrapWord={data.name.length > 20} scaleFont={data.name.length > 30}>
-        {data.name}
-      </Name>
+      <Name wrapWord={data.name.length > 20}>{data.name}</Name>
       <ProgressBar
         value={percentOfComplete}
         max="100"
@@ -144,12 +142,12 @@ const ProgressBar = styled.progress<{
     border-radius: 5px;
   }
 `;
-const Name = styled.div<{ wrapWord: boolean; scaleFont: boolean }>`
+const Name = styled.div<{ wrapWord: boolean }>`
   display: flex;
   align-items: ${({ wrapWord }) => (wrapWord ? "flex-start" : "center")};
   padding-top: 0.1rem;
   padding-bottom: 0.8rem;
   width: 60%;
-  font-size: ${({ scaleFont }) => (scaleFont ? "1.2rem" : "1.6rem")};
+  font-size: 1.6rem;
   font-weight: 700;
 `;
