@@ -24,7 +24,9 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     background-color: #312c2c;
   }
- 
+ html{
+  font-size: 16px;
+ }
   dialog{
     box-sizing: border-box;
     width: clamp(235px,350px,420px);
