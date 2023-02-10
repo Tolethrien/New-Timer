@@ -1,24 +1,61 @@
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { updateTask } from "../../API/handleDocs";
 import useClock from "../hooks/useClock";
 import useTheme from "../hooks/useTheme";
 import { Done, Play, Stop } from "../utils/icons";
 import { vibrate } from "../utils/vibrate";
-interface TimerButtonsProps {
-  showCheckboxComponent?: boolean;
-}
-const TimerButtons: React.FC<TimerButtonsProps> = ({
-  showCheckboxComponent,
-}) => {
-  const { playPauseClock, stopClock, onComplete, taskInProgress } = useClock();
+interface TimerButtonsProps {}
 
+const ClockButtons: React.FC<TimerButtonsProps> = ({}) => {
   const {
     getColor: { itemCardColor, buttonColor, iconColor, dynamicShadowColor },
   } = useTheme();
+  const navigate = useNavigate();
+  const {
+    getClock: { isRunning, pauseDate, startDate, taskInProgress },
+    dispatch,
+  } = useClock();
+
+  const playPauseClock = useCallback(() => {
+    if (isRunning) {
+      dispatch({ type: "pause" });
+      if (taskInProgress !== undefined) updateDB();
+    } else {
+      dispatch({
+        type: "play",
+        payload: { startDate: Date.now() - (pauseDate - startDate) },
+      });
+    }
+  }, [isRunning, taskInProgress]);
+
+  const stopClock = useCallback(() => {
+    if (taskInProgress !== undefined) {
+      updateDB();
+    }
+    dispatch({ type: "stop" });
+  }, [taskInProgress, isRunning]);
+
+  const updateDB = () => {
+    updateTask(taskInProgress?.task!, { timeSpend: Math.floor(setTimeToDB()) });
+  };
+  const setTimeToDB = (): number => {
+    if (isRunning) return (Date.now() - startDate) / 1000;
+    return (pauseDate - startDate) / 1000;
+  };
+
+  const onComplete = useCallback(() => {
+    updateTask(taskInProgress?.task!, {
+      timeSpend: Math.floor(setTimeToDB()),
+      status: "Done",
+    });
+    dispatch({ type: "complete" });
+    navigate(`/projects/project/${taskInProgress?.project}`);
+  }, [taskInProgress, isRunning]);
+
   return (
-    <ComponentBody
-      showCheckboxComponent={showCheckboxComponent}
-      bodyColor={itemCardColor}
-    >
+    <ComponentBody showCheckboxComponent={false} bodyColor={itemCardColor}>
       <ButtonWithDescription>
         <Button
           bodyColor={buttonColor}
@@ -53,7 +90,7 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
     </ComponentBody>
   );
 };
-export default TimerButtons;
+export default ClockButtons;
 const ComponentBody = styled.div<{
   showCheckboxComponent?: boolean;
   bodyColor: string;

@@ -30,7 +30,11 @@ type ColorList =
   | "taskOptionsForegroundColor"
   | "footerActiveIconColor"
   | "footerInActiveIconColor"
-  | "footerBackgroundColor";
+  | "footerBackgroundColor"
+  | "clockPrimaryColor"
+  | "clockSecondaryColor"
+  | "clockGlowColor"
+  | "clockBackgroundColor";
 
 type ColorKeys = { [color in ColorList]: string };
 type ColorMap = { [Theme in ThemeMode]: ColorKeys };
@@ -66,6 +70,10 @@ export const APP_COLORS: ColorMap = {
     footerActiveIconColor: "hsla(287,55%,63%,0.6)",
     footerInActiveIconColor: "hsla(40, 76%, 69%, 0.8)",
     footerBackgroundColor: "hsla(360, 90%, 14%, 0.19)",
+    clockPrimaryColor: "hsla(32, 86%, 83%, 1)",
+    clockSecondaryColor: "hsla(160, 70%, 60%, 1)",
+    clockGlowColor: "hsla(20, 100%, 50%,0.5)",
+    clockBackgroundColor: "hsla(32, 86%, 83%, 0.5)",
   },
   dark: {
     appColorPrimary: "hsla(261, 16%, 40%, 0.8)",
@@ -98,5 +106,9 @@ export const APP_COLORS: ColorMap = {
     footerActiveIconColor: "hsla(344,39%,27%,0.6)",
     footerInActiveIconColor: "hsla(261, 16%, 40%, 0.8)",
     footerBackgroundColor: "hsla(360, 90%, 14%, 0.19)",
+    clockPrimaryColor: "hsla(200, 70%, 60%, 1)",
+    clockSecondaryColor: "hsla(320, 70%, 60%, 1)",
+    clockGlowColor: "hsla(108, 100%, 50%,0.5)",
+    clockBackgroundColor: "hsla(200, 70%, 60%, 0.5)",
   },
 };

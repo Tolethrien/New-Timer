@@ -60,6 +60,7 @@ export const addTask = (id: string, name: string) => {
     timeSpend: 0,
     timeExpected: 25 * 60,
     projectID: id,
+    desc: "",
     showCheckboxes: true,
     showDescription: true,
     checkboxes: {},

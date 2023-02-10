@@ -67,7 +67,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
     await updateAcc({ param, value });
     closeModal();
     navigate("/options");
-    // hack to reload component to update account info
+    // hack to reload component and force auth effect to update account info
     //(navigate to the same component)
   };
 

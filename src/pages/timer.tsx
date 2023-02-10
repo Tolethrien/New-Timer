@@ -4,13 +4,15 @@ import { useState } from "react";
 import Head from "../components/custom/head";
 import DisplayText from "../components/styled/components/displayText";
 import Checkboxes from "../components/projects/tasksComponents/checkboxes";
-import Clock from "../components/timer/clockComponent";
 import useTheme from "../components/hooks/useTheme";
 import useDataFinder from "../components/hooks/useDataFinder";
 import useClock from "../components/hooks/useClock";
+import TimerClock from "../components/timer/timerClock";
 const Timer: React.FC = () => {
   const userData = useDataFinder("all");
-  const { taskInProgress } = useClock();
+  const {
+    getClock: { taskInProgress },
+  } = useClock();
   const [showCheckboxComponent, setShowCheckboxComponent] = useState(false);
   const {
     getColor: { appColorPrimary, borderColor },
@@ -39,7 +41,7 @@ const Timer: React.FC = () => {
           <DisplayText weight={500}>In Project {projectData?.name}</DisplayText>
         )}
       </Head>
-      <Clock showCheckboxComponent={showCheckboxComponent} />
+      <TimerClock />
       <ButtomHead bodyColor={appColorPrimary} borderColor={borderColor}>
         <CheckboxTitleBar
           onClick={() => setShowCheckboxComponent((prev) => !prev)}

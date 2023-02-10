@@ -12,13 +12,14 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
   minHeight = 100,
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const [textValue, settextValue] = useState(value);
+  const [textValue, settextValue] = useState(value as string);
   const { id } = useParams();
   const {
     getColor: { itemCardColor, borderColor, textColorNormal },
   } = useTheme();
 
   const updateDocText = () => {
+    console.log(textValue);
     updateTask(id!, { desc: textValue });
   };
 

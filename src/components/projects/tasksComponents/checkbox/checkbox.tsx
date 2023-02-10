@@ -81,7 +81,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, taskId }) => {
 export default CheckBox;
 const ComponentBody = styled.div<{ bodyColor: string }>`
   display: flex;
-  padding-block: 0.2rem;
+  padding-block: 0.5rem;
   margin-bottom: 0.1rem;
   background-color: ${({ bodyColor }) => bodyColor};
   border-radius: 5px;

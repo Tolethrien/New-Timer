@@ -15,19 +15,20 @@ import Head from "../../custom/head";
 import Checkboxes from "./checkboxes";
 import TaskOptions from "./taskOptions";
 import useTheme from "../../hooks/useTheme";
+import useClock from "../../hooks/useClock";
 const TaskOverview: React.FC = () => {
   const { id } = useParams();
   const task = useDataFinder<TasksData>(id);
-  const { setClock } = useContext(clockContext);
   const navigate = useNavigate();
   const {
     getColor: { categoryActive, categoryDone, categoryOnHold },
   } = useTheme();
+  const { setClock } = useClock();
   const playTask = () => {
     setClock({
-      time: task!.data.timeSpend,
       project: task!.data.projectID,
       task: id!,
+      time: task!.data.timeSpend,
     });
     navigate(`/timer`);
   };
