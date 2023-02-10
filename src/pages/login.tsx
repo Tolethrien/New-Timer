@@ -14,10 +14,7 @@ const Login: React.FC = () => {
   const mailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
 
-  const {
-    theme,
-    getColor: { shadowColor },
-  } = useTheme();
+  const { theme } = useTheme();
   const navigate = useNavigate();
 
   const handleLogin = () => {

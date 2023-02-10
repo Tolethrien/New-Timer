@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { MAX_WIDTH_APP } from "../../../globalCss";
 
 const MainBody = styled.main<{
   background: string;
@@ -6,8 +7,7 @@ const MainBody = styled.main<{
 }>`
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  max-width: 420px;
+  max-width: ${MAX_WIDTH_APP}px;
   height: 100vh;
   margin-inline: auto;
   overflow: hidden;

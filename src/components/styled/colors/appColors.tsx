@@ -1,4 +1,4 @@
-import { ThemeMode } from "../../hooks/useTheme";
+import { ThemeMode } from "../../providers/themeProvider";
 
 type ColorList =
   | "appColorPrimary"
@@ -8,7 +8,8 @@ type ColorList =
   | "projectCardProgressBarColorTone"
   | "projectCardProgressBarValueColor"
   | "taskTemplateColor"
-  | "shadowColor"
+  | "dynamicShadowColor"
+  | "staticShadowColor"
   | "borderColor"
   | "itemCardColor"
   | "iconColor"
@@ -42,7 +43,8 @@ export const APP_COLORS: ColorMap = {
     projectCardProgressBarColorTone: "70%",
     projectCardProgressBarValueColor: `hsla(0, 0%, 30%, 1)`,
     taskTemplateColor: "hsla(40, 76%,70%,0.5)",
-    shadowColor: "hsla(0, 0%, 0%, 0.25)",
+    dynamicShadowColor: "hsla(0, 0%, 0%, 0.25)",
+    staticShadowColor: "hsla(0, 0%, 0%, 0.25)",
     borderColor: "hsla(0, 0%, 80%, 1)",
     itemCardColor: "hsla(0, 0%, 100%, 0.6)",
     iconColor: "brightness(0) invert(0.3)",
@@ -73,7 +75,8 @@ export const APP_COLORS: ColorMap = {
     projectCardProgressBarColorTone: "30%",
     projectCardProgressBarValueColor: "hsla(0, 0%, 70%, 1)",
     taskTemplateColor: "hsla(260,26%,65%,0.5)",
-    shadowColor: "hsla(0, 0%, 100%, 0.25)",
+    dynamicShadowColor: "hsla(0, 0%, 100%, 0.25)",
+    staticShadowColor: "hsla(0, 0%, 0%, 0.25)",
     borderColor: "hsla(0, 2%, 58%, 1)",
     itemCardColor: "hsla(0, 0%, 35%, 0.6)",
     iconColor: "brightness(0) invert(0.7)",

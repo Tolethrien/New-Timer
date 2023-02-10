@@ -12,7 +12,7 @@ import useTheme from "../../hooks/useTheme";
 import DisplayText from "../../styled/components/displayText";
 import { Add, RoundSwap } from "../../utils/icons";
 import { randomKey } from "../../utils/randomKey";
-import { conevrtTimeToString } from "../../utils/timeConverters";
+import { convertTimeToString } from "../../utils/timeConverters";
 import SearchBox from "../custom/searchBox";
 import TitleHeading from "../custom/titleHeading";
 interface ProjectHeadProps {
@@ -69,11 +69,11 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
       {showAll && (
         <>
           <DisplayText>
-            you spend a {conevrtTimeToString(TasksInfo.currentTimeOnTasks)}{" "}
+            you spend a {convertTimeToString(TasksInfo.currentTimeOnTasks)}{" "}
             total on this project
           </DisplayText>
           <DisplayText>
-            Expected time is {conevrtTimeToString(TasksInfo.totalTimeOnTasks)}!
+            Expected time is {convertTimeToString(TasksInfo.totalTimeOnTasks)}!
           </DisplayText>
           <ProjectCategory>
             <DisplayText size={1.2}>

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import { conevrtTimeToString } from "../utils/timeConverters";
+import { convertTimeToString } from "../utils/timeConverters";
 import { clockContext } from "../providers/clockProvider";
 import CircularProgressBar from "../custom/circularProgresBar";
 import TimerButtons from "./timerButtons";
@@ -58,7 +58,7 @@ const Clock: React.FC<ClockProps> = ({ showCheckboxComponent }) => {
         }}
         progress={barProgress}
       >
-        {conevrtTimeToString(timeLeft)}
+        {convertTimeToString(timeLeft)}
       </CircularProgressBar>
       <TimerButtons showCheckboxComponent={showCheckboxComponent} />
     </ComponentBody>

@@ -3,10 +3,12 @@ import ButtonWithIcon from "../custom/buttonWithIcon";
 import DisplayText from "../styled/components/displayText";
 import { Trash } from "../utils/icons";
 import OptionBar from "./optionBar";
+
 const DangerZone: React.FC = () => {
   const temp = () => {
     alert("danger zone temporary restricted");
   };
+
   return (
     <ComponentBody>
       <OptionBar>

@@ -4,8 +4,8 @@ import { useState, useRef } from "react";
 import { updateTask } from "../../../API/handleDocs";
 import { useParams } from "react-router-dom";
 import {
-  conevrTimeToNumber,
-  conevrtTimeToString,
+  convertTimeToNumber,
+  convertTimeToString,
 } from "../../utils/timeConverters";
 import useTheme from "../../hooks/useTheme";
 interface TimeFieldProps {
@@ -16,7 +16,7 @@ const TimeField: React.FC<TimeFieldProps> = ({
   extendedStyle,
   expectedTime,
 }) => {
-  const [time, setTime] = useState(conevrtTimeToString(expectedTime));
+  const [time, setTime] = useState(convertTimeToString(expectedTime));
   const fieldRef = useRef<HTMLDivElement>(null);
   const { id } = useParams();
   const {
@@ -24,7 +24,7 @@ const TimeField: React.FC<TimeFieldProps> = ({
   } = useTheme();
   const TimeUpdate = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
-      updateTask(id!, { timeExpected: conevrTimeToNumber(time) });
+      updateTask(id!, { timeExpected: convertTimeToNumber(time) });
       let temp = fieldRef!.current!.firstChild! as HTMLInputElement;
       temp.blur();
     }

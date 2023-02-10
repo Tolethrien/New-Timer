@@ -3,11 +3,13 @@ interface ThemeProviderProps {
   children: React.ReactNode;
 }
 interface provider {
-  theme: string;
+  theme: ThemeMode;
   coloredCategory: string;
   switchTheme: () => void;
   switchCategoryColor: () => void;
 }
+export type ThemeMode = "light" | "dark";
+
 export const themeContext = createContext({} as provider);
 
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
@@ -15,7 +17,9 @@ const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   if (!localStorage.getItem("categoryColor"))
     localStorage.setItem("categoryColor", "Mono");
 
-  const [theme, setTheme] = useState(localStorage.getItem("mode") as string);
+  const [theme, setTheme] = useState<ThemeMode>(
+    localStorage.getItem("mode") as ThemeMode
+  );
   const [coloredCategory, setcoloredCategory] = useState(
     localStorage.getItem("categoryColor") as string
   );

@@ -22,7 +22,12 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   noShadow = false,
 }) => {
   const {
-    getColor: { borderColor, shadowColor, iconColor, buttonWithIconColor },
+    getColor: {
+      borderColor,
+      dynamicShadowColor,
+      iconColor,
+      buttonWithIconColor,
+    },
   } = useTheme();
   return (
     <ComponentBody
@@ -30,7 +35,7 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
       ref={reference}
       as={extendedStyle}
       borderColor={borderColor}
-      shadowColor={shadowColor}
+      shadowColor={dynamicShadowColor}
       noShadow={noShadow}
       buttonWithIconColor={buttonWithIconColor}
     >

@@ -6,7 +6,6 @@ const PageWrap = styled.section`
   align-items: center;
   overflow-y: auto;
   overflow-x: hidden;
-  width: 100%;
   flex-grow: 1;
 `;
 export default PageWrap;

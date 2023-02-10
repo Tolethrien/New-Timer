@@ -23,7 +23,6 @@ export const clockContext = createContext<provider>({} as provider);
 const MINUTES_TO_PERCENT = (1 / 60) * 100;
 
 const ClockProvider: React.FC<props> = (props) => {
-  // const [state, dispatch] = useReducer(reducer, { age: 42 });
   const [barProgress, setBarProgress] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [taskInProgress, setTaskInProgress] = useState<

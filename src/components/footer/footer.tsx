@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Timer, Projects, Options } from "../utils/icons";
 import { useEffect, useState } from "react";
 import { vibrate } from "../utils/vibrate";
@@ -15,14 +15,18 @@ const Footer: React.FC = () => {
       footerBackgroundColor,
     },
   } = useTheme();
+
   const navigate = useNavigate();
+
   const route = window.location.pathname.slice(1);
+
   const changeRoute = (value: WindowsTypes) => {
     if (value !== currentWindow) {
       navigate(`/${value}`);
       vibrate("short");
     }
   };
+
   useEffect(() => {
     if (
       (route === "projects" || route === "timer" || route === "options") &&
@@ -31,6 +35,7 @@ const Footer: React.FC = () => {
       setCurrentWindow(route);
     }
   }, [route]);
+
   return (
     <ComponentBody footerBackgroundColor={footerBackgroundColor}>
       <ButtonLink

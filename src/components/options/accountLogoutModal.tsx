@@ -19,7 +19,7 @@ const AccountLogoutModal: React.FC<AccountLogoutModalProps> = ({
       </DisplayText>
       <LogoutButtons>
         <ButtonWithIcon
-          alt=""
+          alt="logout button"
           src={Logout}
           onClick={() => {
             logout();
@@ -28,7 +28,7 @@ const AccountLogoutModal: React.FC<AccountLogoutModalProps> = ({
           noShadow
         ></ButtonWithIcon>
         <ButtonWithIcon
-          alt=""
+          alt="go back button"
           src={BackArrow}
           onClick={closeModal}
           text="No"

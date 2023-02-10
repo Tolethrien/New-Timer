@@ -7,7 +7,7 @@ import { clockContext } from "../../providers/clockProvider";
 import { Clock } from "../../utils/icons";
 import Category from "../../custom/category";
 import TaskDescriptionBox from "./taskDescriptionBox";
-import { conevrtTimeToString } from "../../utils/timeConverters";
+import { convertTimeToString } from "../../utils/timeConverters";
 import TitleHeading from "../custom/titleHeading";
 import DisplayText from "../../styled/components/displayText";
 import ButtonWithIcon from "../../custom/buttonWithIcon";
@@ -38,10 +38,10 @@ const TaskOverview: React.FC = () => {
       <Head>
         <TitleHeading />
         <DisplayText size={1}>
-          {conevrtTimeToString(task.data.timeSpend)} spend on task so far
+          {convertTimeToString(task.data.timeSpend)} spend on task so far
         </DisplayText>
         <DisplayText size={1} margin="0 0 0.5rem 0">
-          expected {conevrtTimeToString(task.data.timeExpected)}
+          expected {convertTimeToString(task.data.timeExpected)}
         </DisplayText>
         <ButtonWithIcon
           src={Clock}

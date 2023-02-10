@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { GoTo, Favorites, TaskList, Clock } from "../../../utils/icons";
 import { ProjectsData } from "../../../../API/getUserData";
 import { useNavigate } from "react-router-dom";
-import { conevrtTimeToString } from "../../../utils/timeConverters";
+import { convertTimeToString } from "../../../utils/timeConverters";
 import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
 interface ProjectCardProps {
@@ -63,7 +63,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           textColor={textColorLight}
         >
           <DisplayIcon src={Clock} alt=""></DisplayIcon>
-          <InfoBoxValue>{conevrtTimeToString(totalTimeOnTask)}</InfoBoxValue>
+          <InfoBoxValue>{convertTimeToString(totalTimeOnTask)}</InfoBoxValue>
         </InfoBox>
       </InfoConteiner>
       <Name wrapWord={data.name.length > 20}>{data.name}</Name>
@@ -103,7 +103,7 @@ const ComponentBody = styled.div<{ hue: number; bodyTone: string }>`
 `;
 const InfoConteiner = styled.div`
   width: 25%;
-  margin-left: 2%;
+  margin-inline: 2%;
   margin-block: auto;
 `;
 const InfoBox = styled.div<{ hue: number; tone: string; textColor: string }>`

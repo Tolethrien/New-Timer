@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import styled from "styled-components";
 import useTheme from "../hooks/useTheme";
 interface OptionBarProps {
@@ -6,13 +5,17 @@ interface OptionBarProps {
 }
 const OptionBar: React.FC<OptionBarProps> = ({ children }) => {
   const {
-    getColor: { itemCardColor },
+    getColor: { itemCardColor, staticShadowColor },
   } = useTheme();
 
-  return <ComponentBody bodyColor={itemCardColor}>{children}</ComponentBody>;
+  return (
+    <ComponentBody bodyColor={itemCardColor} shadowColor={staticShadowColor}>
+      {children}
+    </ComponentBody>
+  );
 };
 export default OptionBar;
-const ComponentBody = styled.div<{ bodyColor: string }>`
+const ComponentBody = styled.div<{ bodyColor: string; shadowColor: string }>`
   display: flex;
   align-items: center;
   padding: 0.5rem 0.7rem;
@@ -20,5 +23,5 @@ const ComponentBody = styled.div<{ bodyColor: string }>`
   background-color: ${({ bodyColor }) => bodyColor};
   border-radius: 5px;
   backdrop-filter: blur(20px);
-  box-shadow: 2px 2px 4px 1px hsla(0, 0%, 0%, 0.25);
+  box-shadow: ${({ shadowColor }) => `2px 2px 4px 1px ${shadowColor}`};
 `;

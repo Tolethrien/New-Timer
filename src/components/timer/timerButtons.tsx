@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import styled from "styled-components";
 import useClock from "../hooks/useClock";
 import useTheme from "../hooks/useTheme";
@@ -13,7 +12,7 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
   const { playPauseClock, stopClock, onComplete, taskInProgress } = useClock();
 
   const {
-    getColor: { itemCardColor, buttonColor, iconColor, shadowColor },
+    getColor: { itemCardColor, buttonColor, iconColor, dynamicShadowColor },
   } = useTheme();
   return (
     <ComponentBody
@@ -24,7 +23,7 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
         <Button
           bodyColor={buttonColor}
           iconColor={iconColor}
-          shadowColor={shadowColor}
+          shadowColor={dynamicShadowColor}
           img={Play}
           onClick={() => (playPauseClock(), vibrate("short"))}
         ></Button>
@@ -34,7 +33,7 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
         <Button
           bodyColor={buttonColor}
           iconColor={iconColor}
-          shadowColor={shadowColor}
+          shadowColor={dynamicShadowColor}
           img={Stop}
           onClick={() => (stopClock(), vibrate("short"))}
         ></Button>
@@ -44,7 +43,7 @@ const TimerButtons: React.FC<TimerButtonsProps> = ({
         <Button
           bodyColor={buttonColor}
           iconColor={iconColor}
-          shadowColor={shadowColor}
+          shadowColor={dynamicShadowColor}
           disabled={taskInProgress === undefined ? true : false}
           img={Done}
           onClick={() => (onComplete(), vibrate("short"))}

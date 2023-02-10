@@ -8,7 +8,12 @@ interface HeadProps {
 }
 const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
   const {
-    getColor: { appColorPrimary, appColorSecondary, borderColor, shadowColor },
+    getColor: {
+      appColorPrimary,
+      appColorSecondary,
+      borderColor,
+      dynamicShadowColor,
+    },
   } = useTheme();
   const currentUser = useUserAuth();
   const componentColor = currentUser ? appColorPrimary : appColorSecondary;
@@ -19,7 +24,7 @@ const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
     <ComponentBody
       bodyColor={componentColor}
       borderColor={borderColor}
-      shadowColor={shadowColor}
+      shadowColor={dynamicShadowColor}
       as={extendedStyle}
     >
       {children}

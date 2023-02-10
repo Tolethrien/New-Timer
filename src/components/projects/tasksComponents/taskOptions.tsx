@@ -16,7 +16,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
   const {
     getColor: {
       itemCardColor,
-      shadowColor,
+      dynamicShadowColor,
       taskOptionToggleColor,
       taskOptionsForegroundColor,
     },
@@ -36,7 +36,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
 
   return (
     <ComponentBody>
-      <Option bodyColor={itemCardColor} shadowColor={shadowColor}>
+      <Option bodyColor={itemCardColor} shadowColor={dynamicShadowColor}>
         <DisplayText size={1.2} weight={500}>
           Estimated Time
         </DisplayText>
@@ -45,7 +45,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
           expectedTime={task.data.timeExpected}
         />
       </Option>
-      <Option bodyColor={itemCardColor} shadowColor={shadowColor}>
+      <Option bodyColor={itemCardColor} shadowColor={dynamicShadowColor}>
         <DisplayText size={1.2} weight={500}>
           Task Status
         </DisplayText>
@@ -59,7 +59,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
           ></ButtonAsIcon>
         </CycleStatus>
       </Option>
-      <Option bodyColor={itemCardColor} shadowColor={shadowColor}>
+      <Option bodyColor={itemCardColor} shadowColor={dynamicShadowColor}>
         <DisplayText size={1.2} weight={500}>
           Show Checkboxes
         </DisplayText>
@@ -70,7 +70,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
           taskOptionsForegroundColor={taskOptionsForegroundColor}
         />
       </Option>
-      <Option bodyColor={itemCardColor} shadowColor={shadowColor}>
+      <Option bodyColor={itemCardColor} shadowColor={dynamicShadowColor}>
         <DisplayText size={1.2} weight={500}>
           Show Description
         </DisplayText>

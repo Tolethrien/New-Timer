@@ -1,5 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
+export const MAX_WIDTH_APP: number = 420;
+
 const GlobalStyle = createGlobalStyle`
  *{
    font-family: "Roboto";
@@ -24,15 +26,13 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     background-color: #312c2c;
   }
- html{
-  font-size: 16px;
- }
+ 
   dialog{
     box-sizing: border-box;
-    width: clamp(235px,350px,420px);
+    width: clamp(230px,350px,${MAX_WIDTH_APP}px);
     ::backdrop {
     backdrop-filter: blur(3px);
-    max-width: 420px;
+    max-width: ${MAX_WIDTH_APP}px;
     margin-inline: auto;
     }
   }
