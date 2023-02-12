@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { convertTimeToString } from "../../../utils/timeConverters";
 import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
+import DisplayText from "../../../styled/components/displayText";
 interface ProjectCardProps {
   data: ProjectsData;
 }
@@ -66,14 +67,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           <InfoBoxValue>{convertTimeToString(totalTimeOnTask)}</InfoBoxValue>
         </InfoBox>
       </InfoConteiner>
-      <Name wrapWord={data.name.length > 20}>{data.name}</Name>
-      <ProgressBar
-        value={percentOfComplete}
-        max="100"
-        hue={data.color}
-        tone={projectCardProgressBarColorTone}
-        valueBarColor={projectCardProgressBarValueColor}
-      ></ProgressBar>
+      <DataBox>
+        <DisplayText
+          as={Name}
+          wrapWord={data.name.length > 20}
+          size={1.6}
+          weight={700}
+        >
+          {data.name}
+        </DisplayText>
+        <ProgressBar
+          value={percentOfComplete}
+          max="100"
+          hue={data.color}
+          tone={projectCardProgressBarColorTone}
+          valueBarColor={projectCardProgressBarValueColor}
+        ></ProgressBar>
+      </DataBox>
       <DisplayIcon
         src={GoTo}
         alt=""
@@ -102,7 +112,7 @@ const ComponentBody = styled.div<{ hue: number; bodyTone: string }>`
   cursor: pointer;
 `;
 const InfoConteiner = styled.div`
-  width: 25%;
+  width: fit-content;
   margin-inline: 2%;
   margin-block: auto;
 `;
@@ -122,6 +132,11 @@ const InfoBoxValue = styled.p`
   font-weight: 500;
   font-size: 1rem;
 `;
+const DataBox = styled.div`
+  position: relative;
+  flex-grow: 1;
+`;
+
 const ProgressBar = styled.progress<{
   hue: number;
   tone: string;
@@ -129,8 +144,8 @@ const ProgressBar = styled.progress<{
 }>`
   position: absolute;
   bottom: 0.3rem;
-  left: 27%;
-  width: 68%;
+  left: 0%;
+  width: 95%;
   height: 0.5rem;
   -webkit-appearance: none;
   ::-webkit-progress-bar {
@@ -142,12 +157,11 @@ const ProgressBar = styled.progress<{
     border-radius: 5px;
   }
 `;
-const Name = styled.div<{ wrapWord: boolean }>`
+const Name = styled.p`
   display: flex;
-  align-items: ${({ wrapWord }) => (wrapWord ? "flex-start" : "center")};
-  padding-top: 0.1rem;
-  padding-bottom: 0.8rem;
-  width: 60%;
-  font-size: 1.6rem;
-  font-weight: 700;
+  align-items: center;
+  height: calc(100% - 0.8rem);
+  width: 90%;
+  padding-block: 0.5rem;
+  box-sizing: border-box;
 `;

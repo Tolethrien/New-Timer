@@ -5,9 +5,15 @@ import useTheme from "../hooks/useTheme";
 interface HeadProps {
   children?: React.ReactNode;
   extendedStyle?: StyledComponent<"div", any, {}, never>;
+  overrideColor?: string;
 }
-const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
+const Head: React.FC<HeadProps> = ({
+  children,
+  extendedStyle,
+  overrideColor = "",
+}) => {
   const {
+    coloredHeaders,
     getColor: {
       appColorPrimary,
       appColorSecondary,
@@ -16,7 +22,11 @@ const Head: React.FC<HeadProps> = ({ children, extendedStyle }) => {
     },
   } = useTheme();
   const currentUser = useUserAuth();
-  const componentColor = currentUser ? appColorPrimary : appColorSecondary;
+  const setColor =
+    overrideColor !== "" && coloredHeaders !== "Mono"
+      ? overrideColor
+      : appColorPrimary;
+  const componentColor = currentUser ? setColor : appColorSecondary;
   document
     .querySelector('meta[name="theme-color"]')!
     .setAttribute("content", componentColor);

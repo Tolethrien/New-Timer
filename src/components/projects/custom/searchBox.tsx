@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import styled from "styled-components";
 import DisplayIcon from "../../custom/displayIcon";
+import useTheme from "../../hooks/useTheme";
 import { Loop } from "../../utils/icons";
 
 interface SearchBoxProps {
@@ -13,12 +14,16 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   value,
   placeholder = "search...",
 }) => {
+  const {
+    getColor: { textColorLight },
+  } = useTheme();
   return (
     <ComponentBody>
       <DisplayIcon src={Loop} alt="search Icon"></DisplayIcon>
       <SearchBoxInput
         placeholder={placeholder}
         value={value}
+        placeholderTextColor={textColorLight}
         onChange={(event) => onChange(event.target.value)}
       ></SearchBoxInput>
     </ComponentBody>
@@ -37,7 +42,7 @@ const ComponentBody = styled.div`
   max-width: 50%;
   height: 100%;
 `;
-const SearchBoxInput = styled.input`
+const SearchBoxInput = styled.input<{ placeholderTextColor: string }>`
   background-color: transparent;
   border: none;
   width: 100%;
@@ -52,5 +57,6 @@ const SearchBoxInput = styled.input`
   ::placeholder {
     color: inherit;
     font-weight: 600;
+    color: ${({ placeholderTextColor }) => placeholderTextColor};
   }
 `;

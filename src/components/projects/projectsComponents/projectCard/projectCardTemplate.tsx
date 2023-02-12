@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { useRef, useEffect, useContext, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { TaskList, Clock } from "../../../utils/icons";
 import { addProject } from "../../../../API/handleDocs";
 import { randomKey } from "../../../utils/randomKey";
 import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
+import { colors } from "../../../../API/utils";
 interface ProjectCardProps {
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;
   setTemplateProject: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,7 +27,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const [projectName, setProjectName] = useState("");
 
   const icons = [TaskList, Clock, Clock];
-  const hue = 100;
 
   const handleClickOutside = (e: any) => {
     if (
@@ -37,9 +37,16 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     }
   };
 
+  const projectColor = useMemo(() => {
+    return Object.values(colors)[
+      Math.floor(Math.random() * Object.values(colors).length)
+    ];
+  }, []);
+
   const addNewProject = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (projectName.length !== 0) addProject(projectName);
+    if (projectName.length !== 0)
+      addProject({ color: projectColor, name: projectName });
     setTemplateProject(false);
   };
 
@@ -49,16 +56,23 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   }, []);
 
   return (
-    <ComponentBody hue={100} ref={componentRef} bodyTone={projectCardColorTone}>
+    <ComponentBody
+      hue={projectColor}
+      ref={componentRef}
+      bodyTone={projectCardColorTone}
+    >
       <InfoConteiner>
         {icons.map((e) => (
           <InfoBox
-            hue={hue}
+            hue={projectColor}
             tone={projectCardSecondaryColorTone}
             key={randomKey()}
           >
             <DisplayIcon src={e} alt=""></DisplayIcon>
-            <InfoBoxValue hue={hue} bodyColor={textColorLight}></InfoBoxValue>
+            <InfoBoxValue
+              hue={projectColor}
+              bodyColor={textColorLight}
+            ></InfoBoxValue>
           </InfoBox>
         ))}
       </InfoConteiner>
@@ -73,7 +87,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <ProgressBar
         value={50}
         max="100"
-        hue={100}
+        hue={projectColor}
         tone={projectCardProgressBarColorTone}
         valueBarColor={projectCardProgressBarValueColor}
       ></ProgressBar>

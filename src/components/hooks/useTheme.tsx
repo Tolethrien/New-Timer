@@ -4,17 +4,19 @@ import { APP_COLORS } from "../styled/colors/appColors";
 import { APP_BACKGROUNDS } from "../styled/backgrounds/appBackgrounds";
 
 const useTheme = () => {
-  const { theme, switchTheme, switchCategoryColor, coloredCategory } =
-    useContext(themeContext);
+  const {
+    dispatch,
+    themeState: { coloredCategory, theme, coloredHeaders },
+  } = useContext(themeContext);
   const getColor = APP_COLORS[theme];
   const getBackground = APP_BACKGROUNDS[theme];
   return {
     theme,
-    switchTheme,
+    dispatch,
     getColor,
     getBackground,
-    switchCategoryColor,
     coloredCategory,
+    coloredHeaders,
   };
 };
 export default useTheme;

@@ -38,13 +38,12 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
   const { id } = useParams();
   const project = useDataFinder<ProjectsData>(id)!;
   const {
-    theme,
     getColor: { projectCardColorTone, showMoreButtonColor },
   } = useTheme();
-
   const updateColor = (e: number) => {
     updateProject(id!, { color: e });
   };
+  const headColorBasedOnProjectColor = `hsla(${project.data.color}, 27%, ${projectCardColorTone}, 1)`;
   const TasksInfo = tasksCompletion();
 
   function tasksCompletion() {
@@ -64,7 +63,7 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
     return data;
   }
   return (
-    <Head>
+    <Head overrideColor={headColorBasedOnProjectColor}>
       <TitleHeading />
       {showAll && (
         <>
@@ -102,7 +101,6 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
                   current={e === project.data.color}
                   hue={e}
                   projectCardColorTone={projectCardColorTone}
-                  displayMode={theme}
                   key={randomKey()}
                   onClick={() => updateColor(e)}
                 ></ColorToPick>
@@ -149,7 +147,6 @@ const ColorPicker = styled.div`
 const ColorToPick = styled.div<{
   current: boolean;
   hue: number;
-  displayMode: string;
   projectCardColorTone: string;
 }>`
   width: 1.3rem;

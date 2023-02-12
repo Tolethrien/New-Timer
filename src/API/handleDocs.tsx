@@ -12,22 +12,24 @@ import { ProjectsData, TasksData } from "./getUserData";
 import {
   allProjectsRef,
   allTasksRef,
-  colors,
   projectRef,
   ProjectStatuses,
   taskRef,
 } from "./utils";
 
 //===========PROJECTS===========================
-export const addProject = (name: string) => {
+export const addProject = ({
+  name,
+  color,
+}: {
+  name: string;
+  color: number;
+}) => {
   const reference = allProjectsRef();
   setDoc(reference, {
     name: name,
     createdAt: serverTimestamp(),
-    color:
-      Object.values(colors)[
-        Math.floor(Math.random() * Object.values(colors).length)
-      ],
+    color: color,
     status: "Active",
   });
 };

@@ -6,9 +6,11 @@ import useClock from "../hooks/useClock";
 import useTheme from "../hooks/useTheme";
 import { Done, Play, Stop } from "../utils/icons";
 import { vibrate } from "../utils/vibrate";
-interface TimerButtonsProps {}
+interface TimerButtonsProps {
+  showCheckboxes: boolean;
+}
 
-const ClockButtons: React.FC<TimerButtonsProps> = ({}) => {
+const ClockButtons: React.FC<TimerButtonsProps> = ({ showCheckboxes }) => {
   const {
     getColor: { itemCardColor, buttonColor, iconColor, dynamicShadowColor },
   } = useTheme();
@@ -28,6 +30,7 @@ const ClockButtons: React.FC<TimerButtonsProps> = ({}) => {
         payload: { startDate: Date.now() - (pauseDate - startDate) },
       });
     }
+    vibrate("short");
   }, [isRunning, taskInProgress]);
 
   const stopClock = useCallback(() => {
@@ -35,34 +38,36 @@ const ClockButtons: React.FC<TimerButtonsProps> = ({}) => {
       updateDB();
     }
     dispatch({ type: "stop" });
+    vibrate("short");
   }, [taskInProgress, isRunning]);
 
   const updateDB = () => {
-    updateTask(taskInProgress?.task!, { timeSpend: Math.floor(setTimeToDB()) });
+    updateTask(taskInProgress?.task!, { timeSpend: setTimeToDB() });
   };
   const setTimeToDB = (): number => {
-    if (isRunning) return (Date.now() - startDate) / 1000;
-    return (pauseDate - startDate) / 1000;
+    if (isRunning) return Math.floor((Date.now() - startDate) / 1000);
+    return Math.floor((pauseDate - startDate) / 1000);
   };
 
   const onComplete = useCallback(() => {
     updateTask(taskInProgress?.task!, {
-      timeSpend: Math.floor(setTimeToDB()),
+      timeSpend: setTimeToDB(),
       status: "Done",
     });
     dispatch({ type: "complete" });
+    vibrate("short");
     navigate(`/projects/project/${taskInProgress?.project}`);
   }, [taskInProgress, isRunning]);
 
   return (
-    <ComponentBody showCheckboxComponent={false} bodyColor={itemCardColor}>
+    <ComponentBody showCheckboxes={showCheckboxes} bodyColor={itemCardColor}>
       <ButtonWithDescription>
         <Button
           bodyColor={buttonColor}
           iconColor={iconColor}
           shadowColor={dynamicShadowColor}
           img={Play}
-          onClick={() => (playPauseClock(), vibrate("short"))}
+          onClick={playPauseClock}
         ></Button>
         Play/Pause
       </ButtonWithDescription>
@@ -72,7 +77,7 @@ const ClockButtons: React.FC<TimerButtonsProps> = ({}) => {
           iconColor={iconColor}
           shadowColor={dynamicShadowColor}
           img={Stop}
-          onClick={() => (stopClock(), vibrate("short"))}
+          onClick={stopClock}
         ></Button>
         Stop
       </ButtonWithDescription>
@@ -83,7 +88,7 @@ const ClockButtons: React.FC<TimerButtonsProps> = ({}) => {
           shadowColor={dynamicShadowColor}
           disabled={taskInProgress === undefined ? true : false}
           img={Done}
-          onClick={() => (onComplete(), vibrate("short"))}
+          onClick={onComplete}
         ></Button>
         Complete
       </ButtonWithDescription>
@@ -92,7 +97,7 @@ const ClockButtons: React.FC<TimerButtonsProps> = ({}) => {
 };
 export default ClockButtons;
 const ComponentBody = styled.div<{
-  showCheckboxComponent?: boolean;
+  showCheckboxes?: boolean;
   bodyColor: string;
 }>`
   display: flex;
@@ -102,8 +107,8 @@ const ComponentBody = styled.div<{
   color: inherit;
   border-radius: 10px;
   padding: 1rem;
-  ${({ showCheckboxComponent }) =>
-    showCheckboxComponent
+  ${({ showCheckboxes }) =>
+    showCheckboxes
       ? `
       flex-direction: column;
       gap: 0.5rem;`

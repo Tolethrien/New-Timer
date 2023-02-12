@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import useTheme from "../hooks/useTheme";
 import { shakeX } from "../styled/animations/shakeX";
+import { randomKey } from "../utils/randomKey";
 interface UserInputProps {
   isError?: boolean;
   reference?: React.MutableRefObject<any>;
@@ -9,6 +10,7 @@ interface UserInputProps {
   placeholder?: string;
   noBlur?: boolean;
   noLabel?: boolean;
+  forceRerender?: boolean;
 }
 const UserInput: React.FC<UserInputProps> = ({
   isError = false,
@@ -23,7 +25,7 @@ const UserInput: React.FC<UserInputProps> = ({
     getColor: { textError },
   } = useTheme();
   return (
-    <InputLabel>
+    <InputLabel key={randomKey()}>
       {isError && !noLabel && (
         <LabelWarning noBlur={noBlur} textColor={textError}>
           {errorMsg}
@@ -42,9 +44,13 @@ const UserInput: React.FC<UserInputProps> = ({
 export default UserInput;
 const InputLabel = styled.label`
   display: "grid";
+  position: relative;
 `;
 const LabelWarning = styled.p<{ textColor: string; noBlur: boolean }>`
   color: ${({ textColor }) => textColor};
+  position: absolute;
+  top: -1.3rem;
+  left: 0;
   backdrop-filter: ${({ noBlur }) => !noBlur && `blur(12px)`};
   width: fit-content;
   font-weight: 500;

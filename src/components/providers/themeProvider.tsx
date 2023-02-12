@@ -1,51 +1,60 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
+import {
+  themeDispatch,
+  themeReducer,
+  ThemeState,
+} from "../reducers/themeReducer";
 interface ThemeProviderProps {
   children: React.ReactNode;
 }
 interface provider {
-  theme: ThemeMode;
-  coloredCategory: string;
-  switchTheme: () => void;
-  switchCategoryColor: () => void;
+  themeState: ThemeState;
+  dispatch: React.Dispatch<themeDispatch>;
 }
-export type ThemeMode = "light" | "dark";
+export type ThemeMode = "Light" | "Dark";
+
+// IMPORTANT!!!
+// set new value if you making any theme changes
+// to clear user localstorage
+const LOCAL_STORAGE_CONTROL_VERSION = "0.01a";
 
 export const themeContext = createContext({} as provider);
 
+const localStorageControlVersionCheck = () => {
+  //check control version and clear local storage when diffrent
+  if (
+    localStorage.getItem("themeProvider") &&
+    JSON.parse(localStorage.getItem("themeProvider")!)[
+      "localStorageControlVersion"
+    ] !== LOCAL_STORAGE_CONTROL_VERSION
+  )
+    localStorage.removeItem("themeProvider");
+  // if localStorage is empty create new instance of theme
+  if (!localStorage.getItem("themeProvider"))
+    localStorage.setItem(
+      "themeProvider",
+      JSON.stringify({
+        theme: "Light",
+        coloredCategory: "Mono",
+        coloredHeaders: "Mono",
+        localStorageControlVersion: LOCAL_STORAGE_CONTROL_VERSION,
+      })
+    );
+};
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  if (!localStorage.getItem("mode")) localStorage.setItem("mode", "light");
-  if (!localStorage.getItem("categoryColor"))
-    localStorage.setItem("categoryColor", "Mono");
+  //handle localStorage
+  localStorageControlVersionCheck();
 
-  const [theme, setTheme] = useState<ThemeMode>(
-    localStorage.getItem("mode") as ThemeMode
-  );
-  const [coloredCategory, setcoloredCategory] = useState(
-    localStorage.getItem("categoryColor") as string
-  );
+  //set reducer based on LS
+  const [themeState, dispatch] = useReducer(themeReducer, {
+    ...JSON.parse(localStorage.getItem("themeProvider")!),
+    theme: JSON.parse(localStorage.getItem("themeProvider")!)[
+      "theme"
+    ] as ThemeMode,
+  });
 
-  const switchTheme = () => {
-    if (theme === "light") {
-      localStorage.setItem("mode", "dark");
-      setTheme("dark");
-    } else if (theme === "dark") {
-      localStorage.setItem("mode", "light");
-      setTheme("light");
-    }
-  };
-  const switchCategoryColor = () => {
-    if (coloredCategory === "Mono") {
-      localStorage.setItem("categoryColor", "Colored");
-      setcoloredCategory("Colored");
-    } else if (coloredCategory === "Colored") {
-      localStorage.setItem("categoryColor", "Mono");
-      setcoloredCategory("Mono");
-    }
-  };
   return (
-    <themeContext.Provider
-      value={{ theme, switchTheme, switchCategoryColor, coloredCategory }}
-    >
+    <themeContext.Provider value={{ themeState, dispatch }}>
       {children}
     </themeContext.Provider>
   );

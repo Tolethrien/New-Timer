@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import useDataFinder from "../../hooks/useDataFinder";
-import { TasksData } from "../../../API/getUserData";
+import { ProjectsData, TasksData } from "../../../API/getUserData";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { useContext } from "react";
-import { clockContext } from "../../providers/clockProvider";
 import { Clock } from "../../utils/icons";
 import Category from "../../custom/category";
 import TaskDescriptionBox from "./taskDescriptionBox";
@@ -19,9 +17,19 @@ import useClock from "../../hooks/useClock";
 const TaskOverview: React.FC = () => {
   const { id } = useParams();
   const task = useDataFinder<TasksData>(id);
+  const {
+    data: { color },
+  } = useDataFinder<ProjectsData>(task?.data.projectID) ?? {
+    data: { color: 1 },
+  };
   const navigate = useNavigate();
   const {
-    getColor: { categoryActive, categoryDone, categoryOnHold },
+    getColor: {
+      categoryActive,
+      categoryDone,
+      categoryOnHold,
+      projectCardColorTone,
+    },
   } = useTheme();
   const { setClock } = useClock();
   const playTask = () => {
@@ -32,11 +40,12 @@ const TaskOverview: React.FC = () => {
     });
     navigate(`/timer`);
   };
+  const headColorBasedOnProjectColor = `hsla(${color}, 27%, ${projectCardColorTone}, 1)`;
 
   if (!task) return <Navigate to="/projects" replace />;
   return (
     <>
-      <Head>
+      <Head overrideColor={headColorBasedOnProjectColor}>
         <TitleHeading />
         <DisplayText size={1}>
           {convertTimeToString(task.data.timeSpend)} spend on task so far

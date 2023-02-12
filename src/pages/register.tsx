@@ -9,29 +9,37 @@ import { RegisterNewUser } from "../API/userAuthentication";
 import { useNavigate } from "react-router-dom";
 import UserInput from "../components/custom/userInput";
 import ButtonAsIcon from "../components/custom/buttonAsIcon";
-interface RegisterProps {}
-const Register: React.FC<RegisterProps> = (props) => {
+const Register: React.FC = () => {
   const nameRef = useRef<HTMLInputElement | null>(null);
   const mailRef = useRef<HTMLInputElement>(null);
   const passRef = useRef<HTMLInputElement>(null);
   const repeatRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const [warning, setWarning] = useState("");
+  const [, setRerenderAnim] = useState(false);
+
   const handleRegister = () => {
-    if (nameRef.current?.value === "") return setWarning("name");
-    if (!mailRef.current?.value.includes("@")) return setWarning("email");
-    if (
+    if (nameRef.current?.value === "") {
+      setRerenderAnim((prev) => !prev);
+      return setWarning("name");
+    } else if (!mailRef.current?.value.includes("@")) {
+      setRerenderAnim((prev) => !prev);
+      return setWarning("email");
+    } else if (
       passRef.current?.value === "" ||
       repeatRef.current?.value === "" ||
       passRef.current?.value !== repeatRef.current?.value
-    )
+    ) {
+      setRerenderAnim((prev) => !prev);
       return setWarning("repeat");
+    }
     RegisterNewUser(
       mailRef.current?.value!,
       passRef.current?.value!,
       nameRef.current?.value!
     );
   };
+
   return (
     <PageWrap>
       <Head>
@@ -114,7 +122,7 @@ const UserForm = styled.form`
   flex-direction: column;
   align-items: center;
   margin-block: 25%;
-  gap: 1rem;
+  gap: 1.5rem;
 `;
 
 const ExtendedText = styled.p`

@@ -5,6 +5,7 @@ import { Clock, GoTo } from "../../../utils/icons";
 import { convertTimeToString } from "../../../utils/timeConverters";
 import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
+import DisplayText from "../../../styled/components/displayText";
 const TaskCard: React.FC<{
   task: TasksData;
 }> = ({ task }) => {
@@ -13,16 +14,11 @@ const TaskCard: React.FC<{
   } = useTheme();
   const navigate = useNavigate();
 
-  const tascDesc = () => {
-    if (task && !task.data.desc) return "";
-    return task.data.desc.length > 55
-      ? task.data.desc.slice(0, 55) + "..."
-      : task.data.desc;
-  };
   return (
     <ComponentBody
       onClick={() => navigate(`../task/${task.id}`)}
       bodyColor={itemCardColor}
+      noDesc={!task.data.showDescription}
     >
       <TopBar>
         <InfoBox bodyColor={taskTemplateColor}>
@@ -31,25 +27,35 @@ const TaskCard: React.FC<{
             {convertTimeToString(task!.data.timeSpend)}
           </InfoBoxValue>
         </InfoBox>
-        <Name>{task.data.name}</Name>
-        <DisplayIcon src={GoTo} alt=""></DisplayIcon>
+        <DisplayText as={Name} size={1.3} weight={600}>
+          {task.data.name}
+        </DisplayText>
+        <DisplayIcon
+          absolute={{ x: "right:1%", y: "top:5%" }}
+          src={GoTo}
+          alt=""
+        ></DisplayIcon>
       </TopBar>
-      {task.data.showDescription && <Description>{tascDesc()}</Description>}
+      {task.data.showDescription && (
+        <DescBox>
+          <DisplayText as={Description} weight={500}>
+            {task.data.desc}
+          </DisplayText>
+        </DescBox>
+      )}
     </ComponentBody>
   );
 };
 export default TaskCard;
 
-const ComponentBody = styled.div<{ bodyColor: string }>`
+const ComponentBody = styled.div<{ bodyColor: string; noDesc: boolean }>`
   background-color: ${({ bodyColor }) => bodyColor};
-
   backdrop-filter: blur(20px);
-
   width: 100%;
   height: fit-content;
   margin-bottom: 0.1rem;
   border-radius: 5px;
-  padding-block: 1%;
+  padding-block: ${({ noDesc }) => (noDesc ? "2.5%" : "1%")};
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
   cursor: pointer;
 `;
@@ -76,16 +82,18 @@ const InfoBoxValue = styled.p`
 `;
 
 const Name = styled.p`
-  flex-grow: 1;
-  padding-left: 2%;
-  font-size: 1.3rem;
-  font-weight: 600;
+  padding-inline: 2%;
 `;
-
-const Description = styled.p`
-  width: 80%;
-  min-height: 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
+const DescBox = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
   margin-left: 1%;
+  min-height: 1rem;
+`;
+const Description = styled.p`
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled, { StyledComponent } from "styled-components";
 import useTheme from "../hooks/useTheme";
 import { Collapse } from "../utils/icons";
@@ -8,7 +8,9 @@ const Category: React.FC<{
   children?: React.ReactNode;
   extendedStyle?: StyledComponent<"div", any, {}, never>;
 }> = ({ name, children, extendedStyle, overrideColor }) => {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(
+    (children as []).length === 0
+  );
   const divChildrenRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -17,6 +19,11 @@ const Category: React.FC<{
   } = useTheme();
   const isColored =
     overrideColor && coloredCategory !== "Mono" ? overrideColor : categoryColor;
+
+  useEffect(() => {
+    if ((children as []).length === 0) setIsCollapsed(true);
+  }, [children]);
+
   return (
     <ComponentBody bodyColor={isColored} as={extendedStyle}>
       <TopBar bodyColor={isColored}>

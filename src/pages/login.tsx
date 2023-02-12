@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { login } from "../API/userAuthentication";
 import { Logout } from "../components/utils/icons";
 import { useNavigate } from "react-router-dom";
@@ -16,11 +16,15 @@ const Login: React.FC = () => {
 
   const { theme } = useTheme();
   const navigate = useNavigate();
+  const [errored, setErrored] = useState(false);
+  const [, setRerenderAnim] = useState(false);
 
   const handleLogin = () => {
-    login(mailRef.current!.value, passRef.current!.value);
+    login(mailRef.current!.value, passRef.current!.value, () => {
+      setErrored(true);
+      setRerenderAnim((prev) => !prev);
+    });
   };
-
   const redirectToRegister = () => {
     navigate("/register", { replace: true });
   };
@@ -42,11 +46,15 @@ const Login: React.FC = () => {
         </DisplayText>
         <UserForm onSubmit={(e) => e.preventDefault()}>
           <UserInput
+            errorMsg="Wrong email..."
+            isError={errored}
             inputType="email"
             reference={mailRef}
             placeholder={"email..."}
           />
           <UserInput
+            errorMsg="...or password"
+            isError={errored}
             inputType="password"
             reference={passRef}
             placeholder={"password..."}
@@ -54,7 +62,7 @@ const Login: React.FC = () => {
           <ButtonWithIcon
             src={Logout}
             alt={""}
-            onClick={handleLogin}
+            onClick={() => handleLogin()}
             extendedStyle={ExtendedLoginButton}
             text={"Login"}
           ></ButtonWithIcon>
@@ -91,7 +99,7 @@ const UserForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
 `;
 
 const CreateAcc = styled.div`
@@ -102,11 +110,11 @@ const CreateAcc = styled.div`
 `;
 const DarkModeBackground = styled.div<{ bodyColor: string }>`
   background-color: ${({ bodyColor }) =>
-    bodyColor === "light" ? `transparent` : `hsla(0, 0%, 0%, 0.4)`};
+    bodyColor === "Light" ? `transparent` : `hsla(0, 0%, 0%, 0.4)`};
   white-space: nowrap;
   border-radius: 5px;
   padding: 5% 8%;
-  backdrop-filter: ${({ bodyColor }) => bodyColor === "dark" && "blur(2px)"};
+  backdrop-filter: ${({ bodyColor }) => bodyColor === "Dark" && "blur(2px)"};
 `;
 const ExtendedText = styled.p`
   text-align: center;

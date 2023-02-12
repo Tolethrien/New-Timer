@@ -6,7 +6,7 @@ interface ButtonWithIconProps {
   alt: string;
   onClick: (
     event?: React.MouseEvent<any>
-  ) => void | React.Dispatch<React.SetStateAction<any>>;
+  ) => void | React.Dispatch<React.SetStateAction<any>> | Promise<void>;
   text: string;
   noShadow?: boolean;
   reference?: React.MutableRefObject<any>;
@@ -55,7 +55,7 @@ const ComponentBody = styled.button<{
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  padding: 0.2rem 0.6rem;
+  padding: 0.4rem 0.6rem;
   border-radius: 5px;
   border: ${({ borderColor }) => `1px solid ${borderColor}`};
   background-color: ${({ buttonWithIconColor }) => buttonWithIconColor};

@@ -14,7 +14,7 @@ const Options: React.FC = () => {
   return (
     <PageWrap>
       <Head>
-        <DisplayText>Settings</DisplayText>
+        <DisplayText size={1.5}>Settings</DisplayText>
       </Head>
       <Body>
         <Category name="Account">
@@ -32,6 +32,7 @@ const Options: React.FC = () => {
 };
 export default Options;
 const Body = styled.div`
-  margin-top: 1rem;
+  padding-top: 1rem;
   width: 100%;
+  overflow-y: scroll;
 `;

@@ -9,6 +9,6 @@ type BackgroundKeys = { [Background in BackgroundList]: string };
 type BackgroundMap = { [P in ThemeMode]: BackgroundKeys };
 
 export const APP_BACKGROUNDS: BackgroundMap = {
-  light: { appBackground: mainLight, loginBackground: loginLight },
-  dark: { appBackground: mainDark, loginBackground: loginDark },
+  Light: { appBackground: mainLight, loginBackground: loginLight },
+  Dark: { appBackground: mainDark, loginBackground: loginDark },
 };

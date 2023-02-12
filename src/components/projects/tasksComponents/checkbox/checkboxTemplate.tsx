@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addNewCheckbox } from "../../../../API/handleDocs";
@@ -19,7 +19,6 @@ const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
     getColor: { itemCardColor, iconColor },
   } = useTheme();
   const taskId = useParams().id;
-
   const handleClickOutside = (e: any) => {
     if (
       !componentRef.current?.contains(e.target) &&

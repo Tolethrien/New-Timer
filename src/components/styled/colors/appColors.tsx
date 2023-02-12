@@ -39,7 +39,7 @@ type ColorList =
 type ColorKeys = { [color in ColorList]: string };
 type ColorMap = { [Theme in ThemeMode]: ColorKeys };
 export const APP_COLORS: ColorMap = {
-  light: {
+  Light: {
     appColorPrimary: "hsla(40, 76%, 69%, 0.8)",
     appColorSecondary: "hsla(359, 70%, 79%, 0.8)",
     projectCardColorTone: "80%",
@@ -75,7 +75,7 @@ export const APP_COLORS: ColorMap = {
     clockGlowColor: "hsla(20, 100%, 50%,0.5)",
     clockBackgroundColor: "hsla(32, 86%, 83%, 0.5)",
   },
-  dark: {
+  Dark: {
     appColorPrimary: "hsla(261, 16%, 40%, 0.8)",
     appColorSecondary: "hsla(341, 26%, 22%, 0.8)",
     projectCardColorTone: "20%",

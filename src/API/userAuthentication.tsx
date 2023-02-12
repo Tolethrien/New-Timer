@@ -28,8 +28,14 @@ export const RegisterNewUser = async (
   await setDoc(projectRef, {});
 };
 
-export const login = async (email: string, password: string) => {
-  await signInWithEmailAndPassword(auth, email, password);
+export const login = async (
+  email: string,
+  password: string,
+  callback?: () => void
+) => {
+  await signInWithEmailAndPassword(auth, email, password).catch((e) =>
+    callback?.()
+  );
 };
 
 export const logout = async () => {
