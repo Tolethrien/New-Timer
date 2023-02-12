@@ -90,12 +90,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         size={[1.2, 1.2]}
         absolute={{ x: "top: 0.3rem", y: "right: 1%" }}
       ></DisplayIcon>
-      <DisplayIcon
+      {/* <DisplayIcon
         src={Favorites}
         alt=""
         size={[1.2, 1.2]}
         absolute={{ x: "top: 2rem", y: "right: 1%" }}
-      ></DisplayIcon>
+      ></DisplayIcon> */}
     </ComponentBody>
   );
 };

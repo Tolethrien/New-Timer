@@ -92,7 +92,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         valueBarColor={projectCardProgressBarValueColor}
       ></ProgressBar>
       <FakeIcon pos={[0.5, 1]} bodyColor={textColorLight}></FakeIcon>
-      <FakeIcon pos={[2.1, 1]} bodyColor={textColorLight}></FakeIcon>
+      {/* <FakeIcon pos={[2.1, 1]} bodyColor={textColorLight}></FakeIcon> */}
     </ComponentBody>
   );
 };
