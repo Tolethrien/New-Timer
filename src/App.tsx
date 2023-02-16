@@ -9,6 +9,11 @@ import useTheme from "./components/hooks/useTheme";
 import UserAuth from "./pages/userAuth";
 import MainBody from "./components/styled/components/mainBody";
 import useUserAuth from "./components/hooks/useUserAuth";
+import useIsOnline from "./components/hooks/useIsOnline";
+import styled from "styled-components";
+import ButtonAsIcon from "./components/custom/buttonAsIcon";
+import { Add } from "./components/utils/icons";
+import OfflineWarnings from "./components/custom/offlineWarning";
 
 function App() {
   const {
@@ -32,6 +37,7 @@ function App() {
         </ClockProvider>
       </UserDBProvider>
       <Footer />
+      <OfflineWarnings />
     </MainBody>
   );
 }

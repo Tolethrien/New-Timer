@@ -22,18 +22,16 @@ const Footer: React.FC = () => {
 
   const changeRoute = (value: WindowsTypes) => {
     if (value !== currentWindow) {
-      navigate(`/${value}`);
       vibrate("short");
+      setCurrentWindow(value);
+      navigate(`/${value}`);
     }
   };
 
   useEffect(() => {
-    if (
-      (route === "projects" || route === "timer" || route === "options") &&
-      route !== currentWindow
-    ) {
-      setCurrentWindow(route);
-    }
+    if (route === "timer" || route === "options") setCurrentWindow(route);
+    else if (route.includes("projects")) setCurrentWindow("projects");
+    // console.log(route.includes("projects"), currentWindow, route);
   }, [route]);
 
   return (

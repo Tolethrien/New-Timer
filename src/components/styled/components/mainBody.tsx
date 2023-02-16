@@ -7,6 +7,7 @@ const MainBody = styled.main<{
 }>`
   display: flex;
   flex-direction: column;
+  position: relative;
   max-width: ${MAX_WIDTH_APP}px;
   height: 100vh;
   margin-inline: auto;

@@ -44,7 +44,7 @@ const ClockButtons: React.FC<TimerButtonsProps> = ({ showCheckboxes }) => {
   const updateDB = () => {
     updateTask(taskInProgress?.task!, { timeSpend: setTimeToDB() });
   };
-  const setTimeToDB = (): number => {
+  const setTimeToDB = () => {
     if (isRunning) return Math.floor((Date.now() - startDate) / 1000);
     return Math.floor((pauseDate - startDate) / 1000);
   };

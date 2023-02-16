@@ -8,6 +8,7 @@ import {
   convertTimeToString,
 } from "../../utils/timeConverters";
 import useTheme from "../../hooks/useTheme";
+import { vibrate } from "../../utils/vibrate";
 interface TimeFieldProps {
   extendedStyle?: StyledComponent<"div", any, {}, never>;
   expectedTime: number;
@@ -24,9 +25,10 @@ const TimeField: React.FC<TimeFieldProps> = ({
   } = useTheme();
   const TimeUpdate = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
+      vibrate("short");
       updateTask(id!, { timeExpected: convertTimeToNumber(time) });
-      let temp = fieldRef!.current!.firstChild! as HTMLInputElement;
-      temp.blur();
+      let inputToBlur = fieldRef!.current!.firstChild! as HTMLInputElement;
+      inputToBlur.blur();
     }
   };
   return (

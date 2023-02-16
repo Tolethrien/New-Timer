@@ -3,6 +3,7 @@ import { updateTask } from "../../../API/handleDocs";
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useTheme from "../../hooks/useTheme";
+import { vibrate } from "../../utils/vibrate";
 interface TaskDescriptionBoxProps {
   value: string;
   minHeight?: number;
@@ -19,7 +20,7 @@ const TaskDescriptionBox: React.FC<TaskDescriptionBoxProps> = ({
   } = useTheme();
 
   const updateDocText = () => {
-    console.log(textValue);
+    vibrate("short");
     updateTask(id!, { desc: textValue });
   };
 

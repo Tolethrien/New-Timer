@@ -19,6 +19,7 @@ const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
     getColor: { itemCardColor, iconColor },
   } = useTheme();
   const taskId = useParams().id;
+
   const handleClickOutside = (e: any) => {
     if (
       !componentRef.current?.contains(e.target) &&
@@ -28,7 +29,8 @@ const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
     }
   };
 
-  const createNewCheckbox = () => {
+  const createNewCheckbox = (e: React.SyntheticEvent) => {
+    e.preventDefault();
     if (checkboxName.length !== 0) addNewCheckbox(taskId!, checkboxName);
     setTemplateTask(false);
   };
@@ -49,7 +51,7 @@ const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
           readOnly
         ></Box>
       </BoxWrap>
-      <NameForm onSubmit={() => createNewCheckbox()}>
+      <NameForm onSubmit={(e) => createNewCheckbox(e)}>
         <NameInput
           autoFocus={true}
           placeholder="Name of Checkbox..."

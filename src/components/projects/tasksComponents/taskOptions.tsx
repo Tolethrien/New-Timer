@@ -8,6 +8,7 @@ import ButtonAsIcon from "../../custom/buttonAsIcon";
 import DisplayText from "../../styled/components/displayText";
 import { RoundSwap } from "../../utils/icons";
 import { updateStatus } from "../../../API/handleDocs";
+import { vibrate } from "../../utils/vibrate";
 interface TaskOptionsProps {
   task: TasksData;
 }
@@ -25,13 +26,13 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
   const { id } = useParams();
 
   const updateDisplayCategory = (type: "checkboxes" | "description") => {
-    const desc = {
-      showDescription: task.data.showDescription ? false : true,
-    };
-    const check = {
-      showCheckboxes: task.data.showCheckboxes ? false : true,
-    };
-    updateTask(id!, type === "checkboxes" ? check : desc);
+    vibrate("short");
+    updateTask(
+      id!,
+      type === "checkboxes"
+        ? { showCheckboxes: !task.data.showCheckboxes }
+        : { showDescription: !task.data.showDescription }
+    );
   };
 
   return (

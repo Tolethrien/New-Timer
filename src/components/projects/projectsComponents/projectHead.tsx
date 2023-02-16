@@ -13,6 +13,7 @@ import DisplayText from "../../styled/components/displayText";
 import { Add, RoundSwap } from "../../utils/icons";
 import { randomKey } from "../../utils/randomKey";
 import { convertTimeToString } from "../../utils/timeConverters";
+import { vibrate } from "../../utils/vibrate";
 import SearchBox from "../custom/searchBox";
 import TitleHeading from "../custom/titleHeading";
 interface ProjectHeadProps {
@@ -41,8 +42,15 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
     getColor: { projectCardColorTone, showMoreButtonColor },
   } = useTheme();
   const updateColor = (e: number) => {
+    vibrate("short");
     updateProject(id!, { color: e });
   };
+
+  const updateShowAll = () => {
+    vibrate("short");
+    setShowAll((prev) => !prev);
+  };
+
   const headColorBasedOnProjectColor = `hsla(${project.data.color}, 27%, ${projectCardColorTone}, 1)`;
   const TasksInfo = tasksCompletion();
 
@@ -125,7 +133,7 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
       </ManagingProject>
       <MoreInfoButton
         showMoreButtonColor={showMoreButtonColor}
-        onClick={() => setShowAll((prev) => !prev)}
+        onClick={updateShowAll}
       ></MoreInfoButton>
     </Head>
   );

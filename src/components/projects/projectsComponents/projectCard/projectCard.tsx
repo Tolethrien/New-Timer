@@ -6,6 +6,7 @@ import { convertTimeToString } from "../../../utils/timeConverters";
 import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
 import DisplayText from "../../../styled/components/displayText";
+import { vibrate } from "../../../utils/vibrate";
 interface ProjectCardProps {
   data: ProjectsData;
 }
@@ -35,9 +36,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   const percentOfComplete =
     tasks.length > 0 ? Math.round((taskDone(tasks) / tasks.length) * 100) : 100;
 
+  const goToProject = () => {
+    vibrate("short");
+    navigate(`./project/${id}`);
+  };
   return (
     <ComponentBody
-      onClick={() => navigate(`./project/${id}`)}
+      onClick={goToProject}
       hue={data.color}
       bodyTone={projectCardColorTone}
     >

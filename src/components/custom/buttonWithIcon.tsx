@@ -1,5 +1,6 @@
 import styled, { StyledComponent } from "styled-components";
 import useTheme from "../hooks/useTheme";
+import { vibrate } from "../utils/vibrate";
 
 interface ButtonWithIconProps {
   src: string;
@@ -29,9 +30,13 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
       buttonWithIconColor,
     },
   } = useTheme();
+  const handleClick = () => {
+    vibrate("short");
+    onClick();
+  };
   return (
     <ComponentBody
-      onClick={onClick}
+      onClick={handleClick}
       ref={reference}
       as={extendedStyle}
       borderColor={borderColor}
