@@ -5,14 +5,14 @@ import { updateTask } from "../../API/handleDocs";
 import useClock from "../hooks/useClock";
 import useTheme from "../hooks/useTheme";
 import { Done, Play, Stop } from "../utils/icons";
-import { vibrate } from "../utils/vibrate";
+import ClockButton from "./clockButton";
 interface TimerButtonsProps {
   showCheckboxes: boolean;
 }
 
 const ClockButtons: React.FC<TimerButtonsProps> = ({ showCheckboxes }) => {
   const {
-    getColor: { itemCardColor, buttonColor, iconColor, dynamicShadowColor },
+    getColor: { itemCardColor },
   } = useTheme();
   const navigate = useNavigate();
   const {
@@ -30,7 +30,6 @@ const ClockButtons: React.FC<TimerButtonsProps> = ({ showCheckboxes }) => {
         payload: { startDate: Date.now() - (pauseDate - startDate) },
       });
     }
-    vibrate("short");
   }, [isRunning, taskInProgress]);
 
   const stopClock = useCallback(() => {
@@ -38,7 +37,6 @@ const ClockButtons: React.FC<TimerButtonsProps> = ({ showCheckboxes }) => {
       updateDB();
     }
     dispatch({ type: "stop" });
-    vibrate("short");
   }, [taskInProgress, isRunning]);
 
   const updateDB = () => {
@@ -55,43 +53,24 @@ const ClockButtons: React.FC<TimerButtonsProps> = ({ showCheckboxes }) => {
       status: "Done",
     });
     dispatch({ type: "complete" });
-    vibrate("short");
     navigate(`/projects/project/${taskInProgress?.project}`);
   }, [taskInProgress, isRunning]);
 
   return (
     <ComponentBody showCheckboxes={showCheckboxes} bodyColor={itemCardColor}>
-      <ButtonWithDescription>
-        <Button
-          bodyColor={buttonColor}
-          iconColor={iconColor}
-          shadowColor={dynamicShadowColor}
-          img={Play}
-          onClick={playPauseClock}
-        ></Button>
+      <ClockButton icon={Play} onClick={playPauseClock}>
         Play/Pause
-      </ButtonWithDescription>
-      <ButtonWithDescription>
-        <Button
-          bodyColor={buttonColor}
-          iconColor={iconColor}
-          shadowColor={dynamicShadowColor}
-          img={Stop}
-          onClick={stopClock}
-        ></Button>
+      </ClockButton>
+      <ClockButton icon={Stop} onClick={stopClock}>
         Stop
-      </ButtonWithDescription>
-      <ButtonWithDescription>
-        <Button
-          bodyColor={buttonColor}
-          iconColor={iconColor}
-          shadowColor={dynamicShadowColor}
-          disabled={taskInProgress === undefined ? true : false}
-          img={Done}
-          onClick={onComplete}
-        ></Button>
+      </ClockButton>
+      <ClockButton
+        icon={Done}
+        onClick={onComplete}
+        disabled={taskInProgress === undefined ? true : false}
+      >
         Complete
-      </ButtonWithDescription>
+      </ClockButton>
     </ComponentBody>
   );
 };

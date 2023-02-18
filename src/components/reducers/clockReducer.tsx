@@ -17,7 +17,6 @@ export const clockProviderReducer = (
 ) => {
   switch (action.type) {
     case "setClock": {
-      vibrate("short");
       return {
         ...state,
         pauseDate: 0,
@@ -26,7 +25,6 @@ export const clockProviderReducer = (
       };
     }
     case "pause": {
-      vibrate("short");
       return {
         ...state,
         isRunning: false,
@@ -34,7 +32,6 @@ export const clockProviderReducer = (
       };
     }
     case "play": {
-      vibrate("short");
       return {
         ...state,
         isRunning: true,
@@ -42,7 +39,6 @@ export const clockProviderReducer = (
       };
     }
     case "stop": {
-      vibrate("short");
       return {
         ...state,
         isRunning: false,
@@ -53,7 +49,6 @@ export const clockProviderReducer = (
     }
 
     case "complete": {
-      vibrate("short");
       return {
         ...state,
         isRunning: false,

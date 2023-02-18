@@ -1,7 +1,7 @@
-import mainLight from "./mainLight.jpg";
-import mainDark from "./mainDark.jpg";
-import loginLight from "./loginLight.jpg";
-import loginDark from "./loginDark.jpg";
+import mainLight from "./mainlight.webp";
+import mainDark from "./maindark.webp";
+import loginLight from "./loginlight.webp";
+import loginDark from "./logindark.webp";
 import { ThemeMode } from "../../providers/themeProvider";
 
 type BackgroundList = "appBackground" | "loginBackground";

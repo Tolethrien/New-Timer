@@ -38,6 +38,7 @@ const TimerChecboxes: React.FC<TimerChecboxesProps> = ({
             {Object.keys(data!.checkboxes).length > 0 ? (
               <Checkboxes
                 checkboxes={data!.checkboxes}
+                showComplete={false}
                 displayOnly
                 useID={taskInProgress.task}
               />

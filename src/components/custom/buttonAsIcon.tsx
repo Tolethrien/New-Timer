@@ -1,23 +1,34 @@
 import styled, { StyledComponent } from "styled-components";
 import useTheme from "../hooks/useTheme";
+import {
+  AnimationKey,
+  ButtonsAnimations,
+  ButtonAnimsList,
+} from "../styled/animations/buttonsAnimations";
 import { vibrate } from "../utils/vibrate";
 interface ButtonAsIconProps {
   src: string;
+  alt?: string;
   margin?: string;
   size?: number[];
   position?: string;
   onClick: () => void;
   reference?: React.RefObject<HTMLButtonElement>;
   extendedStyle?: StyledComponent<"button", any, {}, never>;
+  extendedProps?: {};
+  animation?: AnimationKey;
 }
 const ButtonAsIcon: React.FC<ButtonAsIconProps> = ({
   src,
+  alt = "",
   margin,
   position,
   size,
   onClick,
   reference,
   extendedStyle,
+  extendedProps,
+  animation = "none",
 }) => {
   const {
     getColor: { iconColor },
@@ -30,14 +41,18 @@ const ButtonAsIcon: React.FC<ButtonAsIconProps> = ({
 
   return (
     <ComponentBody
-      onClick={handleClick}
       src={src}
+      alt={alt}
+      onClick={handleClick}
       margin={margin}
       size={size}
       position={position}
       ref={reference}
-      as={extendedStyle}
       iconColor={iconColor}
+      as={extendedStyle}
+      animation={animation}
+      anims={ButtonAnimsList}
+      {...extendedProps}
     ></ComponentBody>
   );
 };
@@ -49,6 +64,9 @@ export const ComponentBody = styled.button<{
   size?: number[];
   position?: string;
   iconColor: string;
+  isPressed: boolean;
+  animation: AnimationKey;
+  anims: ButtonsAnimations;
 }>`
   position: relative;
   display: flex;
@@ -65,4 +83,8 @@ export const ComponentBody = styled.button<{
   border: none;
   cursor: pointer;
   filter: ${({ iconColor }) => iconColor};
+  transition: 0.5s;
+  :active {
+    ${({ animation, anims }) => anims[animation]}
+  }
 `;

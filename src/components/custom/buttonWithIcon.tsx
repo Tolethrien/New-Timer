@@ -1,7 +1,11 @@
 import styled, { StyledComponent } from "styled-components";
 import useTheme from "../hooks/useTheme";
 import { vibrate } from "../utils/vibrate";
-
+import {
+  ButtonAnimsList,
+  AnimationKey,
+  ButtonsAnimations,
+} from "../styled/animations/buttonsAnimations";
 interface ButtonWithIconProps {
   src: string;
   alt: string;
@@ -10,8 +14,10 @@ interface ButtonWithIconProps {
   ) => void | React.Dispatch<React.SetStateAction<any>> | Promise<void>;
   text: string;
   noShadow?: boolean;
+  animation?: AnimationKey;
   reference?: React.MutableRefObject<any>;
   extendedStyle?: StyledComponent<"button", any, {}, never>;
+  extendedProps?: {};
 }
 const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   src,
@@ -20,13 +26,16 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   text,
   reference,
   extendedStyle,
+  extendedProps,
+  animation = "none",
   noShadow = false,
 }) => {
   const {
     getColor: {
       borderColor,
-      dynamicShadowColor,
       iconColor,
+      dynamicShadowColor,
+      staticShadowColor,
       buttonWithIconColor,
     },
   } = useTheme();
@@ -43,6 +52,9 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
       shadowColor={dynamicShadowColor}
       noShadow={noShadow}
       buttonWithIconColor={buttonWithIconColor}
+      animation={animation}
+      anims={ButtonAnimsList}
+      {...extendedProps}
     >
       <ButtonIcon src={src} alt={alt} iconColor={iconColor}></ButtonIcon>
       {text}
@@ -55,6 +67,9 @@ const ComponentBody = styled.button<{
   shadowColor: string;
   noShadow: boolean;
   buttonWithIconColor: string;
+  isPressed: boolean;
+  animation: AnimationKey;
+  anims: ButtonsAnimations;
 }>`
   display: flex;
   align-items: center;
@@ -65,7 +80,7 @@ const ComponentBody = styled.button<{
   border: ${({ borderColor }) => `1px solid ${borderColor}`};
   background-color: ${({ buttonWithIconColor }) => buttonWithIconColor};
   box-shadow: ${({ shadowColor, noShadow }) =>
-    !noShadow && `0px 4px 4px ${shadowColor}`};
+    !noShadow && `1px 2px 4px ${shadowColor}`};
   backdrop-filter: blur(15px);
   color: inherit;
   font-size: 1rem;
@@ -73,6 +88,9 @@ const ComponentBody = styled.button<{
   white-space: nowrap;
   transition: 0.5s;
   cursor: pointer;
+  :active {
+    ${({ animation, anims }) => anims[animation]}
+  }
 `;
 const ButtonIcon = styled.img<{ iconColor: string }>`
   width: 1rem;

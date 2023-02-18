@@ -6,6 +6,7 @@ import { randomKey } from "../../../utils/randomKey";
 import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
 import { colors } from "../../../../API/utils";
+import { showFromOpacity } from "../../../styled/animations/showFromOpacity";
 interface ProjectCardProps {
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;
   setTemplateProject: React.Dispatch<React.SetStateAction<boolean>>;
@@ -108,6 +109,7 @@ const ComponentBody = styled.div<{ hue: number; bodyTone: string }>`
   margin: 0.4rem 0;
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
   cursor: pointer;
+  animation: ${showFromOpacity} 0.5s normal forwards;
 `;
 const InfoConteiner = styled.div`
   width: 25%;

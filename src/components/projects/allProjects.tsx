@@ -39,6 +39,7 @@ const AllProjects: React.FC = () => {
             src={Add}
             onClick={openTempateProject}
             text={"Add New"}
+            animation="invert"
             reference={buttonNewRef}
           />
         </ManagingProject>

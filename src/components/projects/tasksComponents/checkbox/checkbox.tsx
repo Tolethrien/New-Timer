@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Edit, CheckBoxEmpty, CheckBoxFill, Trash } from "../../../utils/icons";
 import { updateCheckbox, deleteCheckbox } from "../../../../API/handleDocs";
-import { useParams } from "react-router-dom";
 import ButtonAsIcon from "../../../custom/buttonAsIcon";
 import focusOnEndOfLine from "../../utils/focusOnEndOfLine";
 import useTheme from "../../../hooks/useTheme";
+import { checkboxesType } from "../../../../API/getUserData";
 interface CheckBoxProps {
-  checkboxData: [string, { createdAt: number; name: string; value: boolean }];
+  checkboxData: [string, checkboxesType];
   taskId: string;
 }
 
@@ -65,6 +65,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, taskId }) => {
         contentEditable={isEditing}
         suppressContentEditableWarning={true}
         ref={paragraphRef}
+        isComplete={data.value}
         onKeyDown={(e) => e.key === "Enter" && changeName()}
       >
         {data.name}
@@ -107,11 +108,13 @@ const Box = styled.input<{
   cursor: pointer;
   filter: ${({ iconColor }) => iconColor};
 `;
-const BoxDescDisplay = styled.p`
+const BoxDescDisplay = styled.p<{ isComplete: boolean }>`
   flex-grow: 1;
   font-size: 1.4rem;
   font-weight: 500;
   margin-left: 2%;
+  text-decoration: ${({ isComplete }) => isComplete && `line-through 2px`};
+
   :focus {
     outline: none;
   }

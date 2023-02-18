@@ -5,6 +5,7 @@ import { addTask } from "../../../../API/handleDocs";
 import useTheme from "../../../hooks/useTheme";
 import ButtonAsIcon from "../../../custom/buttonAsIcon";
 import { Trash } from "../../../utils/icons";
+import { showFromOpacity } from "../../../styled/animations/showFromOpacity";
 interface TaskCardTemplateProps {
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;
   setTemplateTask: React.Dispatch<React.SetStateAction<boolean>>;
@@ -67,13 +68,13 @@ export default TaskCardTemplate;
 const ComponentBody = styled.div<{ bodyColor: string }>`
   background-color: ${({ bodyColor }) => bodyColor};
   backdrop-filter: blur(20px);
-
   width: 100%;
   height: fit-content;
   margin-bottom: 0.1rem;
   border-radius: 5px;
   padding-block: 1%;
   box-shadow: 0px 4px 4px hsla(0, 0%, 0%, 0.25);
+  animation: ${showFromOpacity} 0.5s normal forwards;
 `;
 const TopBar = styled.div`
   height: 50%;

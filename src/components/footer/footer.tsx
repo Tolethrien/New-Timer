@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
 
   const changeRoute = (value: WindowsTypes) => {
     if (value !== currentWindow) {
-      vibrate("short");
+      vibrate("medium");
       setCurrentWindow(value);
       navigate(`/${value}`);
     }

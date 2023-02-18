@@ -14,6 +14,7 @@ const PersonalisationOptions: React.FC = () => {
           alt=""
           text={`${theme} Mode`}
           noShadow
+          animation="inset"
           onClick={() => dispatch({ type: "switchThemeColor" })}
         ></ButtonWithIcon>
       </OptionBar>
@@ -24,6 +25,7 @@ const PersonalisationOptions: React.FC = () => {
           alt=""
           text={`${coloredCategory}`}
           noShadow
+          animation="inset"
           onClick={() => dispatch({ type: "switchCategoryColor" })}
         ></ButtonWithIcon>
       </OptionBar>
@@ -34,6 +36,7 @@ const PersonalisationOptions: React.FC = () => {
           alt=""
           text={`${coloredHeaders}`}
           noShadow
+          animation="inset"
           onClick={() => dispatch({ type: "switchHeaderColor" })}
         ></ButtonWithIcon>
       </OptionBar>

@@ -1,6 +1,7 @@
 import styled, { StyledComponent } from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import useTheme from "../hooks/useTheme";
+import { vibrate } from "../utils/vibrate";
 interface DropMenuButtonProps {
   children?: React.ReactNode;
   extendedStyle?: StyledComponent<"div", any, {}, never>;
@@ -29,12 +30,15 @@ export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
     visible && document.addEventListener("click", handleClickOutside);
     return () => document.removeEventListener("click", handleClickOutside);
   });
-
+  const openDropDown = () => {
+    vibrate("short");
+    setVisible((prev) => !prev);
+  };
   return (
     <ComponentBody
       iconColor={iconColor}
       src={src}
-      onClick={() => setVisible((prev) => !prev)}
+      onClick={openDropDown}
       ref={myRef}
       as={extendedStyle}
     >
@@ -87,9 +91,13 @@ export const DropMenuOption: React.FC<DropMenuOptionProps> = ({
   const {
     getColor: { dropMenuOptionColor, dropMenuOptionBorderColor },
   } = useTheme();
+  const onClickCallback = () => {
+    vibrate("short");
+    callback?.();
+  };
   return (
     <Option
-      onClick={() => callback?.()}
+      onClick={onClickCallback}
       dropMenuOptionBorderColor={dropMenuOptionBorderColor}
       dropMenuOptionColor={dropMenuOptionColor}
       as={extendedStyle}

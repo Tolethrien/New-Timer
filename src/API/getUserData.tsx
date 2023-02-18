@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
-import { collection, query, onSnapshot, orderBy } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  orderBy,
+  FieldValue,
+} from "firebase/firestore";
 import db, { auth } from "./firebase";
 
+export type TimeStamp = { nanoseconds: number; seconds: number };
+export type CreatedAtType = TimeStamp | FieldValue;
 export interface ProjectsData {
   id: string;
   tasks: TasksData[];
@@ -9,7 +17,7 @@ export interface ProjectsData {
     color: number;
     status: string;
     name: string;
-    createdAt: { nanoseconds: number; seconds: number };
+    createdAt: CreatedAtType;
   };
 }
 
@@ -17,18 +25,24 @@ export interface TasksData {
   id: string;
   data: {
     desc: string;
-    checkboxes: checkboxes;
+    checkboxes: checkboxesList;
     projectID: string;
     name: string;
     status: string;
     timeSpend: number;
     timeExpected: number;
     showCheckboxes: boolean;
+    showFinishedCheckboxes: boolean;
     showDescription: boolean;
   };
 }
-export interface checkboxes {
-  [key: string]: { createdAt: number; name: string; value: boolean };
+export interface checkboxesList {
+  [key: string]: checkboxesType;
+}
+export interface checkboxesType {
+  createdAt: CreatedAtType;
+  name: string;
+  value: boolean;
 }
 
 export const GetUserData = () => {

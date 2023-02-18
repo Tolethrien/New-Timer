@@ -5,6 +5,7 @@ import { addNewCheckbox } from "../../../../API/handleDocs";
 import useTheme from "../../../hooks/useTheme";
 import ButtonAsIcon from "../../../custom/buttonAsIcon";
 import { CheckBoxEmpty, Trash } from "../../../utils/icons";
+import { showFromOpacity } from "../../../styled/animations/showFromOpacity";
 interface CheckboxTemplateProps {
   setTemplateTask: React.Dispatch<React.SetStateAction<boolean>>;
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;
@@ -73,6 +74,7 @@ const ComponentBody = styled.div<{ bodyColor: string }>`
   padding-block: 0.5rem;
   margin-bottom: 0.1rem;
   background-color: ${({ bodyColor }) => bodyColor};
+  animation: ${showFromOpacity} 0.5s normal forwards;
 
   backdrop-filter: blur(20px);
   border-radius: 5px;

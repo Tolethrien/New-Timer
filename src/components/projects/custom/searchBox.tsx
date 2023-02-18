@@ -19,7 +19,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({
   } = useTheme();
   return (
     <ComponentBody>
-      <DisplayIcon src={Loop} alt="search Icon"></DisplayIcon>
+      <DisplayIcon src={Loop} alt=""></DisplayIcon>
       <SearchBoxInput
         placeholder={placeholder}
         value={value}

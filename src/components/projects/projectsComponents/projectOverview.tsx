@@ -83,6 +83,7 @@ export default Project;
 
 const AllTasks = styled.div`
   width: 100%;
+  margin-top: -0.5rem;
   overflow-y: auto;
   overflow-x: hidden;
   padding-top: 5%;

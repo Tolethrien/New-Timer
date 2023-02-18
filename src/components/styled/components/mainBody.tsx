@@ -9,6 +9,7 @@ const MainBody = styled.main<{
   flex-direction: column;
   position: relative;
   max-width: ${MAX_WIDTH_APP}px;
+  height: 100vh;
   height: 100svh;
   margin-inline: auto;
   overflow: hidden;

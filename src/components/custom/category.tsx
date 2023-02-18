@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import styled, { StyledComponent } from "styled-components";
 import useTheme from "../hooks/useTheme";
 import { Collapse } from "../utils/icons";
+import ButtonAsIcon from "./buttonAsIcon";
 const Category: React.FC<{
   name: string;
   overrideColor?: string;
   children?: React.ReactNode;
   extendedStyle?: StyledComponent<"div", any, {}, never>;
-}> = ({ name, children, extendedStyle, overrideColor }) => {
+  extendedProps?: {};
+}> = ({ name, children, extendedStyle, extendedProps, overrideColor }) => {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(
     (children as []).length === 0
   );
@@ -15,7 +17,7 @@ const Category: React.FC<{
 
   const {
     coloredCategory,
-    getColor: { categoryColor, iconColor },
+    getColor: { categoryColor },
   } = useTheme();
   const isColored =
     overrideColor && coloredCategory !== "Mono" ? overrideColor : categoryColor;
@@ -25,16 +27,15 @@ const Category: React.FC<{
   }, [children]);
 
   return (
-    <ComponentBody bodyColor={isColored} as={extendedStyle}>
+    <ComponentBody bodyColor={isColored} as={extendedStyle} {...extendedProps}>
       <TopBar bodyColor={isColored}>
         <TopBarName>{name}</TopBarName>
-        <CollapseIcon
-          isCollapsed={isCollapsed}
-          iconColor={iconColor}
+        <ButtonAsIcon
+          extendedStyle={CollapseIcon}
+          extendedProps={{ isCollapsed }}
           src={Collapse}
-          alt="collaps Category"
           onClick={() => setIsCollapsed((prev) => !prev)}
-        ></CollapseIcon>
+        />
       </TopBar>
       {!isCollapsed && (
         <TaskWrapper ref={divChildrenRef}>{children}</TaskWrapper>
@@ -69,14 +70,11 @@ const TaskWrapper = styled.div`
   z-index: 2;
   margin-top: 1.9rem;
 `;
-const CollapseIcon = styled.img<{ isCollapsed: boolean; iconColor: string }>`
+const CollapseIcon = styled.button<{ isCollapsed: boolean }>`
   width: 0.8rem;
   height: 0.8rem;
-  transition: 0.5s;
-  cursor: pointer;
   transform: ${({ isCollapsed }) =>
     `rotate(${isCollapsed ? "0deg" : "180deg"})`};
-  filter: ${({ iconColor }) => iconColor};
 `;
 const TopBar = styled.div<{ bodyColor: string }>`
   position: absolute;

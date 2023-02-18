@@ -8,7 +8,6 @@ import focusOnEndOfLine from "../projects/utils/focusOnEndOfLine";
 interface EditableTitleProps {
   text: string;
 }
-const TEXT_SPLIT_CHAR = 20;
 
 const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
   const componentRef = useRef<HTMLDivElement>(null);
@@ -52,14 +51,13 @@ const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
         onKeyDown={(e) => e.key === "Enter" && updateName()}
         ref={paragraphfocusRef}
       >
-        {text.length > TEXT_SPLIT_CHAR && !isEditing
-          ? text.slice(0, TEXT_SPLIT_CHAR) + "..."
-          : text}
+        {text}
       </NameEditable>
       <ButtonAsIcon
         src={Edit}
         size={[1, 1]}
         margin="0 0 0 5%"
+        animation="scale"
         onClick={() => setIsEditing((prev) => !prev)}
       ></ButtonAsIcon>
     </ComponentBody>
@@ -76,6 +74,7 @@ const NameEditable = styled.p`
   font-weight: 600;
   outline: none;
   width: fit-content;
+  text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 `;

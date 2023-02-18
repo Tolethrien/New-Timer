@@ -89,6 +89,7 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
             <ButtonAsIcon
               src={RoundSwap}
               size={[1.5, 1.5]}
+              animation={"rotate"}
               onClick={() => updateStatus({ document: project, id: id! })}
             ></ButtonAsIcon>
           </ProjectCategory>
@@ -128,6 +129,7 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
           src={Add}
           onClick={openTemplate}
           text={"Add New"}
+          animation="invert"
           reference={newProjectButtonRef}
         />
       </ManagingProject>

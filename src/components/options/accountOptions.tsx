@@ -39,6 +39,7 @@ const AccountOptions: React.FC = () => {
           alt=""
           text="Change"
           noShadow
+          animation="inset"
           onClick={() => openModal("email")}
         ></ButtonWithIcon>
       </OptionBar>
@@ -49,6 +50,7 @@ const AccountOptions: React.FC = () => {
           alt=""
           text="Change"
           noShadow
+          animation="inset"
           onClick={() => openModal("password")}
         ></ButtonWithIcon>
       </OptionBar>
@@ -59,6 +61,7 @@ const AccountOptions: React.FC = () => {
           alt=""
           text="Change"
           noShadow
+          animation="inset"
           onClick={() => openModal("userName")}
         ></ButtonWithIcon>
       </OptionBar>
@@ -69,6 +72,7 @@ const AccountOptions: React.FC = () => {
           alt=""
           text="Logout"
           noShadow
+          animation="inset"
           onClick={() => openModal("logout")}
         ></ButtonWithIcon>
       </OptionBar>

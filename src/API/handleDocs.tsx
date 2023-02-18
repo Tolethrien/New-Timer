@@ -8,7 +8,12 @@ import {
 } from "firebase/firestore";
 import { randomKey } from "../components/utils/randomKey";
 import db, { auth } from "./firebase";
-import { ProjectsData, TasksData } from "./getUserData";
+import {
+  checkboxesList,
+  checkboxesType,
+  ProjectsData,
+  TasksData,
+} from "./getUserData";
 import {
   allProjectsRef,
   allTasksRef,
@@ -31,7 +36,7 @@ export const addProject = ({
     createdAt: serverTimestamp(),
     color: color,
     status: "Active",
-  });
+  } as ProjectsData["data"]);
 };
 
 export const deleteProject = ({ id, tasks }: { id: string; tasks: any[] }) => {
@@ -65,8 +70,9 @@ export const addTask = (id: string, name: string) => {
     desc: "",
     showCheckboxes: true,
     showDescription: true,
+    showFinishedCheckboxes: true,
     checkboxes: {},
-  });
+  } as TasksData["data"]);
 };
 
 export const updateTime = (id: string, value: number) => {
@@ -105,7 +111,7 @@ export const addNewCheckbox = (taskId: string, name: string) => {
       createdAt: serverTimestamp(),
       value: false,
     },
-  });
+  } as checkboxesList);
 };
 
 interface updateStatusProps {

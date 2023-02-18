@@ -6,6 +6,7 @@ import { convertTimeToString } from "../../../utils/timeConverters";
 import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
 import DisplayText from "../../../styled/components/displayText";
+import { vibrate } from "../../../utils/vibrate";
 const TaskCard: React.FC<{
   task: TasksData;
 }> = ({ task }) => {
@@ -14,9 +15,13 @@ const TaskCard: React.FC<{
   } = useTheme();
   const navigate = useNavigate();
 
+  const goToTask = () => {
+    vibrate("short");
+    navigate(`../task/${task.id}`);
+  };
   return (
     <ComponentBody
-      onClick={() => navigate(`../task/${task.id}`)}
+      onClick={goToTask}
       bodyColor={itemCardColor}
       noDesc={!task.data.showDescription}
     >

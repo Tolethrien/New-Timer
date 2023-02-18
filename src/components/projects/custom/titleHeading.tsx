@@ -33,6 +33,7 @@ const TitleHeading: React.FC = () => {
         src={BackArrow}
         size={[1.5, 2.5]}
         position={"50% 70%"}
+        animation="none"
         onClick={() => navigateTo()}
       ></ButtonAsIcon>
       <EditableTitle text={document.data.name}></EditableTitle>

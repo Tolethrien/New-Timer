@@ -25,14 +25,28 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
 
   const { id } = useParams();
 
-  const updateDisplayCategory = (type: "checkboxes" | "description") => {
+  const updateDisplayCategory = (
+    type: "checkboxes" | "description" | "finishedCheckboxes"
+  ) => {
+    switch (type) {
+      case "checkboxes": {
+        updateTask(id!, { showCheckboxes: !task.data.showCheckboxes });
+        break;
+      }
+      case "finishedCheckboxes": {
+        updateTask(id!, {
+          showFinishedCheckboxes: !task.data.showFinishedCheckboxes,
+        });
+        break;
+      }
+      case "description": {
+        updateTask(id!, { showDescription: !task.data.showDescription });
+        break;
+      }
+      default:
+        return;
+    }
     vibrate("short");
-    updateTask(
-      id!,
-      type === "checkboxes"
-        ? { showCheckboxes: !task.data.showCheckboxes }
-        : { showDescription: !task.data.showDescription }
-    );
   };
 
   return (
@@ -57,6 +71,7 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
             onClick={() => updateStatus({ document: task, id: id! })}
             size={[1.2, 1.2]}
             margin="0 0 0 0.5rem"
+            animation="rotate"
           ></ButtonAsIcon>
         </CycleStatus>
       </Option>
@@ -67,6 +82,17 @@ const TaskOptions: React.FC<TaskOptionsProps> = ({ task }) => {
         <Toggle
           onClick={() => updateDisplayCategory("checkboxes")}
           active={task.data.showCheckboxes}
+          toggleColor={taskOptionToggleColor}
+          taskOptionsForegroundColor={taskOptionsForegroundColor}
+        />
+      </Option>
+      <Option bodyColor={itemCardColor} shadowColor={dynamicShadowColor}>
+        <DisplayText size={1.2} weight={500}>
+          Show finieshed checkboxes
+        </DisplayText>
+        <Toggle
+          onClick={() => updateDisplayCategory("finishedCheckboxes")}
+          active={task.data.showFinishedCheckboxes}
           toggleColor={taskOptionToggleColor}
           taskOptionsForegroundColor={taskOptionsForegroundColor}
         />

@@ -14,6 +14,7 @@ import Checkboxes from "./checkboxes";
 import TaskOptions from "./taskOptions";
 import useTheme from "../../hooks/useTheme";
 import useClock from "../../hooks/useClock";
+import { vibrate } from "../../utils/vibrate";
 const TaskOverview: React.FC = () => {
   const { id } = useParams();
   const task = useDataFinder<TasksData>(id);
@@ -38,6 +39,7 @@ const TaskOverview: React.FC = () => {
       task: id!,
       time: task!.data.timeSpend,
     });
+    vibrate("medium");
     navigate(`/timer`);
   };
   const headColorBasedOnProjectColor = `hsla(${color}, 27%, ${projectCardColorTone}, 1)`;
@@ -58,6 +60,7 @@ const TaskOverview: React.FC = () => {
           alt=""
           text="Start"
           onClick={playTask}
+          animation="invert"
           extendedStyle={ButtonAbsolute}
         ></ButtonWithIcon>
       </Head>
@@ -68,8 +71,14 @@ const TaskOverview: React.FC = () => {
           </Category>
         )}
         {task.data.showCheckboxes && (
-          <Category name="Checkbox" overrideColor={categoryDone}>
-            <Checkboxes checkboxes={task.data.checkboxes} />
+          <Category
+            name={`Checkbox(${Object.keys(task.data.checkboxes).length})`}
+            overrideColor={categoryDone}
+          >
+            <Checkboxes
+              checkboxes={task.data.checkboxes}
+              showComplete={task.data.showFinishedCheckboxes}
+            />
           </Category>
         )}
         <Category name="Settings" overrideColor={categoryOnHold}>
@@ -90,6 +99,7 @@ const ButtonAbsolute = styled.button`
 const AllCategories = styled.div`
   width: 100%;
   padding-top: 5%;
+  margin-top: -0.5rem;
   overflow-y: auto;
   overflow-x: hidden;
 `;

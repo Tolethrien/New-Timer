@@ -140,7 +140,6 @@ const AccountModal: React.FC<AccountModalProps> = ({
         </>
       )}
       <Form onSubmit={(e) => e.preventDefault()} ref={formRef}>
-        <DisplayText>New {modalschema[typeOfData].displayName}</DisplayText>
         <UserInput
           errorMsg={modalschema[typeOfData].error}
           inputType="text"
@@ -149,7 +148,6 @@ const AccountModal: React.FC<AccountModalProps> = ({
           reference={firstInputRef}
           noBlur
         ></UserInput>
-        <DisplayText>Again...</DisplayText>
         <UserInput
           errorMsg="names are not the same"
           inputType="text"
@@ -175,6 +173,9 @@ export default AccountModal;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
+  padding-block: 1rem;
+
   input {
     width: 100%;
     text-align: start;
