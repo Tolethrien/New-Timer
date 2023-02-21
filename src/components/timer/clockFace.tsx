@@ -17,7 +17,7 @@ const ClockFace: React.FC = () => {
     },
   } = useTheme();
 
-  const clockInterval = useRef<NodeJS.Timer>();
+  const clockInterval = useRef<number>();
   const {
     getClock: { pauseDate, startDate, isRunning },
   } = useClock();
