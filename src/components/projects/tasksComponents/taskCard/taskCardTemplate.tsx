@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { addTask } from "../../../../API/handleDocs";
@@ -6,17 +6,25 @@ import useTheme from "../../../hooks/useTheme";
 import ButtonAsIcon from "../../../custom/buttonAsIcon";
 import { Trash } from "../../../utils/icons";
 import { showFromOpacity } from "../../../styled/animations/showFromOpacity";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 interface TaskCardTemplateProps {
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;
+  isTemplateTask: boolean;
   setTemplateTask: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
   setTemplateTask,
   referenceButton,
+  isTemplateTask,
 }) => {
   const [newTaskName, setNewTaskName] = useState("");
-  const componentRef = useRef<HTMLDivElement>(null);
-
+  const componentRef = useClickOutside({
+    onClickOutside: () => {
+      setTemplateTask(false);
+    },
+    state: isTemplateTask,
+    outsideRef: referenceButton,
+  });
   const {
     getColor: { itemCardColor, taskTemplateColor },
   } = useTheme();
@@ -27,20 +35,6 @@ const TaskCardTemplate: React.FC<TaskCardTemplateProps> = ({
     newTaskName.length > 0 && addTask(projectId!, newTaskName);
     setTemplateTask!(false);
   };
-
-  const handleClickOutside = (e: any) => {
-    if (
-      !componentRef.current?.contains(e.target) &&
-      !referenceButton.current?.contains(e.target)
-    ) {
-      setTemplateTask(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
 
   return (
     <ComponentBody ref={componentRef} bodyColor={itemCardColor}>

@@ -24,7 +24,7 @@ const Checkboxes: React.FC<ChecboxesProps> = ({
   displayOnly = false,
   useID,
 }) => {
-  const [templateTask, setTemplateTask] = useState(false);
+  const [isTemplateTask, setIsTemplateTask] = useState(false);
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const taskId = useParams().id!;
   const {
@@ -77,9 +77,10 @@ const Checkboxes: React.FC<ChecboxesProps> = ({
               taskId={useID ?? taskId}
             ></CheckBox>
           ))}
-      {templateTask && !displayOnly && (
+      {isTemplateTask && !displayOnly && (
         <CheckboxTemplate
-          setTemplateTask={setTemplateTask}
+          setIsTemplateTask={setIsTemplateTask}
+          isTemplateTask={isTemplateTask}
           referenceButton={buttonNewRef}
         />
       )}
@@ -87,7 +88,7 @@ const Checkboxes: React.FC<ChecboxesProps> = ({
         <ButtonWithIcon
           src={Add}
           alt=""
-          onClick={() => setTemplateTask(true)}
+          onClick={() => setIsTemplateTask(true)}
           text="Add New"
           animation="invert"
           extendedStyle={extendedButton}

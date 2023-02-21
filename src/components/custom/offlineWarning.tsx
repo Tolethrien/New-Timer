@@ -4,7 +4,7 @@ import useIsOnline from "../hooks/useIsOnline";
 import useTheme from "../hooks/useTheme";
 import DisplayText from "../styled/components/displayText";
 import { Add } from "../utils/icons";
-import ButtonAsIcon from "./buttonAsIcon";
+import { vibrate } from "../utils/vibrate";
 import ButtonWithIcon from "./buttonWithIcon";
 interface OfflineWarningsProps {}
 const OfflineWarnings: React.FC<OfflineWarningsProps> = (props) => {
@@ -13,9 +13,12 @@ const OfflineWarnings: React.FC<OfflineWarningsProps> = (props) => {
     getColor: { itemCardColor, textError },
   } = useTheme();
   const [warningShowed, setWarningShowed] = useState(isOnline);
-
+  const showWarning = () => {
+    vibrate("long");
+    setWarningShowed(true);
+  };
   useEffect(() => {
-    !isOnline && setWarningShowed(true);
+    !isOnline && showWarning();
     if (isOnline && warningShowed) setWarningShowed(false);
   }, [isOnline]);
   return (
@@ -28,7 +31,12 @@ const OfflineWarnings: React.FC<OfflineWarningsProps> = (props) => {
         Lost internet connection
       </DisplayText>
       <DisplayText>
-        you may still view the app but any changes will <b>NOT</b> be saved!
+        Although App should store your changes locally and send them on server
+        when internet connection is restored. It will <b>NOT</b> save them if
+        you close or refresh app before that happens.
+      </DisplayText>
+      <DisplayText>
+        Therefore it is <b>NOT</b> reccomended to using it at this state
       </DisplayText>
       <DisplayText>may occur Errors</DisplayText>
       <ButtonWithIcon
@@ -56,16 +64,24 @@ const ComponentBody = styled.div<{
   flex-direction: column;
   max-width: 60%;
   width: fit-content;
-  /* border: 1px solid ${({ borderColor }) => borderColor}; */
   backdrop-filter: blur(20px);
   background-color: ${({ componentColor }) => componentColor};
-  top: 30%;
+  top: 20%;
   left: -1%;
   gap: 0.5rem;
   z-index: 100;
   border-radius: 0 10px 10px 0;
   padding: 0.5rem;
   box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.25);
+  animation: MoveIn 0.5s ease-out forwards;
+  @keyframes MoveIn {
+    from {
+      left: -50%;
+    }
+    to {
+      left: -1%;
+    }
+  }
 `;
 const CloseButton = styled.button<{ textColor: string }>`
   align-self: flex-end;

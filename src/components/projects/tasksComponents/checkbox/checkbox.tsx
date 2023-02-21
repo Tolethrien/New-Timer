@@ -6,6 +6,7 @@ import ButtonAsIcon from "../../../custom/buttonAsIcon";
 import focusOnEndOfLine from "../../utils/focusOnEndOfLine";
 import useTheme from "../../../hooks/useTheme";
 import { checkboxesType } from "../../../../API/getUserData";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 interface CheckBoxProps {
   checkboxData: [string, checkboxesType];
   taskId: string;
@@ -15,16 +16,19 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, taskId }) => {
   const [checkboxId, data] = checkboxData ?? [];
   const [isEditing, setIsEditing] = useState(false);
   const paragraphRef = useRef<HTMLParagraphElement>(null);
-  const componentRef = useRef<HTMLDivElement>(null);
+  // const componentRef = useRef<HTMLDivElement>(null);
   const {
     getColor: { itemCardColor, iconColor },
   } = useTheme();
-  const handleClickOutside = (e: any) => {
-    if (!componentRef.current?.contains(e.target)) {
+
+  const componentRef = useClickOutside({
+    onClickOutside: () => {
       paragraphRef.current!.innerText = data.name;
       setIsEditing(false);
-    }
-  };
+    },
+    state: isEditing,
+  });
+
   const removeCheckbox = () => {
     deleteCheckbox(taskId!, checkboxId!);
   };
@@ -42,11 +46,7 @@ const CheckBox: React.FC<CheckBoxProps> = ({ checkboxData, taskId }) => {
     setIsEditing(false);
   };
   useEffect(() => {
-    if (isEditing) {
-      focusOnEndOfLine(paragraphRef);
-      document.addEventListener("click", handleClickOutside);
-    }
-    return () => document.removeEventListener("click", handleClickOutside);
+    isEditing && focusOnEndOfLine(paragraphRef);
   }, [isEditing]);
   return (
     <ComponentBody ref={componentRef} bodyColor={itemCardColor}>

@@ -48,6 +48,7 @@ const Project: React.FC = () => {
           {templateTask && (
             <TaskCardTemplate
               referenceButton={buttonNewRef}
+              isTemplateTask={templateTask}
               setTemplateTask={setTemplateTask}
             ></TaskCardTemplate>
           )}

@@ -1,48 +1,43 @@
 import styled, { StyledComponent } from "styled-components";
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import useTheme from "../hooks/useTheme";
 import { vibrate } from "../utils/vibrate";
+import { useClickOutside } from "../hooks/useClickOutside";
 interface DropMenuButtonProps {
   children?: React.ReactNode;
   extendedStyle?: StyledComponent<"div", any, {}, never>;
   src: string;
   alt: string;
 }
+
 export const DropMenuButton: React.FC<DropMenuButtonProps> = ({
   children,
   src,
   extendedStyle,
 }) => {
-  const [visible, setVisible] = useState(false);
-  const myRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
+  const componentRef = useClickOutside({
+    state: isVisible,
+    onClickOutside: () => setIsVisible(false),
+  });
   const {
     getColor: { iconColor },
   } = useTheme();
 
-  const handleClickOutside = (e: any) => {
-    if (!myRef.current?.contains(e.target)) {
-      setVisible(false);
-    }
-  };
-
-  useEffect(() => {
-    visible && document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  });
   const openDropDown = () => {
     vibrate("short");
-    setVisible((prev) => !prev);
+    setIsVisible((prev) => !prev);
   };
   return (
     <ComponentBody
       iconColor={iconColor}
       src={src}
       onClick={openDropDown}
-      ref={myRef}
+      ref={componentRef}
       as={extendedStyle}
     >
-      <OptionsBox visible={visible}>{children}</OptionsBox>
+      <OptionsBox visible={isVisible}>{children}</OptionsBox>
     </ComponentBody>
   );
 };

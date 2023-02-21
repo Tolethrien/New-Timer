@@ -3,7 +3,7 @@ type BuzzType = { [K in Durations]: number };
 
 const vibrateOn = true;
 
-const buzzTime: BuzzType = { short: 10, medium: 50, long: 100 };
+const buzzTime: BuzzType = { short: 5, medium: 30, long: 60 };
 export const vibrate = (duration: Durations) => {
   vibrateOn && navigator.vibrate(buzzTime[duration]);
 };

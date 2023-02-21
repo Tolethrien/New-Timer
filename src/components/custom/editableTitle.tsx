@@ -5,22 +5,24 @@ import { updateProject, updateTask } from "../../API/handleDocs";
 import { useParams } from "react-router-dom";
 import ButtonAsIcon from "./buttonAsIcon";
 import focusOnEndOfLine from "../projects/utils/focusOnEndOfLine";
+import { useClickOutside } from "../hooks/useClickOutside";
 interface EditableTitleProps {
   text: string;
 }
 
 const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
-  const componentRef = useRef<HTMLDivElement>(null);
-  const paragraphfocusRef = useRef<HTMLParagraphElement>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [route, id] = useParams()["*"]!.split("/")!;
+  const paragraphfocusRef = useRef<HTMLParagraphElement>(null);
 
-  const handleClickOutside = (event: any) => {
-    if (!componentRef.current?.contains(event.target)) {
+  const componentRef = useClickOutside({
+    state: isEditing,
+    onClickOutside: () => {
       paragraphfocusRef.current!.innerText = text;
       setIsEditing(false);
-    }
-  };
+    },
+  });
+
   const updateName = () => {
     if (paragraphfocusRef.current?.innerText === "") {
       paragraphfocusRef.current.innerText = text;
@@ -36,11 +38,7 @@ const EditableTitle: React.FC<EditableTitleProps> = ({ text }) => {
   };
 
   useEffect(() => {
-    if (isEditing) {
-      focusOnEndOfLine(paragraphfocusRef);
-      document.addEventListener("click", handleClickOutside);
-    }
-    return () => document.removeEventListener("click", handleClickOutside);
+    isEditing && focusOnEndOfLine(paragraphfocusRef);
   }, [isEditing]);
 
   return (

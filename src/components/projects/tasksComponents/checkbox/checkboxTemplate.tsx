@@ -6,40 +6,35 @@ import useTheme from "../../../hooks/useTheme";
 import ButtonAsIcon from "../../../custom/buttonAsIcon";
 import { CheckBoxEmpty, Trash } from "../../../utils/icons";
 import { showFromOpacity } from "../../../styled/animations/showFromOpacity";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 interface CheckboxTemplateProps {
-  setTemplateTask: React.Dispatch<React.SetStateAction<boolean>>;
+  isTemplateTask: boolean;
+  setIsTemplateTask: React.Dispatch<React.SetStateAction<boolean>>;
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;
 }
 const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
-  setTemplateTask,
+  isTemplateTask,
+  setIsTemplateTask,
   referenceButton,
 }) => {
   const [checkboxName, setcheckboxName] = useState("");
-  const componentRef = useRef<HTMLDivElement>(null);
   const {
     getColor: { itemCardColor, iconColor },
   } = useTheme();
-  const taskId = useParams().id;
-
-  const handleClickOutside = (e: any) => {
-    if (
-      !componentRef.current?.contains(e.target) &&
-      !referenceButton.current?.contains(e.target)
-    ) {
-      setTemplateTask(false);
-    }
-  };
+  const { id: taskId } = useParams();
+  const componentRef = useClickOutside({
+    onClickOutside: () => {
+      setIsTemplateTask(false);
+    },
+    state: isTemplateTask,
+    outsideRef: referenceButton,
+  });
 
   const createNewCheckbox = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (checkboxName.length !== 0) addNewCheckbox(taskId!, checkboxName);
-    setTemplateTask(false);
+    setIsTemplateTask(false);
   };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
 
   return (
     <ComponentBody ref={componentRef} bodyColor={itemCardColor}>
@@ -63,7 +58,7 @@ const CheckboxTemplate: React.FC<CheckboxTemplateProps> = ({
         src={Trash}
         size={[1, 1]}
         margin="0 2%"
-        onClick={() => setTemplateTask(false)}
+        onClick={() => setIsTemplateTask(false)}
       ></ButtonAsIcon>
     </ComponentBody>
   );

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { TaskList, Clock } from "../../../utils/icons";
 import { addProject } from "../../../../API/handleDocs";
 import { randomKey } from "../../../utils/randomKey";
@@ -7,12 +7,15 @@ import DisplayIcon from "../../../custom/displayIcon";
 import useTheme from "../../../hooks/useTheme";
 import { colors } from "../../../../API/utils";
 import { showFromOpacity } from "../../../styled/animations/showFromOpacity";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 interface ProjectCardProps {
   referenceButton: React.MutableRefObject<HTMLButtonElement | null>;
+  isTemplateProject: boolean;
   setTemplateProject: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ProjectCard: React.FC<ProjectCardProps> = ({
   referenceButton,
+  isTemplateProject,
   setTemplateProject,
 }) => {
   const {
@@ -24,20 +27,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       projectCardProgressBarValueColor,
     },
   } = useTheme();
-  const componentRef = useRef<HTMLDivElement>(null);
   const [projectName, setProjectName] = useState("");
 
   const icons = [TaskList, Clock, Clock];
 
-  const handleClickOutside = (e: any) => {
-    if (
-      !componentRef.current?.contains(e.target) &&
-      !referenceButton.current?.contains(e.target)
-    ) {
+  const ComponentRef = useClickOutside({
+    onClickOutside: () => {
       setTemplateProject(false);
-    }
-  };
-
+    },
+    state: isTemplateProject,
+    outsideRef: referenceButton,
+  });
   const projectColor = useMemo(() => {
     return Object.values(colors)[
       Math.floor(Math.random() * Object.values(colors).length)
@@ -51,15 +51,10 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     setTemplateProject(false);
   };
 
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
-
   return (
     <ComponentBody
       hue={projectColor}
-      ref={componentRef}
+      ref={ComponentRef}
       bodyTone={projectCardColorTone}
     >
       <InfoConteiner>

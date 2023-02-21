@@ -34,7 +34,10 @@ type ColorList =
   | "clockPrimaryColor"
   | "clockSecondaryColor"
   | "clockGlowColor"
-  | "clockBackgroundColor";
+  | "clockBackgroundColor"
+  | "inputColor"
+  | "ConnectionDotIndicatorColorTone"
+  | "ConnectionDotIndicatorOfflineColorTone";
 
 type ColorKeys = { [color in ColorList]: string };
 type ColorMap = { [Theme in ThemeMode]: ColorKeys };
@@ -46,6 +49,7 @@ export const APP_COLORS: ColorMap = {
     projectCardSecondaryColorTone: "70%",
     projectCardProgressBarColorTone: "70%",
     projectCardProgressBarValueColor: `hsla(0, 0%, 30%, 1)`,
+    inputColor: "hsla(40, 20%, 70%, 0.7)",
     taskTemplateColor: "hsla(40, 76%,70%,0.5)",
     dynamicShadowColor: "hsla(0, 0%, 0%, 0.25)",
     staticShadowColor: "hsla(0, 0%, 0%, 0.25)",
@@ -74,6 +78,8 @@ export const APP_COLORS: ColorMap = {
     clockSecondaryColor: "hsla(160, 70%, 60%, 1)",
     clockGlowColor: "hsla(20, 100%, 50%,0.5)",
     clockBackgroundColor: "hsla(32, 86%, 83%, 0.5)",
+    ConnectionDotIndicatorColorTone: "100",
+    ConnectionDotIndicatorOfflineColorTone: "hsla(86, 100%, 30%, 1)",
   },
   Dark: {
     appColorPrimary: "hsla(261, 16%, 40%, 0.8)",
@@ -82,6 +88,7 @@ export const APP_COLORS: ColorMap = {
     projectCardSecondaryColorTone: "30%",
     projectCardProgressBarColorTone: "30%",
     projectCardProgressBarValueColor: "hsla(0, 0%, 70%, 1)",
+    inputColor: "hsla(261, 20%, 60%, 0.7)",
     taskTemplateColor: "hsla(260,26%,65%,0.5)",
     dynamicShadowColor: "hsla(0, 0%, 100%, 0.25)",
     staticShadowColor: "hsla(0, 0%, 0%, 0.25)",
@@ -92,7 +99,7 @@ export const APP_COLORS: ColorMap = {
     textColorLight: "hsla(0, 0%, 65%, 100%)",
     buttonColor: "hsla(0, 0%, 87%, 0.22)",
     categoryColor: "hsla(245, 84%, 15%, 1)",
-    textError: "hsla(10, 74%, 40%, 1)",
+    textError: "hsla(10, 77%, 45%, 1)",
     buttonWithIconColor: "hsla(261, 0%, 55%, 0.3)",
     showMoreButtonColor: "hsla(0, 0%, 87%, 0.68)",
     dropMenuOptionColor: "hsla(0, 0%, 87%, 0.5)",
@@ -110,5 +117,7 @@ export const APP_COLORS: ColorMap = {
     clockSecondaryColor: "hsla(320, 70%, 60%, 1)",
     clockGlowColor: "hsla(108, 100%, 50%,0.5)",
     clockBackgroundColor: "hsla(200, 70%, 60%, 0.5)",
+    ConnectionDotIndicatorColorTone: "100",
+    ConnectionDotIndicatorOfflineColorTone: "360",
   },
 };

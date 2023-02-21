@@ -11,6 +11,7 @@ import useTheme from "../../hooks/useTheme";
 import { vibrate } from "../../utils/vibrate";
 import useDataFinder from "../../hooks/useDataFinder";
 import { TasksData } from "../../../API/getUserData";
+import { useClickOutside } from "../../hooks/useClickOutside";
 interface TimeFieldProps {
   extendedStyle?: StyledComponent<"div", any, {}, never>;
   expectedTime: number;
@@ -19,34 +20,34 @@ const TimeField: React.FC<TimeFieldProps> = ({
   extendedStyle,
   expectedTime,
 }) => {
-  const fieldRef = useRef<HTMLDivElement>(null);
   const { id } = useParams();
 
   const [newValue, setNewValue] = useState(convertTimeToString(expectedTime));
   const {
     getColor: { taskOptionsForegroundColor },
   } = useTheme();
+
+  const componentRef = useClickOutside({
+    onClickOutside: () => {
+      (componentRef.current!.firstChild! as HTMLInputElement).value =
+        convertTimeToString(expectedTime);
+    },
+    state: convertTimeToString(expectedTime) !== newValue,
+  });
   const TimeUpdate = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
       vibrate("short");
       updateTask(id!, { timeExpected: convertTimeToNumber(newValue) });
-      (fieldRef!.current!.firstChild! as HTMLInputElement).blur();
-    }
-  };
-  const blurValue = () => {
-    if (convertTimeToString(expectedTime) !== newValue) {
-      (fieldRef!.current!.firstChild! as HTMLInputElement).value =
-        convertTimeToString(expectedTime);
+      (componentRef!.current!.firstChild! as HTMLInputElement).blur();
     }
   };
 
   return (
     <ComponentBody
       as={extendedStyle}
-      ref={fieldRef}
+      ref={componentRef}
       taskOptionsForegroundColor={taskOptionsForegroundColor}
       onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => TimeUpdate(e)}
-      onBlur={blurValue}
     >
       <NumberInput
         as={TimeF}

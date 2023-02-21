@@ -17,10 +17,10 @@ const AllProjects: React.FC = () => {
   const currentUser = useUserAuth();
   const buttonNewRef = useRef<HTMLButtonElement>(null);
   const [searchText, setSearchText] = useState("");
-  const [templateProject, setTemplateProject] = useState(false);
+  const [isTemplateProject, setIsTemplateProject] = useState(false);
 
   const openTempateProject = () => {
-    setTemplateProject(true);
+    setIsTemplateProject(true);
   };
 
   return (
@@ -46,12 +46,13 @@ const AllProjects: React.FC = () => {
       </Head>
       <ProjectsList>
         {userData?.length === 0 && (
-          <NoProjectsDisplay isTemplateOpen={templateProject} />
+          <NoProjectsDisplay isTemplateOpen={isTemplateProject} />
         )}
-        {templateProject && (
+        {isTemplateProject && (
           <ProjectCardTemplate
             referenceButton={buttonNewRef}
-            setTemplateProject={setTemplateProject}
+            isTemplateProject={isTemplateProject}
+            setTemplateProject={setIsTemplateProject}
           />
         )}
         {userData

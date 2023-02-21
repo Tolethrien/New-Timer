@@ -16,7 +16,12 @@ interface AccountModalProps {
 }
 
 type ModalSchemaType = {
-  [K in ModalInputsType]: { displayName: string; value: string; error: string };
+  [Key in ModalInputsType]: {
+    displayName: string;
+    value: string;
+    error: string;
+    typeofInput: string;
+  };
 };
 
 const AccountModal: React.FC<AccountModalProps> = ({
@@ -25,6 +30,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
 }) => {
   const currentUser = useUserAuth();
   const [isErrored, setisErrored] = useState(false);
+  const [, setRerenderAnim] = useState(false);
   const navigate = useNavigate();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -35,26 +41,33 @@ const AccountModal: React.FC<AccountModalProps> = ({
     email: {
       displayName: "email",
       value: currentUser?.email ?? "",
+      typeofInput: "email",
       error: "email should contain @ character or emails are not the same",
     },
     password: {
       displayName: "Password",
       value: "********",
+      typeofInput: "password",
+
       error:
         "password should contain at least 8 characters or passwords are not the same",
     },
     userName: {
       displayName: "Name",
       value: currentUser?.displayName ?? "",
+      typeofInput: "text",
+
       error:
         "name should contain at least 1 character or names are not the same",
     },
     logout: {
       displayName: "Logout",
       value: currentUser?.email ?? "",
+      typeofInput: "",
+
       error: "",
     },
-    default: { displayName: "", value: "", error: "" },
+    default: { displayName: "", value: "", error: "", typeofInput: "" },
   };
 
   const closeModal = () => {
@@ -79,6 +92,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
           secondInputRef.current?.value === "" ||
           firstInputRef.current?.value !== secondInputRef.current?.value
         ) {
+          setRerenderAnim((prev) => !prev);
           setisErrored(true);
         } else {
           updateAccountValue({
@@ -95,6 +109,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
           secondInputRef.current?.value === "" ||
           firstInputRef.current?.value !== secondInputRef.current?.value
         ) {
+          setRerenderAnim((prev) => !prev);
           setisErrored(true);
         } else {
           updateAccountValue({
@@ -111,6 +126,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
           secondInputRef.current?.value === "" ||
           firstInputRef.current?.value !== secondInputRef.current?.value
         ) {
+          setRerenderAnim((prev) => !prev);
           setisErrored(true);
         } else {
           updateAccountValue({
@@ -121,6 +137,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
         break;
       }
       default:
+        return;
     }
   };
 
@@ -142,7 +159,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
       <Form onSubmit={(e) => e.preventDefault()} ref={formRef}>
         <UserInput
           errorMsg={modalschema[typeOfData].error}
-          inputType="text"
+          inputType={modalschema[typeOfData].typeofInput}
           isError={isErrored}
           placeholder={`New ${modalschema[typeOfData].displayName}`}
           reference={firstInputRef}
@@ -150,7 +167,7 @@ const AccountModal: React.FC<AccountModalProps> = ({
         ></UserInput>
         <UserInput
           errorMsg="names are not the same"
-          inputType="text"
+          inputType={modalschema[typeOfData].typeofInput}
           isError={isErrored}
           placeholder="Again..."
           reference={secondInputRef}
@@ -173,8 +190,8 @@ export default AccountModal;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding-block: 1rem;
+  gap: 1rem;
+  /* padding-block: 1rem; */
 
   input {
     width: 100%;
