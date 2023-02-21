@@ -52,7 +52,7 @@ export default Options;
 const Body = styled.div`
   padding-top: 1rem;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 const ExtendedHead = styled.div`
   flex-direction: row;

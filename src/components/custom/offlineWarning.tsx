@@ -67,19 +67,20 @@ const ComponentBody = styled.div<{
   backdrop-filter: blur(20px);
   background-color: ${({ componentColor }) => componentColor};
   top: 20%;
-  left: -1%;
+  left: -100%;
   gap: 0.5rem;
   z-index: 100;
   border-radius: 0 10px 10px 0;
   padding: 0.5rem;
   box-shadow: 2px 3px 3px rgba(0, 0, 0, 0.25);
   animation: MoveIn 0.5s ease-out forwards;
+  animation-delay: 2s;
   @keyframes MoveIn {
     from {
       left: -50%;
     }
     to {
-      left: -1%;
+      left: 0%;
     }
   }
 `;
