@@ -1,6 +1,6 @@
 # Welcome to Project New Timer
 
-[New Timer](https://www.newtimer.vercel.app)
+[New Timer](http://www.newtimer.vercel.app)
 
 ## Description
 
