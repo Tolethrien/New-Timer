@@ -9,10 +9,6 @@ import useTheme from "./components/hooks/useTheme";
 import UserAuth from "./pages/userAuth";
 import MainBody from "./components/styled/components/mainBody";
 import useUserAuth from "./components/hooks/useUserAuth";
-import useIsOnline from "./components/hooks/useIsOnline";
-import styled from "styled-components";
-import ButtonAsIcon from "./components/custom/buttonAsIcon";
-import { Add } from "./components/utils/icons";
 import OfflineWarnings from "./components/custom/offlineWarning";
 
 function App() {
@@ -20,7 +16,6 @@ function App() {
     getColor: { textColorNormal },
     getBackground: { appBackground },
   } = useTheme();
-
   const currentUser = useUserAuth();
 
   if (!currentUser) return <UserAuth />;

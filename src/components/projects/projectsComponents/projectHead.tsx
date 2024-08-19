@@ -39,7 +39,7 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
   const { id } = useParams();
   const project = useDataFinder<ProjectsData>(id)!;
   const {
-    getColor: { projectCardColorTone, showMoreButtonColor },
+    getColor: { projectCardColorTone, showMoreButtonColor, textColorLight },
   } = useTheme();
   const updateColor = (e: number) => {
     vibrate("short");
@@ -136,7 +136,11 @@ const ProjectHead: React.FC<ProjectHeadProps> = ({
       <MoreInfoButton
         showMoreButtonColor={showMoreButtonColor}
         onClick={updateShowAll}
-      ></MoreInfoButton>
+      >
+        <MoreInfoArrow textColor={textColorLight} isShown={showAll}>
+          {showAll ? <span>&#129089;</span> : <span>&#129087;</span>}
+        </MoreInfoArrow>
+      </MoreInfoButton>
     </Head>
   );
 };
@@ -174,16 +178,29 @@ const ColorToPick = styled.div<{
   `}
 `;
 
-const MoreInfoButton = styled.button<{ showMoreButtonColor: string }>`
+const MoreInfoButton = styled.button<{
+  showMoreButtonColor: string;
+}>`
   width: 30%;
-  height: 0.5rem;
+  height: 0.7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${({ showMoreButtonColor }) => showMoreButtonColor};
   border: none;
   align-self: center;
   border-radius: 10px;
   cursor: pointer;
 `;
-
+const MoreInfoArrow = styled.p<{
+  textColor: string;
+  isShown: boolean;
+}>`
+  color: ${({ textColor }) => textColor};
+  font-size: 1.5rem;
+  cursor: pointer;
+  transform: ${({ isShown }) => isShown && `translateY(-5%)`};
+`;
 const ManagingProject = styled.div`
   width: 100%;
   display: flex;

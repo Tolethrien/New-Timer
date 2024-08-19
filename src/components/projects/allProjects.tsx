@@ -22,7 +22,6 @@ const AllProjects: React.FC = () => {
   const openTempateProject = () => {
     setIsTemplateProject(true);
   };
-
   return (
     <>
       <Head>

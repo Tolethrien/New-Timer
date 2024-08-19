@@ -1,4 +1,4 @@
-export const convertTimeToString: (sec: number) => string = (sec) => {
+export const convertTimeToString = (sec: number) => {
   let hours = Math.floor(sec / 3600);
   let minutes = Math.floor((sec - hours * 3600) / 60);
   let seconds = sec - hours * 3600 - minutes * 60;
@@ -11,7 +11,7 @@ export const convertTimeToString: (sec: number) => string = (sec) => {
   );
 };
 
-export const convertTimeToNumber: (time: string) => number = (time: string) => {
+export const convertTimeToNumber = (time: string) => {
   let value = time.split(":");
   return Number(value[0]) * 3600 + Number(value[1]) * 60 + Number(value[2]);
 };

@@ -14,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
       margin: 20px 0px;
     }
     ::-webkit-scrollbar-thumb {
-      background: hsla(0, 0%, 43%, 1);
+      background: hsla(0, 0%, 63%, 1);
       border-radius: 5px;
     }
   }

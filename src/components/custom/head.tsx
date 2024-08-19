@@ -21,6 +21,7 @@ const Head: React.FC<HeadProps> = ({
       dynamicShadowColor,
     },
   } = useTheme();
+
   const currentUser = useUserAuth();
   const setColor =
     overrideColor !== "" && coloredHeaders !== "Mono"

@@ -13,6 +13,11 @@ import {
   updatePassword,
 } from "firebase/auth";
 
+export interface updateAccType {
+  param: "name" | "email" | "password";
+  value: string;
+}
+
 const auth = getAuth();
 
 export const RegisterNewUser = async (
@@ -33,7 +38,7 @@ export const login = async (
   password: string,
   callback?: () => void
 ) => {
-  await signInWithEmailAndPassword(auth, email, password).catch((e) =>
+  await signInWithEmailAndPassword(auth, email, password).catch(() =>
     callback?.()
   );
 };
@@ -50,10 +55,6 @@ export const useFirebaseAuth = () => {
   return currentUser;
 };
 
-export interface updateAccType {
-  param: "name" | "email" | "password";
-  value: string;
-}
 export const updateAcc = async ({ param, value }: updateAccType) => {
   if (param === "name")
     await updateProfile(auth.currentUser!, { displayName: value });

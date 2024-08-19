@@ -33,18 +33,15 @@ const ClockFace: React.FC = () => {
     // (every few minutes one sec was skipped)
     if (isRunning) {
       clockInterval.current = setInterval(() => {
-        setTimeLeft((Date.now() - startDate) / 1000);
-        setProgressBar((prev) => prev + MINUTES_TO_PERCENT);
-      }, 500);
+        const now = Math.round((Date.now() - startDate) / 1000);
+        if (timeLeft !== now) {
+          setTimeLeft(now);
+          setProgressBar((prev) => prev + MINUTES_TO_PERCENT);
+        }
+      }, 250);
     }
     return () => clearInterval(clockInterval.current);
   }, [timeLeft, isRunning]);
-
-  useEffect(() => {
-    // reevaluate timer on first component mount
-    // to avoid 0.5s deley on clock intervale(visual glitch)
-    isRunning && setTimeLeft((Date.now() - startDate) / 1000);
-  }, []);
 
   useEffect(() => {
     //reset timer when clock is stopped

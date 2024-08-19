@@ -61,6 +61,7 @@ const ComponentBody = styled.textarea<{
 }>`
   width: 97%;
   height: ${({ height }) => height}px;
+  max-height: 30dvh;
   background-color: ${({ bodyColor }) => bodyColor};
   backdrop-filter: blur(20px);
   border: ${({ borderColor }) => borderColor};
