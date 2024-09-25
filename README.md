@@ -12,6 +12,13 @@
 - **Time Tracking**: Monitor the time you spend on individual tasks and total time on whole project.
 - **User-Friendly Interface**: An intuitive interface in lofi style that allows you to start tracking time quickly and easily.
 
+## Try out!
+
+you can use this test account to scroll through app:
+
+- login: preview@emberborn.xyz
+- password: Preview#Preview123
+
 ## Installation
 
 this App supports PWA(progresive web App)
