@@ -78,7 +78,7 @@ export const APP_COLORS: ColorMap = {
     clockGlowColor: "hsla(20, 100%, 50%,0.5)",
     clockBackgroundColor: "hsla(32, 86%, 83%, 0.5)",
     ConnectionDotIndicatorColorTone: "100",
-    ConnectionDotIndicatorOfflineColorTone: "hsla(86, 100%, 30%, 1)",
+    ConnectionDotIndicatorOfflineColorTone: "360",
   },
   Dark: {
     appColorPrimary: "hsla(261, 16%, 40%, 0.8)",
