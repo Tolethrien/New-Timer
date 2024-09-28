@@ -17,12 +17,10 @@ const Login: React.FC = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const [errored, setErrored] = useState(false);
-  const [, setRerenderAnim] = useState(false);
 
   const handleLogin = () => {
     login(mailRef.current!.value, passRef.current!.value, () => {
       setErrored(true);
-      setRerenderAnim((prev) => !prev);
     });
   };
   const redirectToRegister = () => {

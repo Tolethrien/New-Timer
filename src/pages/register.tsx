@@ -16,21 +16,17 @@ const Register: React.FC = () => {
   const repeatRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const [warning, setWarning] = useState("");
-  const [, setRerenderAnim] = useState(false);
 
   const handleRegister = () => {
     if (nameRef.current?.value === "") {
-      setRerenderAnim((prev) => !prev);
       return setWarning("name");
     } else if (!mailRef.current?.value.includes("@")) {
-      setRerenderAnim((prev) => !prev);
       return setWarning("email");
     } else if (
       passRef.current?.value === "" ||
       repeatRef.current?.value === "" ||
       passRef.current?.value !== repeatRef.current?.value
     ) {
-      setRerenderAnim((prev) => !prev);
       return setWarning("repeat");
     }
     RegisterNewUser(
