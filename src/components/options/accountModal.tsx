@@ -30,7 +30,6 @@ const AccountModal: React.FC<AccountModalProps> = ({
 }) => {
   const currentUser = useUserAuth();
   const [isErrored, setisErrored] = useState(false);
-  const [, setRerenderAnim] = useState(false);
   const navigate = useNavigate();
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -75,7 +74,9 @@ const AccountModal: React.FC<AccountModalProps> = ({
     formRef.current?.reset();
     reference.current?.close();
   };
-
+  const showDemoError = () => {
+    alert("action unavailable in demo version");
+  };
   const updateAccountValue = async ({ param, value }: updateAccType) => {
     await updateAcc({ param, value });
     closeModal();
@@ -92,7 +93,6 @@ const AccountModal: React.FC<AccountModalProps> = ({
           secondInputRef.current?.value === "" ||
           firstInputRef.current?.value !== secondInputRef.current?.value
         ) {
-          setRerenderAnim((prev) => !prev);
           setisErrored(true);
         } else {
           updateAccountValue({
@@ -109,13 +109,13 @@ const AccountModal: React.FC<AccountModalProps> = ({
           secondInputRef.current?.value === "" ||
           firstInputRef.current?.value !== secondInputRef.current?.value
         ) {
-          setRerenderAnim((prev) => !prev);
           setisErrored(true);
         } else {
-          updateAccountValue({
-            param: "email",
-            value: firstInputRef.current!.value!,
-          });
+          showDemoError();
+          // updateAccountValue({
+          //   param: "email",
+          //   value: firstInputRef.current!.value!,
+          // });
         }
         break;
       }
@@ -126,13 +126,13 @@ const AccountModal: React.FC<AccountModalProps> = ({
           secondInputRef.current?.value === "" ||
           firstInputRef.current?.value !== secondInputRef.current?.value
         ) {
-          setRerenderAnim((prev) => !prev);
           setisErrored(true);
         } else {
-          updateAccountValue({
-            param: "password",
-            value: firstInputRef.current!.value!,
-          });
+          showDemoError();
+          // updateAccountValue({
+          //   param: "password",
+          //   value: firstInputRef.current!.value!,
+          // });
         }
         break;
       }

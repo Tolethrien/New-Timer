@@ -22,7 +22,10 @@ const Options: React.FC = () => {
   return (
     <PageWrap>
       <Head extendedStyle={ExtendedHead}>
-        <DisplayText size={1.5}>Settings</DisplayText>
+        <DisplayText size={1.5}>
+          Settings
+          <DemoText>(demo)</DemoText>
+        </DisplayText>
         <ConnectionIndicator
           DotColor={
             isOnline
@@ -56,6 +59,10 @@ const Body = styled.div`
 `;
 const ExtendedHead = styled.div`
   flex-direction: row;
+`;
+const DemoText = styled.span`
+  font-size: 0.7rem;
+  padding-left: 0.5rem;
 `;
 const ConnectionIndicator = styled.div<{ DotColor: string; isOnline: boolean }>`
   position: relative;

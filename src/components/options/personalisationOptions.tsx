@@ -30,7 +30,7 @@ const PersonalisationOptions: React.FC = () => {
         ></ButtonWithIcon>
       </OptionBar>
       <OptionBar>
-        <DisplayText>Colorful Headers</DisplayText>
+        <DisplayText>Colorful Projects Header</DisplayText>
         <ButtonWithIcon
           src={RoundSwap}
           alt=""

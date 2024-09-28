@@ -39,8 +39,7 @@ type ColorList =
   | "ConnectionDotIndicatorColorTone"
   | "ConnectionDotIndicatorOfflineColorTone";
 
-type ColorKeys = { [color in ColorList]: string };
-type ColorMap = { [Theme in ThemeMode]: ColorKeys };
+type ColorMap = Record<ThemeMode, Record<ColorList, string>>;
 export const APP_COLORS: ColorMap = {
   Light: {
     appColorPrimary: "hsla(40, 76%, 69%, 0.8)",

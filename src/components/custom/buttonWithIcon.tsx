@@ -18,6 +18,7 @@ interface ButtonWithIconProps {
   reference?: React.MutableRefObject<any>;
   extendedStyle?: StyledComponent<"button", any, {}, never>;
   extendedProps?: {};
+  disabled?: boolean;
 }
 const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   src,
@@ -29,13 +30,13 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
   extendedProps,
   animation = "none",
   noShadow = false,
+  disabled = false,
 }) => {
   const {
     getColor: {
       borderColor,
       iconColor,
       dynamicShadowColor,
-      staticShadowColor,
       buttonWithIconColor,
     },
   } = useTheme();
@@ -49,6 +50,7 @@ const ButtonWithIcon: React.FC<ButtonWithIconProps> = ({
       ref={reference}
       as={extendedStyle}
       borderColor={borderColor}
+      disabled={disabled}
       shadowColor={dynamicShadowColor}
       noShadow={noShadow}
       buttonWithIconColor={buttonWithIconColor}

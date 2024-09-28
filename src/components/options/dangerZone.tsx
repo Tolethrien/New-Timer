@@ -5,8 +5,8 @@ import { Trash } from "../utils/icons";
 import OptionBar from "./optionBar";
 
 const DangerZone: React.FC = () => {
-  const temp = () => {
-    alert("danger zone temporary restricted");
+  const demo = () => {
+    alert("danger zone restricted in demo version");
   };
 
   return (
@@ -18,7 +18,7 @@ const DangerZone: React.FC = () => {
           alt=""
           text="delete"
           noShadow
-          onClick={temp}
+          onClick={demo}
         ></ButtonWithIcon>
       </OptionBar>
       <OptionBar>
@@ -28,7 +28,7 @@ const DangerZone: React.FC = () => {
           alt=""
           text="delete"
           noShadow
-          onClick={temp}
+          onClick={demo}
         ></ButtonWithIcon>
       </OptionBar>
     </ComponentBody>

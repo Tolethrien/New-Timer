@@ -17,12 +17,10 @@ const Login: React.FC = () => {
   const { theme } = useTheme();
   const navigate = useNavigate();
   const [errored, setErrored] = useState(false);
-  const [, setRerenderAnim] = useState(false);
 
   const handleLogin = () => {
     login(mailRef.current!.value, passRef.current!.value, () => {
       setErrored(true);
-      setRerenderAnim((prev) => !prev);
     });
   };
   const redirectToRegister = () => {
@@ -43,6 +41,7 @@ const Login: React.FC = () => {
         <DisplayText size={1.5} weight={500} as={ExtendedText}>
           Login to begin <br />
           your productivity
+          <DemoText>(demo)</DemoText>
         </DisplayText>
         <UserForm onSubmit={(e) => e.preventDefault()}>
           <UserInput
@@ -118,6 +117,13 @@ const DarkModeBackground = styled.div<{ bodyColor: string }>`
 `;
 const ExtendedText = styled.p`
   text-align: center;
+  position: relative;
+`;
+const DemoText = styled.span`
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
 `;
 const ExtendedLoginButton = styled.button`
   padding: 0.4rem 1em;

@@ -33,11 +33,12 @@ const Register: React.FC = () => {
       setRerenderAnim((prev) => !prev);
       return setWarning("repeat");
     }
-    RegisterNewUser(
-      mailRef.current?.value!,
-      passRef.current?.value!,
-      nameRef.current?.value!
-    );
+    alert("Register is disabled in demo version");
+    // RegisterNewUser(
+    //   mailRef.current?.value!,
+    //   passRef.current?.value!,
+    //   nameRef.current?.value!
+    // );
   };
 
   return (
