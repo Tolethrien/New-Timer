@@ -44,7 +44,7 @@ const Options: React.FC = () => {
         <Category name="Personalization">
           <PersonalisationOptions />
         </Category>
-        <Category name="Danger Zone" overrideColor={categoryDanger}>
+        <Category name="Danger zone" overrideColor={categoryDanger}>
           <DangerZone />
         </Category>
       </Body>

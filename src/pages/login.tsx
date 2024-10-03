@@ -34,7 +34,7 @@ const Login: React.FC = () => {
           Welcome to New Timer
         </DisplayText>
         <DisplayText margin="0 0 3% 0">
-          your personal Projects Time measuring App
+          Your personal project time-tracking app
         </DisplayText>
       </Head>
       <LoginBody>

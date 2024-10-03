@@ -8,18 +8,18 @@ const PersonalisationOptions: React.FC = () => {
   return (
     <>
       <OptionBar>
-        <DisplayText>Dark/Light Mode</DisplayText>
+        <DisplayText>Dark/Light mode</DisplayText>
         <ButtonWithIcon
           src={RoundSwap}
           alt=""
-          text={`${theme} Mode`}
+          text={`${theme} mode`}
           noShadow
           animation="inset"
           onClick={() => dispatch({ type: "switchThemeColor" })}
         ></ButtonWithIcon>
       </OptionBar>
       <OptionBar>
-        <DisplayText>Colorful Categories</DisplayText>
+        <DisplayText>Colorful categories</DisplayText>
         <ButtonWithIcon
           src={RoundSwap}
           alt=""
@@ -30,7 +30,7 @@ const PersonalisationOptions: React.FC = () => {
         ></ButtonWithIcon>
       </OptionBar>
       <OptionBar>
-        <DisplayText>Colorful Projects Header</DisplayText>
+        <DisplayText>Colorful projects header</DisplayText>
         <ButtonWithIcon
           src={RoundSwap}
           alt=""

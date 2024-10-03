@@ -32,10 +32,10 @@ const Timer: React.FC = () => {
         <DisplayText weight={500}>
           {taskInProgress
             ? `currently working on ${taskName}`
-            : "You Are now in Free Mode"}
+            : "You are now in free mode"}
         </DisplayText>
         {taskInProgress && (
-          <DisplayText weight={500}>In Project {projectName}</DisplayText>
+          <DisplayText weight={500}>In project {projectName}</DisplayText>
         )}
       </Head>
       <TimerClock showCheckboxes={showCheckboxComponent} />

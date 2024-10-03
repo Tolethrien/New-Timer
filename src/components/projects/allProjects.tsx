@@ -29,7 +29,7 @@ const AllProjects: React.FC = () => {
           Hello, {currentUser?.displayName}!
         </DisplayText>
         <DisplayText size={1.8} weight={700} margin="1% 0 0 0">
-          Projects On your List ({userData?.length})
+          Projects on your list ({userData?.length})
         </DisplayText>
         <ManagingProject>
           <SearchBox onChange={setSearchText} value={searchText} />
